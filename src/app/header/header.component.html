@@ -1,0 +1,50 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row class="mat-elevation-z6"
+                     fxFlex
+                     fxLayout="row">
+        <button type="button"
+                mat-icon-button
+                (click)="sidenav.toggle()">
+            <mat-icon [attr.alt]="'Menu'">menu</mat-icon>
+        </button>
+        <span fxFlex></span>
+
+        <div fxLayout="row"
+             fxLayoutGap="10px">
+
+            <ng-template [ngIf]="(user$ | async)"
+                         [ngIfElse]="loggedOut">
+                <img width="50"
+                     height="50"
+                     mat-card-avatar
+                     [src]="(user$ | async)?.image"
+                     onerror="this.src='../../assets/user.png';"
+                     [attr.alt]="'User Image'">
+                <a mat-button
+                   role="button"
+                   (click)="onLogout()">
+                    Logout
+                </a>
+            </ng-template>
+
+
+            <ng-template #loggedOut>
+                <a mat-button
+                   role="button"
+                   href="#/user/auth"
+                   (click)="switchAuthModeTo('login')">
+                    Login
+                </a>
+                <a mat-raised-button
+                   color="warn"
+                   role="button"
+                   href="#/user/auth"
+                   (click)="switchAuthModeTo('register')">
+                    Register
+                </a>
+            </ng-template>
+
+        </div>
+
+    </mat-toolbar-row>
+</mat-toolbar>

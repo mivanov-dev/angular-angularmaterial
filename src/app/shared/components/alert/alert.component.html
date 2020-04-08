@@ -1,0 +1,9 @@
+<mat-card fxLayout="row"
+          fxLayoutAlign="space-between center">
+    <span [ngStyle]="{'color': hasError ? 'red': 'green'}">{{ message }}</span>
+    <button mat-icon-button
+            (click)="onClose()">
+        <i [attr.alt]="'Close'"
+           class="fas fa-times"></i>
+    </button>
+</mat-card>

@@ -1,0 +1,131 @@
+<div fxLayoutAlign="center center"
+     class="container">
+
+    <div fxLayoutGap="10px"
+         fxLayout="column"
+         fxLayoutAlign="center center">
+
+        <ng-template appPlaceholder></ng-template>
+
+        <div>
+            <mat-card fxFlex="350px"
+                      fxFlex.xs="300px">
+                <mat-card-header fxLayout="row"
+                                 fxLayoutAlign="center center">
+
+                    <mat-card-title>
+                        {{ authMode === 'login' ? 'Login' : 'Register' }}
+                    </mat-card-title>
+                </mat-card-header>
+
+                <mat-card-content>
+                    <form [formGroup]="form"
+                          #formDirective="ngForm"
+                          (ngSubmit)="onSubmit()"
+                          [attr.autocomplete]="'off'">
+
+                        <div formGroupName="user">
+                            <mat-form-field class="field"
+                                            fxLayout="column">
+                                <mat-label>Email</mat-label>
+                                <input matInput
+                                       #email
+                                       type="email"
+                                       formControlName="email">
+                                <mat-error *ngIf="hasEmailControlErrorRequired(emailControl)">
+                                    Email is <strong>required</strong> !
+                                </mat-error>
+                                <mat-error *ngIf="hasControlErrorLengtgh(emailControl)">
+                                    Email length must be between 10 and 100 characters!
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="field"
+                                            fxLayout="column">
+                                <mat-label>Password</mat-label>
+                                <input matInput
+                                       #password
+                                       type="password"
+                                       formControlName="password">
+                                <mat-error *ngIf="hasPasswordControlErrorRequired(passwordControl)">
+                                    Password is <strong>required</strong> !
+                                </mat-error>
+                                <mat-error *ngIf="hasControlErrorLengtgh(passwordControl)">
+                                    Password length must be between 10 and 100 characters!
+                                </mat-error>
+                            </mat-form-field>
+
+                            <app-caps-lock [field]="password"
+                                           (isActiveCapsLock)="$event"></app-caps-lock>
+
+                            <div fxLayout="row"
+                                 fxLayoutAlign="space-between center"
+                                 *ngIf="authMode == 'login'">
+                                <mat-checkbox formControlName="remember"
+                                              color="primary">
+                                    <small>Remember Me !</small>
+                                </mat-checkbox>
+                                <a mat-button
+                                   color="primary"
+                                   [routerLink]="['/user/forgot-password']">
+                                    <small>Forgot password ?</small>
+                                </a>
+                            </div>
+
+                            <div class="form-label-group"
+                                 *ngIf="authMode == 'register'">
+                                <file-pond #filepond
+                                           name="filepond"
+                                           class="filepond"
+                                           [options]="fileOptions"
+                                           [files]="pondFiles">
+                                </file-pond>
+                            </div>
+                        </div>
+
+                        <button mat-raised-button
+                                #submitButton
+                                type="submit"
+                                style="display: none;"></button>
+                    </form>
+                </mat-card-content>
+                <mat-card-actions fxLayout="column"
+                                  fxLayoutGap="5px">
+
+                    <button mat-raised-button
+                            color="primary"
+                            (click)="onTriggerSubmit()"
+                            fxLayout="column"
+                            fxLayoutAlign="center stretch"
+                            [disabled]="(isLoading$ | async)">
+                        {{ authMode === 'login' ? 'Login' : 'Register' }}&nbsp;
+                        <i class="fas fa-cog fa-spin"
+                           *ngIf="(isLoading$ | async)"></i>
+                    </button>
+
+                    <button mat-button
+                            disabled
+                            *ngIf="authMode == 'login'">
+                        or
+                    </button>
+
+                    <app-social *ngIf="authMode == 'login'"
+                                [isLoading]="(isLoading$ | async)"></app-social>
+
+                </mat-card-actions>
+                <mat-card-footer fxLayout="column"
+                                 fxLayoutAlign="center none"
+                                 fxLayoutAlign="center center">
+                    <small>{{ authMode === 'login' ? 'Don’t have an account ?' : 'Already have an account ?' }}</small>
+                    <button mat-button
+                            color="primary"
+                            (click)="authMode == 'login' ? switchAuthModeTo('register') : switchAuthModeTo('login')">
+                        {{ authMode == 'login' ? 'Register' : 'Login' }}
+                    </button>
+                </mat-card-footer>
+            </mat-card>
+        </div>
+
+    </div>
+
+</div>
