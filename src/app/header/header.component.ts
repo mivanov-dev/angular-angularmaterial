@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() sidenav: MatSidenav;
   private _onDestroy$: Subject<void> = new Subject<void>();
   user$: Observable<AuthModels.Login> = this._store$.pipe(takeUntil(this._onDestroy$), select(fromAuth.selectLogin));
+  userImage: string = '../../assets/user.png';
 
   constructor(private _store$: Store<fromApp.AppState>) { }
 

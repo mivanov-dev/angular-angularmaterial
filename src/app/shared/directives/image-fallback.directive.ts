@@ -21,7 +21,7 @@ export class ImageFallbackDirective {
   loadFallbackOnError(): void {
 
     const element: HTMLImageElement = this._eRef.nativeElement as HTMLImageElement;
-    element.src = this.image || '../../../assets/user.png';
+    element.src = this.image;
 
   }
 }
