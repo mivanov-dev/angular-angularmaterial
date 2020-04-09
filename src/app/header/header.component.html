@@ -5,7 +5,8 @@
         <button type="button"
                 mat-icon-button
                 (click)="sidenav.toggle()">
-            <mat-icon [attr.alt]="'Menu'">menu</mat-icon>
+            <mat-icon alt="menu"
+                      aria-label="menu">menu</mat-icon>
         </button>
         <span fxFlex></span>
 
@@ -18,8 +19,8 @@
                      height="50"
                      mat-card-avatar
                      [src]="(user$ | async)?.image"
-                     onerror="this.src='../../assets/user.png';"
-                     [attr.alt]="'User Image'">
+                     appImageFallback
+                     alt="UserImage">
                 <a mat-button
                    role="button"
                    (click)="onLogout()">

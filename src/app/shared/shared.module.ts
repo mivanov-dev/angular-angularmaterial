@@ -7,7 +7,7 @@ import { MaterialModule } from '@app/material.module';
 import { LayoutModule } from '@app/layout.module';
 import { FilepondModule } from '@app/filepond.module';
 import { AlertComponent, CapsLockComponent } from './components';
-import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorDirective } from './directives';
+import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorDirective, ImageFallbackDirective } from './directives';
 
 // Without services
 @NgModule({
@@ -17,6 +17,7 @@ import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorD
     TemplateRendererDirective,
     ConfirmEqualValidatorDirective,
     CapsLockComponent,
+    ImageFallbackDirective,
   ],
   imports: [
     CommonModule,
@@ -31,6 +32,7 @@ import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorD
     PlaceholderDirective,
     TemplateRendererDirective,
     ConfirmEqualValidatorDirective,
+    ImageFallbackDirective,
     CapsLockComponent,
     FormsModule,
     ReactiveFormsModule,
