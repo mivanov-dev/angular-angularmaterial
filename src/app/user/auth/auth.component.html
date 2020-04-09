@@ -22,7 +22,7 @@
                     <form [formGroup]="form"
                           #formDirective="ngForm"
                           (ngSubmit)="onSubmit()"
-                          [attr.autocomplete]="'off'">
+                          autocomplete="off">
 
                         <div formGroupName="user">
                             <mat-form-field class="field"

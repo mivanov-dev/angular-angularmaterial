@@ -3,7 +3,7 @@
     <span [ngStyle]="{'color': hasError ? 'red': 'green'}">{{ message }}</span>
     <button mat-icon-button
             (click)="onClose()">
-        <i [attr.alt]="'Close'"
+        <i aria-label="close"
            class="fas fa-times"></i>
     </button>
 </mat-card>
