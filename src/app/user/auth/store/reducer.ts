@@ -20,7 +20,7 @@ export const initState: State = {
     authMode: { mode: 'login' },
 };
 
-export const featureReducer = createReducer<State>(
+export const reducer = createReducer<State>(
     initState,
     /**
      * LOGIN
@@ -141,23 +141,17 @@ export const featureReducer = createReducer<State>(
 
 );
 
-export function reducer(state: State | undefined, action: Action) {
-
-    return featureReducer(state, action);
-
-};
-
-const getError = (state: State) => { if (!state.loading) { return state.error; } };
-const getLoading = (state: State) => state.loading;
-const getLogin = (state: State) => state.login;
-const getRegister = (state: State) => state.register;
-const getAuthMode = (state: State) => state.authMode;
+export const getError = (state: State) => { if (!state.loading) { return state.error; } };
+export const getLoading = (state: State) => state.loading;
+export const getLogin = (state: State) => state.login;
+export const getRegister = (state: State) => state.register;
+export const getAuthMode = (state: State) => state.authMode;
 
 export const key = 'auth';
-const authFeatureSelector = createFeatureSelector<State>(key);
+export const featureSelector = createFeatureSelector<State>(key);
 
-export const selectError = createSelector(authFeatureSelector, getError);
-export const selectLoading = createSelector(authFeatureSelector, getLoading);
-export const selectLogin = createSelector(authFeatureSelector, getLogin);
-export const selectRegister = createSelector(authFeatureSelector, getRegister);
-export const selectAuthMode = createSelector(authFeatureSelector, getAuthMode);
+export const selectError = createSelector(featureSelector, getError);
+export const selectLoading = createSelector(featureSelector, getLoading);
+export const selectLogin = createSelector(featureSelector, getLogin);
+export const selectRegister = createSelector(featureSelector, getRegister);
+export const selectAuthMode = createSelector(featureSelector, getAuthMode);

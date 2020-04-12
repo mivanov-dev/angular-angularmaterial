@@ -13,7 +13,7 @@ export const initState: State = {
     loading: false,
 };
 
-const featureReducer = createReducer(
+export const reducer = createReducer(
     initState,
     on(ResetPasswordActions.resetPasswordStart, (state, { data }) => ({
         ...state,
@@ -31,17 +31,11 @@ const featureReducer = createReducer(
     })),
 );
 
-export function reducer(state: State | undefined, action: Action) {
-
-    return featureReducer(state, action);
-
-};
-
-const getError = (state: State) => state.error;
-const getLoading = (state: State) => state.loading;
+export const getError = (state: State) => state.error;
+export const getLoading = (state: State) => state.loading;
 
 export const key = 'reset-password';
-const resetPasswordFeatureSelector = createFeatureSelector<State>(key);
+export const featureSelector = createFeatureSelector<State>(key);
 
-export const selectError = createSelector(resetPasswordFeatureSelector, getError);
-export const selectLoading = createSelector(resetPasswordFeatureSelector, getLoading);
+export const selectError = createSelector(featureSelector, getError);
+export const selectLoading = createSelector(featureSelector, getLoading);

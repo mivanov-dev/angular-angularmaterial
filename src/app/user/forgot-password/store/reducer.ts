@@ -16,7 +16,7 @@ export const initState: State = {
     loading: false,
 };
 
-const featureReducer = createReducer(
+export const reducer = createReducer(
     initState,
     on(ForgotPasswordActions.forgotPasswordStart, (state, { data }) => ({
         ...state,
@@ -41,19 +41,13 @@ const featureReducer = createReducer(
     })),
 );
 
-export function reducer(state: State | undefined, action: Action) {
-
-    return featureReducer(state, action);
-
-};
-
-const getError = (state: State) => state.error;
-const getLoading = (state: State) => state.loading;
-const getForgotPassword = (state: State) => state.forgotPassword;
+export const getError = (state: State) => state.error;
+export const getLoading = (state: State) => state.loading;
+export const getForgotPassword = (state: State) => state.forgotPassword;
 
 export const key = 'forgot-password';
-const forgotPasswordFeatureSelector = createFeatureSelector<State>(key);
+export const featureSelector = createFeatureSelector<State>(key);
 
-export const selectError = createSelector(forgotPasswordFeatureSelector, getError);
-export const selectLoading = createSelector(forgotPasswordFeatureSelector, getLoading);
-export const selectForgotPassword = createSelector(forgotPasswordFeatureSelector, getForgotPassword);
+export const selectError = createSelector(featureSelector, getError);
+export const selectLoading = createSelector(featureSelector, getLoading);
+export const selectForgotPassword = createSelector(featureSelector, getForgotPassword);
