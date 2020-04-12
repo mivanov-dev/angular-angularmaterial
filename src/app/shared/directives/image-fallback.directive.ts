@@ -9,11 +9,11 @@ import { Directive, Input, HostListener, ElementRef } from '@angular/core';
  * <img src="some_image_url" [appImageFallback]="variable" />
  */
 @Directive({
-  selector: '[appImageFallback]'
+  selector: 'img[appImageFallback]'
 })
 export class ImageFallbackDirective {
 
-  @Input() image: string;
+  @Input() appImageFallback: string;
 
   constructor(private _eRef: ElementRef) { }
 
@@ -21,7 +21,8 @@ export class ImageFallbackDirective {
   loadFallbackOnError(): void {
 
     const element: HTMLImageElement = this._eRef.nativeElement as HTMLImageElement;
-    element.src = this.image;
+    console.log(element.src, this.appImageFallback)
+    element.src = this.appImageFallback;
 
   }
 }
