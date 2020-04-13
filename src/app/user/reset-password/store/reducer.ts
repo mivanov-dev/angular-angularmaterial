@@ -39,7 +39,7 @@ export const getError = (state: State) => state.error;
 export const getLoading = (state: State) => state.loading;
 
 export const key = 'reset-password';
-export const featureSelector = createFeatureSelector<State>(key);
+const featureSelector = createFeatureSelector<State>(key);
 
 export const selectError = createSelector(featureSelector, getError);
 export const selectLoading = createSelector(featureSelector, getLoading);

@@ -50,7 +50,7 @@ export const getLoading = (state: State) => state.loading;
 export const getForgotPassword = (state: State) => state.forgotPassword;
 
 export const key = 'forgot-password';
-export const featureSelector = createFeatureSelector<State>(key);
+const featureSelector = createFeatureSelector<State>(key);
 
 export const selectError = createSelector(featureSelector, getError);
 export const selectLoading = createSelector(featureSelector, getLoading);

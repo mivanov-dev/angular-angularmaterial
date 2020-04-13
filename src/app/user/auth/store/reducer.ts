@@ -152,7 +152,7 @@ export const getRegister = (state: State) => state.register;
 export const getAuthMode = (state: State) => state.authMode;
 
 export const key = 'auth';
-export const featureSelector = createFeatureSelector<State>(key);
+const featureSelector = createFeatureSelector<State>(key);
 
 export const selectError = createSelector(featureSelector, getError);
 export const selectLoading = createSelector(featureSelector, getLoading);
