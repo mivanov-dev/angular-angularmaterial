@@ -12,7 +12,7 @@ import { Store, select } from '@ngrx/store';
 // custom
 import { PlaceholderDirective } from '@app/shared/directives';
 import { LoggerService, SeoService } from '@app/shared/services';
-import * as fromApp from '@app/store/reducer';
+import * as fromApp from '@app/store';
 import * as AuthActions from './store/actions';
 import * as fromAuth from './store';
 import { AlertComponent } from '@app/shared/components';

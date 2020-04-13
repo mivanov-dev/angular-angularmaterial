@@ -12,7 +12,7 @@ import { Store, select } from '@ngrx/store';
 import { IDirtyCheckGuard } from '@app/shared/guards';
 import { PlaceholderDirective } from '@app/shared/directives';
 import { SeoService } from '@app/shared/services';
-import * as fromApp from '@app/store/reducer';
+import * as fromApp from '@app/store';
 import * as fromForgotPassword from './store';
 import * as ForgotPasswordActions from './store/actions';
 import { AlertComponent } from '@app/shared/components';

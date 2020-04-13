@@ -7,7 +7,7 @@ import { take, exhaustMap, takeUntil } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import * as fromApp from '@app/store/reducer';
+import * as fromApp from '@app/store';
 import * as fromAuth from '@app/user/auth/store';
 
 @Injectable()

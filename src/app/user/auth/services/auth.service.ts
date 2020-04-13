@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 // ngrx
 import { Store } from '@ngrx/store';
 // custom
-import * as fromApp from '@app/store/reducer';
+import * as fromApp from '@app/store';
 import * as AuthModels from '../store/models';
 import * as AuthActions from '../store/actions';
 import { environment } from 'src/environments/environment';
