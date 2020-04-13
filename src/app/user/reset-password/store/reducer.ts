@@ -13,7 +13,7 @@ export const initState: State = {
     loading: false,
 };
 
-export const reducer = createReducer(
+export const resetPassReducer = createReducer(
     initState,
     on(ResetPasswordActions.resetPasswordStart, (state, { data }) => ({
         ...state,
@@ -30,6 +30,10 @@ export const reducer = createReducer(
         loading: false
     })),
 );
+
+export const reducer = (state: State | undefined, action: Action) => {
+    return resetPassReducer(state, action);
+}
 
 export const getError = (state: State) => state.error;
 export const getLoading = (state: State) => state.loading;

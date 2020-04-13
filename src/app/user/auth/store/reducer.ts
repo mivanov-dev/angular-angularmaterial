@@ -20,7 +20,7 @@ export const initState: State = {
     authMode: { mode: 'login' },
 };
 
-export const reducer = createReducer<State>(
+export const authReducer = createReducer<State>(
     initState,
     /**
      * LOGIN
@@ -140,6 +140,10 @@ export const reducer = createReducer<State>(
     })),
 
 );
+
+export const reducer = (state: State | undefined, action: Action) => {
+    return authReducer(state, action);
+}
 
 export const getError = (state: State) => { if (!state.loading) { return state.error; } };
 export const getLoading = (state: State) => state.loading;

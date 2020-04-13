@@ -16,7 +16,7 @@ export const initState: State = {
     loading: false,
 };
 
-export const reducer = createReducer(
+export const forgotPassReducer = createReducer(
     initState,
     on(ForgotPasswordActions.forgotPasswordStart, (state, { data }) => ({
         ...state,
@@ -40,6 +40,10 @@ export const reducer = createReducer(
         error: null
     })),
 );
+
+export const reducer = (state: State | undefined, action: Action) => {
+    return forgotPassReducer(state, action);
+}
 
 export const getError = (state: State) => state.error;
 export const getLoading = (state: State) => state.loading;
