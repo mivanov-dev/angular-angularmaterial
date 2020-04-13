@@ -14,7 +14,7 @@ import { PlaceholderDirective } from '@app/shared/directives';
 import { LoggerService, SeoService } from '@app/shared/services';
 import * as fromApp from '@app/store/reducer';
 import * as AuthActions from './store/actions';
-import * as fromAuth from './store/reducer';
+import * as fromAuth from './store';
 import { AlertComponent } from '@app/shared/components';
 import { environment } from '@env/environment';
 import { IDirtyCheckGuard } from '@app/shared/guards';

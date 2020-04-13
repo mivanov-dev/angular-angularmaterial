@@ -14,7 +14,7 @@ import { PlaceholderDirective } from '@app/shared/directives';
 import { LoggerService, SeoService } from '@app/shared/services';
 import * as fromApp from '@app/store/reducer';
 import { AlertComponent } from '@app/shared/components';
-import * as fromResetPassword from './store/reducer';
+import * as fromResetPassword from './store';
 import * as ResetPasswordActions from './store/actions';
 import * as ResetPasswordModels from './store/models';
 import { IDirtyCheckGuard } from '@app/shared/guards';

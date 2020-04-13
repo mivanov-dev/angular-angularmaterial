@@ -35,11 +35,4 @@ export const reducer = (state: State | undefined, action: Action) => {
     return resetPassReducer(state, action);
 }
 
-export const getError = (state: State) => state.error;
-export const getLoading = (state: State) => state.loading;
-
 export const key = 'reset-password';
-const featureSelector = createFeatureSelector<State>(key);
-
-export const selectError = createSelector(featureSelector, getError);
-export const selectLoading = createSelector(featureSelector, getLoading);

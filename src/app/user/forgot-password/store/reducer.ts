@@ -45,13 +45,4 @@ export const reducer = (state: State | undefined, action: Action) => {
     return forgotPassReducer(state, action);
 }
 
-export const getError = (state: State) => state.error;
-export const getLoading = (state: State) => state.loading;
-export const getForgotPassword = (state: State) => state.forgotPassword;
-
 export const key = 'forgot-password';
-const featureSelector = createFeatureSelector<State>(key);
-
-export const selectError = createSelector(featureSelector, getError);
-export const selectLoading = createSelector(featureSelector, getLoading);
-export const selectForgotPassword = createSelector(featureSelector, getForgotPassword);

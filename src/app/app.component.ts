@@ -11,7 +11,7 @@ import { map, shareReplay, filter } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 // custom
 import * as fromApp from './store/reducer';
-import * as fromAuth from './user/auth/store/reducer';
+import * as fromAuth from './user/auth/store';
 
 declare const particlesJS: any;
 

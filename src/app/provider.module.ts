@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 // custom
 import { SeoService } from './shared/services';
 import * as fromApp from '@app/store/reducer';
-import * as fromAuth from '@app/user/auth/store/reducer';
+import * as fromAuth from '@app/user/auth/store';
 import * as AuthActions from '@app/user/auth/store/actions';
 import { TokenResolver } from './user/reset-password/resolvers';
 import { AuthInterceptor, HttpErrorInterceptor, ErrorInterceptor } from './shared/interceptors';
