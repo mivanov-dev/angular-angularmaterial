@@ -2,6 +2,7 @@
 import { InjectionToken } from '@angular/core';
 // ngrx
 import { ActionReducerMap, Action, ActionReducer, MetaReducer, State, RuntimeChecks } from '@ngrx/store';
+import { storeFreeze } from 'ngrx-store-freeze';
 // custom
 import * as fromAuth from '@app/user/auth/store/reducer';
 import { environment } from '@env/environment';
@@ -36,7 +37,7 @@ export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
 
 };
 
-export const metaReducers: MetaReducer<any>[] = !environment.production ? [debug] : [];
+export const metaReducers: MetaReducer<any>[] = !environment.production ? [debug, storeFreeze] : [];
 
 export const runtimeChecks: RuntimeChecks = {
     strictStateImmutability: true,
