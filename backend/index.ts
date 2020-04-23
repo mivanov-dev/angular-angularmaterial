@@ -41,6 +41,10 @@ global.document = window.document;
 global.particlesJS = window.particlesJS;
 // @ts-ignore
 global.Typed = window.Typed;
+// @ts-ignore
+// global.Image = window.Image;
+global['Image'] = window.Image;
+global['Image'] = globalThis.Image;
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 app.engine('html', ngExpressEngine({ bootstrap: AppServerModule }));

@@ -3,9 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // custom
-import { MaterialModule } from '@app/material.module';
-import { LayoutModule } from '@app/layout.module';
-import { FilepondModule } from '@app/filepond.module';
+import { FilepondModule, LayoutModule, MaterialModule } from './modules';
 import { AlertComponent, CapsLockComponent } from './components';
 import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorDirective, ImageFallbackDirective } from './directives';
 
@@ -23,9 +21,9 @@ import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorD
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule,
+    FilepondModule,
     LayoutModule,
-    FilepondModule
+    MaterialModule,
   ],
   exports: [
     AlertComponent,
@@ -34,6 +32,7 @@ import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorD
     ConfirmEqualValidatorDirective,
     ImageFallbackDirective,
     CapsLockComponent,
+    // modules
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
