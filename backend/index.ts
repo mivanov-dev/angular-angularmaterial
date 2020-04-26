@@ -53,15 +53,14 @@ app.set('view engine', 'html');
 app.set('views', distFolder);
 
 app.set('view engine', 'html');
-app.set('port', process.env.PORT || 4200);
-app.set('host', process.env.HOST || 'localhost');
+app.set('port', +config.port || 4200);
+app.set('host', config.host || 'localhost');
 app.set('view cache', true);
 
 app.use(compression());
 app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(expressValidator());
 app.use(cookieParser());
 app.use(expressSession(config.expressSessionOptions));
 app.use(cors(config.corsOptions));

@@ -67,7 +67,7 @@ export class SeoService {
 
     config(seo: SeoModel): void {
 
-        const url = environment.appUrl + '/#/' + seo.url;
+        const url = environment.baseUrl + '/#/' + seo.url;
         const title = seo.title + ' | AngularAngularMaterial';
         const descriptionContent = 'This angular application is with test purpose, here we test all angular technics.';
 
@@ -78,14 +78,14 @@ export class SeoService {
         this._meta.updateTag({ property: 'og:title', content: title });
         this._meta.updateTag({ property: 'og:type', content: 'website' });
         this._meta.updateTag({ property: 'og:site_name', content: 'AngularAngularMaterial' });
-        this._meta.updateTag({ property: 'og:image', content: `${environment.appUrl}/assets/icons/icon-192x192.png` });
+        this._meta.updateTag({ property: 'og:image', content: `${environment.baseUrl}/assets/icons/icon-192x192.png` });
         this._meta.updateTag({ property: 'og:description', content: descriptionContent });
 
         this._meta.updateTag({ name: 'twitter:title', content: title });
         this._meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
         this._meta.updateTag({ name: 'twitter:site', content: '@AngularAngularMaterial' });
         this._meta.updateTag({ name: 'twitter:creator', content: '@AngularAngularMaterial' });
-        this._meta.updateTag({ name: 'twitter:image', content: `${environment.appUrl}/assets/icons/icon-192x192.png` });
+        this._meta.updateTag({ name: 'twitter:image', content: `${environment.baseUrl}/assets/icons/icon-192x192.png` });
 
         this._meta.updateTag({ name: 'description', content: descriptionContent })
 

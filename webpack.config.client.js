@@ -3,14 +3,14 @@ let dotenv = require("dotenv");
 
 dotenv.config({ path: "./.env", encoding: 'utf-8' });
 
-const protocol = process.env.PROTOCOL || 'http';
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || '4200';
+const baseUrl = `http://${host}:${port}`;
 
-const proxy = Boolean(process.env.PROXY) || false;
-const proxyProtocol = process.env.PROXY_PROTOCOL || 'http';
+const hasProxy = process.env.HAS_PROXY || false;
 const proxyHost = process.env.PROXY_HOST || 'localhost';
 const proxyPort = process.env.PROXY_PORT || '3000';
+const proxyBaseUrl = `http://${proxyHost}:${proxyPort}`;
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -20,14 +20,12 @@ let config = {
         new webpack.DefinePlugin({
             "process.env": {
                 // Base
-                PROTOCOL: JSON.stringify(protocol),
+                BASE_URL: JSON.stringify(baseUrl),
                 HOST: JSON.stringify(host),
                 PORT: JSON.stringify(port),
                 // Proxy
-                PROXY: proxy,
-                PROXY_PROTOCOL: JSON.stringify(proxyProtocol),
-                PROXY_HOST: JSON.stringify(proxyHost),
-                PROXY_PORT: JSON.stringify(proxyPort),
+                HAS_PROXY: Boolean(hasProxy),
+                PROXY_BASE_URL: JSON.stringify(proxyBaseUrl),
                 // Google
                 GOOGLE_ANALYTICS_ID: JSON.stringify(process.env.GOOGLE_ANALYTICS_ID || 'G-XXXXXXXXXX'),
                 // Cloudinary

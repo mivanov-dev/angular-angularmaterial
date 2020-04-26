@@ -20,7 +20,7 @@ export function database(uri: string): void {
     connection.on('connecting', () => log.info('mongoose:connecting'));
     connection.on('error', err => log.error('mongoose:error'));
     connection.on('disconnected', () => log.warn('mongoose:disconnected'));
-    mongoose.connect(uri, { useNewUrlParser: true });
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 }
 

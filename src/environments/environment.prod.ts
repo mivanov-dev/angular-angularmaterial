@@ -1,24 +1,27 @@
+import { buildReqUrl } from './utils';
 // base
-const appUrl = `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}`;
+const baseUrl = process.env.BASE_URL;
 // proxy
-const proxy = process.env.PROXY;
-const proxyUrl = `${process.env.PROXY_PROTOCOL}://${process.env.PROXY_HOST}:${process.env.PROXY_PORT}`;
+const hasProxy = process.env.HAS_PROXY;
+const proxyBaseUrl = process.env.PROXY_BASE_URL;
 
 export const environment = {
   production: true,
-  appUrl,
+  baseUrl: baseUrl,
+  host: process.env.HOST,
+  port: +process.env.PORT,
   google: {
     analytics: {
       id: process.env.GOOGLE_ANALYTICS_ID
     }
   },
   request: {
-    apiUserRegister: proxy ? `${proxyUrl}/api/user/register` : `${appUrl}/api/user/register`,
-    apiUserLogin: proxy ? `${proxyUrl}/api/user/login` : `${appUrl}/api/user/login`,
-    apiUserIsLoggedIn: proxy ? `${proxyUrl}/api/user/isLoggedIn` : `${appUrl}/api/user/isLoggedIn`,
-    apiUserLogout: proxy ? `${proxyUrl}/api/user/logout` : `${appUrl}/api/user/logout`,
-    apiUserForgotPassword: proxy ? `${proxyUrl}/api/user/forgot-password` : `${appUrl}/api/user/forgot-password`,
-    apiUserResetPassword: proxy ? `${proxyUrl}/api/user/reset-password` : `${appUrl}/api/user/reset-password`
+    apiUserRegister: buildReqUrl(hasProxy, proxyBaseUrl, baseUrl, '/api/user/register'),
+    apiUserLogin: buildReqUrl(hasProxy, proxyBaseUrl, baseUrl, '/api/user/login'),
+    apiUserIsLoggedIn: buildReqUrl(hasProxy, proxyBaseUrl, baseUrl, '/api/user/isLoggedIn'),
+    apiUserLogout: buildReqUrl(hasProxy, proxyBaseUrl, baseUrl, '/api/user/logout'),
+    apiUserForgotPassword: buildReqUrl(hasProxy, proxyBaseUrl, baseUrl, '/api/user/forgot-password'),
+    apiUserResetPassword: buildReqUrl(hasProxy, proxyBaseUrl, baseUrl, '/api/user/reset-password')
   },
   cloudinary: {
     server: process.env.CLOUDINARY_SERVER,

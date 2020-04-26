@@ -8,6 +8,7 @@ import { UserImage, User } from '../../mongoose/models';
 import { handleErrors } from '../../middlewares';
 import { passportStrategy } from '../../passport';
 import { Smtp } from '../../smtp';
+import { config } from '../../config';
 
 const smtp = Smtp.getInstance();
 
@@ -128,6 +129,8 @@ class Controller {
 
     static forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
 
+        const { host, port } = config;
+
         try {
 
             const { email } = req.body;
@@ -152,7 +155,7 @@ class Controller {
                 const subject = 'Reset password !';
                 const html = `
                     <p>Reset your password !</p>
-                    <a href="http://localhost:4200/#/user/reset-password/${user.resetPasswordToken}" target="_blank">
+                    <a href="http://${host}:${port}/#/user/reset-password/${user.resetPasswordToken}" target="_blank">
                         Click here !
                     </a>`;
                 await smtp.sendMail(to, subject, html);

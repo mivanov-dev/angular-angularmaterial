@@ -3,9 +3,11 @@ import { SessionOptions } from 'express-session';
 import * as SMTPTransport from 'nodemailer/lib/smtp-transport';
 const ms = require('ms');
 // custom
-const e = dotenv.config({ path: './.env', encoding: 'utf-8' });
+dotenv.config({ path: './.env', encoding: 'utf-8' });
 
 export const config = {
+    host: process.env.HOST,
+    port: process.env.PORT,
     mongodb: {
         uri: process.env.MONGODB_URI
     },
