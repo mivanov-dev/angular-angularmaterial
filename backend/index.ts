@@ -16,7 +16,7 @@ const ms = require('ms');
 import { config } from './config';
 import { Smtp } from './smtp';
 import { database } from './mongoose';
-import { userRouter } from './routes';
+import { userRouter, sitemapRouter } from './routes';
 import { log } from './logger';
 
 import { AppServerModule, ngExpressEngine, APP_BASE_HREF } from '../src/main.server';
@@ -43,8 +43,7 @@ global.particlesJS = window.particlesJS;
 global.Typed = window.Typed;
 // @ts-ignore
 // global.Image = window.Image;
-global['Image'] = window.Image;
-global['Image'] = globalThis.Image;
+global.Image = window.Image;
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 app.engine('html', ngExpressEngine({ bootstrap: AppServerModule }));
@@ -53,8 +52,8 @@ app.set('view engine', 'html');
 app.set('views', distFolder);
 
 app.set('view engine', 'html');
-app.set('port', +config.port || 4200);
-app.set('host', config.host || 'localhost');
+app.set('port', +config.port);
+app.set('host', config.host);
 app.set('view cache', true);
 
 app.use(compression());
@@ -92,6 +91,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction): void => {
 });
 
 app.use(userRouter);
+app.use(sitemapRouter);
 
 const smtp = Smtp.getInstance();
 smtp.verify();

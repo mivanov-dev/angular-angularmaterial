@@ -1,0 +1,47 @@
+import { NextFunction, Response, Request } from 'express';
+import { SitemapStream, streamToPromise } from 'sitemap';
+import { createGzip } from 'zlib';
+// custom
+import { handleErrors } from '../../middlewares';
+import { config } from '../../config';
+
+let sitemap;
+
+class Controller {
+
+    static sitemap = async (req: Request | any, res: Response, next: NextFunction) => {
+
+        const { host, port } = config;
+
+        res.header('Content-Type', 'application/xml');
+        res.header('Content-Encoding', 'gzip');
+        // if we have a cached entry send it
+        if (sitemap) {
+            res.send(sitemap)
+            return
+        }
+
+        try {
+
+            const smStream = new SitemapStream({ hostname: `http://${host}:${port}` });
+            const pipeline = smStream.pipe(createGzip());
+
+            // pipe your entries or directly write them.
+            smStream.write({ url: '/', changefreq: 'always', priority: 1.0 });
+            smStream.write({ url: '/#/user/auth', changefreq: 'always', priority: 0.8 });
+            smStream.write({ url: '/#/user/forgot-password', changefreq: 'always', priority: 0.8 });
+            smStream.write({ url: '/#/page-not-found', changefreq: 'always', priority: 0.8 });
+            smStream.end();
+
+            // cache the response
+            streamToPromise(pipeline).then(sm => sitemap = sm)
+            // stream write the response
+            pipeline.pipe(res).on('error', (e) => { throw e })
+
+        } catch (error) {
+            handleErrors(error, res);
+        }
+    }
+}
+
+export { Controller as SitemapController };

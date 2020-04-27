@@ -6,8 +6,8 @@ const ms = require('ms');
 dotenv.config({ path: './.env', encoding: 'utf-8' });
 
 export const config = {
-    host: process.env.HOST,
-    port: process.env.PORT,
+    host: process.env.HOST || 'localhost',
+    port: process.env.PORT || 4200,
     mongodb: {
         uri: process.env.MONGODB_URI
     },
