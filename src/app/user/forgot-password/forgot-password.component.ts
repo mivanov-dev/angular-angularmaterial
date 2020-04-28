@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ComponentFactoryResolver, ComponentRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ComponentFactoryResolver, ComponentRef, PLATFORM_ID, Inject } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 // material
 import { MatButton } from '@angular/material/button';
@@ -16,6 +16,7 @@ import * as fromApp from '@app/store';
 import * as fromForgotPassword from './store';
 import * as ForgotPasswordActions from './store/actions';
 import { AlertComponent } from '@app/shared/components';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-forgot-password',
@@ -42,7 +43,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
   constructor(private _componentFactoryResolver: ComponentFactoryResolver,
     private _formBuilder: FormBuilder,
     private _store$: Store<fromApp.AppState>,
-    private _seoService: SeoService) {
+    private _seoService: SeoService,
+    @Inject(PLATFORM_ID) private _platformId) {
 
     this._seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
 
@@ -77,7 +79,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
       })
     }, { updateOn: 'blur' });
 
-    this.emailElement.focus({ preventScroll: true });
+    if (isPlatformBrowser(this._platformId)) {
+      this.emailElement.focus({ preventScroll: true });
+    }
 
   };
 
@@ -95,13 +99,17 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   get emailElement(): HTMLElement {
 
-    return this.email.nativeElement;
+    if (isPlatformBrowser(this._platformId)) {
+      return this.email.nativeElement;
+    }
 
   }
 
   get submitButtonElement(): HTMLElement {
 
-    return this.submitButton._elementRef.nativeElement;
+    if (isPlatformBrowser(this._platformId)) {
+      return this.submitButton._elementRef.nativeElement;
+    }
 
   }
 

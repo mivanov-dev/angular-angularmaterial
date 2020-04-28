@@ -1,7 +1,7 @@
 // angular
 import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 // cdk
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 // rxjs
@@ -29,7 +29,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private _breakpointObserver: BreakpointObserver,
     private _store$: Store<fromApp.AppState>,
     private _router: Router,
-    @Inject(PLATFORM_ID) private _platformId
+    @Inject(PLATFORM_ID) private _platformId,
+    @Inject(DOCUMENT) private _document: Document,
   ) { }
 
   ngOnInit(): void {
@@ -68,7 +69,9 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((res) => {
 
-        document.getElementById('loading-box').style.display = 'none';
+        if (isPlatformBrowser(this._platformId)) {
+          this._document.getElementById('loading-box').style.display = 'none';
+        }
 
       });
 

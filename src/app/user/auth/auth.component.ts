@@ -1,7 +1,7 @@
 // angular
-import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver, OnDestroy, Inject, ComponentRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver, OnDestroy, Inject, ComponentRef, PLATFORM_ID } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, FormGroupDirective } from '@angular/forms';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
@@ -101,7 +101,8 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
     private _loggerService: LoggerService,
     private _store$: Store<fromApp.AppState>,
     private _seoService: SeoService,
-    @Inject(DOCUMENT) private _document: Document) {
+    @Inject(DOCUMENT) private _document: Document,
+    @Inject(PLATFORM_ID) private _platformId) {
 
     this._seoService.config({ title: 'Auth', url: 'user/auth' });
 
@@ -144,7 +145,9 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
       })
     }, { updateOn: 'blur' });
 
-    this.emailElement.focus({ preventScroll: true });
+    if (isPlatformBrowser(this._platformId)) {
+      this.emailElement.focus({ preventScroll: true });
+    }
 
   }
 
@@ -168,19 +171,25 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   get emailElement(): HTMLElement {
 
-    return this.email.nativeElement;
+    if (isPlatformBrowser(this._platformId)) {
+      return this.email.nativeElement;
+    }
 
   }
 
   get fileElement(): HTMLElement {
 
-    return this._document.getElementsByName('filepond')[1];
+    if (isPlatformBrowser(this._platformId)) {
+      return this._document.getElementsByName('filepond')[1];
+    }
 
   }
 
   get submitButtonElement(): HTMLElement {
 
-    return this.submitButton._elementRef.nativeElement;
+    if (isPlatformBrowser(this._platformId)) {
+      return this.submitButton._elementRef.nativeElement;
+    }
 
   }
 
@@ -204,7 +213,9 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
     }
 
     this.form.reset();
-    this.emailElement.focus({ preventScroll: true });
+    if (isPlatformBrowser(this._platformId)) {
+      this.emailElement.focus({ preventScroll: true });
+    }
     this._isSubmitted = false;
 
   }

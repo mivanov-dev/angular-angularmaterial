@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver, OnDestroy, ComponentRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver, OnDestroy, ComponentRef, PLATFORM_ID, Inject } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute, Data } from '@angular/router';
 // material
@@ -18,6 +18,7 @@ import * as fromResetPassword from './store';
 import * as ResetPasswordActions from './store/actions';
 import * as ResetPasswordModels from './store/models';
 import { IDirtyCheckGuard } from '@app/shared/guards';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-reset-password',
@@ -47,7 +48,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
     private _store$: Store<fromApp.AppState>,
     private _seoService: SeoService,
     private _router: Router,
-    private _activatedRoute: ActivatedRoute) {
+    private _activatedRoute: ActivatedRoute,
+    @Inject(PLATFORM_ID) private _platformId) {
 
     this._seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
 
@@ -87,7 +89,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
       })
     }, { updateOn: 'blur' });
 
-    this.passwordElement.focus({ preventScroll: true });
+    if (isPlatformBrowser(this._platformId)) {
+      this.passwordElement.focus({ preventScroll: true });
+    }
 
   };
 
@@ -110,12 +114,18 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
   }
 
   get passwordElement() {
-    return this.password.nativeElement;
+
+    if (isPlatformBrowser(this._platformId)) {
+      return this.password.nativeElement;
+    }
+
   }
 
   get submitButtonElement(): HTMLElement {
 
-    return this.submitButton._elementRef.nativeElement;
+    if (isPlatformBrowser(this._platformId)) {
+      return this.submitButton._elementRef.nativeElement;
+    }
 
   }
 
@@ -137,7 +147,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
 
   onTriggerClick(): void {
 
-    this.submitButtonElement.click();
+    if (isPlatformBrowser(this._platformId)) {
+      this.submitButtonElement.click();
+    }
 
   }
 

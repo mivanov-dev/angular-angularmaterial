@@ -1,5 +1,5 @@
 // angular
-import { BrowserModule, HammerModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { NgModule, PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -34,6 +34,7 @@ import { ResetPasswordEffects } from './user/reset-password/store/effects';
   imports: [
     HammerModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserTransferStateModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     // import HttpClientModule after BrowserModule or Browser... !
