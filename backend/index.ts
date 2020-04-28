@@ -16,7 +16,7 @@ const ms = require('ms');
 import { config } from './config';
 import { Smtp } from './smtp';
 import { database } from './mongoose';
-import { userRouter, sitemapRouter } from './routes';
+import { userRouter, sitemapRouter, robotsRouter } from './routes';
 import { log } from './logger';
 
 import { AppServerModule, ngExpressEngine, APP_BASE_HREF } from '../src/main.server';
@@ -92,6 +92,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction): void => {
 
 app.use(userRouter);
 app.use(sitemapRouter);
+app.use(robotsRouter);
 
 const smtp = Smtp.getInstance();
 smtp.verify();
