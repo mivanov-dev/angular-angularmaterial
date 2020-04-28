@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 // custom
 import { HomeComponent } from './home';
+import { environment } from '@env/environment';
 
 
 const routes: Routes = [
@@ -41,7 +42,8 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       useHash: true,
-      preloadingStrategy: PreloadAllModules
+      preloadingStrategy: PreloadAllModules,
+      initialNavigation: environment.production ? "enabled" : "disabled"
     })
   ],
   exports: [RouterModule]
