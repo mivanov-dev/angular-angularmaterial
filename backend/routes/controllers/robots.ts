@@ -1,6 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
 import robotstxt from "generate-robotstxt";
-import * as fs from 'fs';
 // custom
 import { handleErrors } from '../../middlewares';
 import { config } from '../../config';
