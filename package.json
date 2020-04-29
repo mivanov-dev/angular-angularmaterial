@@ -14,7 +14,7 @@
     "build:ssr": "ng build --prod && ng run angular-angularmaterial:server:production",
     "prod:ssr": "npm run build:ssr && npm run serve:ssr",
     "prerender": "ng run angular-angularmaterial:prerender",
-    "preinstall": "npm i -g @angular/cli typescript tslint rimraf && rimraf package-lock.json"
+    "preinstall": "npm i -g @angular/cli typescript tslint rimraf node-sass && rimraf package-lock.json"
   },
   "dependencies": {
     "@angular/animations": "9.1.3",

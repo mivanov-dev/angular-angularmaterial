@@ -1,6 +1,6 @@
 // angular
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules, ExtraOptions } from '@angular/router';
 // custom
 import { HomeComponent } from './home';
 import { environment } from '@env/environment';
@@ -38,13 +38,14 @@ const routes: Routes = [
   }
 ];
 
+const options: ExtraOptions = {
+  useHash: true,
+  preloadingStrategy: PreloadAllModules
+};
+
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {
-      useHash: true,
-      preloadingStrategy: PreloadAllModules,
-      initialNavigation: environment.production ? "enabled" : "disabled"
-    })
+    RouterModule.forRoot(routes, environment.production ? Object.assign({ initialNavigation: 'enabled' }, options) : options)
   ],
   exports: [RouterModule]
 })
