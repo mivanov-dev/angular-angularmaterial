@@ -98,7 +98,7 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
     private _formBuilder: FormBuilder,
-    private _loggerService: LoggerService,
+    private _logger: LoggerService,
     private _store$: Store<fromApp.AppState>,
     private _seoService: SeoService,
     @Inject(DOCUMENT) private _document: Document,

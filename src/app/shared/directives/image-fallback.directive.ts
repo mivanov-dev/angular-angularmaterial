@@ -1,5 +1,6 @@
 // angular
-import { Directive, Input, HostListener, ElementRef } from '@angular/core';
+import { Directive, Input, HostListener, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 /**
  * We can use the directive like that.
@@ -15,14 +16,15 @@ export class ImageFallbackDirective {
 
   @Input() appImageFallback: string;
 
-  constructor(private _eRef: ElementRef) { }
+  constructor(private _eRef: ElementRef, @Inject(PLATFORM_ID) private _platformId) { }
 
   @HostListener('error')
   loadFallbackOnError(): void {
 
-    const element: HTMLImageElement = this._eRef.nativeElement as HTMLImageElement;
-    console.log(element.src, this.appImageFallback)
-    element.src = this.appImageFallback;
+    if (isPlatformBrowser(this._platformId)) {
+      const element: HTMLImageElement = this._eRef.nativeElement as HTMLImageElement;
+      element.src = this.appImageFallback;
+    }
 
   }
 }
