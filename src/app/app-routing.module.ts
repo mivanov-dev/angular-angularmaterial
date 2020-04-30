@@ -22,7 +22,10 @@ const routes: Routes = [
     }
   }, {
     path: 'user',
-    loadChildren: () => import('./user').then(m => m.UserModule)
+    loadChildren: () => import('./user').then(m => m.UserModule),
+    data: {
+      animation: 'user'
+    }
   }, {
     path: 'page-not-found',
     loadChildren: () => import('./page-not-found').then(m => m.PageNotFoundModule),
@@ -40,12 +43,13 @@ const routes: Routes = [
 
 const options: ExtraOptions = {
   useHash: true,
-  preloadingStrategy: PreloadAllModules
+  preloadingStrategy: PreloadAllModules,
+  initialNavigation: 'enabled'
 };
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, environment.production ? Object.assign({ initialNavigation: 'enabled' }, options) : options)
+    RouterModule.forRoot(routes, options)
   ],
   exports: [RouterModule]
 })

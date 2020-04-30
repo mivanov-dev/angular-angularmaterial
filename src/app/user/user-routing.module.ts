@@ -20,19 +20,19 @@ const routes: Routes = [{
       path: 'auth',
       loadChildren: () => import('./auth').then(m => m.AuthModule),
       data: {
-        animation: 'user-auth'
+        animation: 'auth'
       },
     }, {
       path: 'forgot-password',
       loadChildren: () => import('./forgot-password').then(m => m.ForgotPasswordModule),
       data: {
-        animation: 'user-forgot-password'
+        animation: 'forgot-password'
       }
     }, {
       path: 'reset-password/:id',
       loadChildren: () => import('./reset-password').then(m => m.ResetPasswordModule),
       data: {
-        animation: 'user-reset-password'
+        animation: 'reset-password'
       },
       resolve: {
         token: TokenResolver

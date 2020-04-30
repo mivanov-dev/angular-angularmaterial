@@ -1,6 +1,7 @@
 // angular
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
 // rxjs
 import { Observable } from 'rxjs';
 // ngrx
@@ -23,7 +24,8 @@ export class AuthService {
 
   constructor(
     private _store$: Store<fromApp.AppState>,
-    private _http: HttpClient) { }
+    private _http: HttpClient,
+    @Inject(PLATFORM_ID) private _platformId) { }
 
   login$ = (data: AuthModels.LoginStart): Observable<AuthModels.Login> =>
     this._http.post<AuthModels.Login>(this._loginUrl, data);
@@ -41,17 +43,19 @@ export class AuthService {
 
   setLogoutTimer(expirationDate: number): void {
 
-    this._expirationTimer = setTimeout(() => {
+    if (isPlatformBrowser(this._platformId)) {
+      this._expirationTimer = setTimeout(() => {
 
-      this._store$.dispatch(AuthActions.logout());
+        this._store$.dispatch(AuthActions.logout());
 
-    }, expirationDate);
+      }, expirationDate);
+    }
 
   }
 
   clearLogoutTimer(): void {
 
-    if (this._expirationTimer) {
+    if (this._expirationTimer && isPlatformBrowser(this._platformId)) {
       clearTimeout(this._expirationTimer);
       this._expirationTimer = null;
     }
