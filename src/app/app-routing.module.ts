@@ -44,7 +44,8 @@ const routes: Routes = [
 const options: ExtraOptions = {
   useHash: true,
   preloadingStrategy: PreloadAllModules,
-  initialNavigation: 'enabled'
+  initialNavigation: 'enabled',
+  onSameUrlNavigation: 'reload'
 };
 
 @NgModule({
