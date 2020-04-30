@@ -11,7 +11,7 @@ const routes: Routes = [{
   children: [
     {
       path: '',
-      redirectTo: 'auth',
+      redirectTo: '/auth',
       pathMatch: 'full',
       data: {
         animation: 'user-auth'

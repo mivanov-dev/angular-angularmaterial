@@ -9,7 +9,7 @@ import { environment } from '@env/environment';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '/home',
     pathMatch: 'full',
     data: {
       animation: 'home'
@@ -34,7 +34,7 @@ const routes: Routes = [
     }
   }, {
     path: '**',
-    redirectTo: 'page-not-found',
+    redirectTo: '/page-not-found',
     data: {
       animation: 'page-not-found'
     }
