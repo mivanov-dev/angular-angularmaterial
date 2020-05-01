@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 // ngrx
-import { StoreRouterConnectingModule, RouterState } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, RouterState, NavigationActionTiming } from '@ngrx/router-store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
@@ -36,13 +36,16 @@ import { ResetPasswordEffects } from './user/reset-password/store/effects';
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserTransferStateModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     // import HttpClientModule after BrowserModule or Browser... !
     HttpClientModule,
-    ProviderModule,
+    AppRoutingModule,
     StoreModule.forRoot(fromApp.reducers, {
       metaReducers: fromApp.metaReducers,
       runtimeChecks: fromApp.runtimeChecks
+    }),
+    StoreRouterConnectingModule.forRoot({
+      routerState: RouterState.Minimal,
+      navigationActionTiming: NavigationActionTiming.PreActivation,
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -53,11 +56,9 @@ import { ResetPasswordEffects } from './user/reset-password/store/effects';
       ForgotPasswordEffects,
       ResetPasswordEffects,
     ]),
-    StoreRouterConnectingModule.forRoot({
-      routerState: RouterState.Minimal
-    }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     SharedModule,
+    ProviderModule,
   ],
   bootstrap: [AppComponent]
 })
