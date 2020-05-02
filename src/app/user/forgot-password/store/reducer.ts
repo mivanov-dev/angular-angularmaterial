@@ -1,5 +1,5 @@
 // ngrx
-import { createReducer, Action, on, createSelector, createFeatureSelector } from '@ngrx/store';
+import { createReducer, Action, on } from '@ngrx/store';
 // custom
 import * as ForgotPasswordActions from './actions';
 import * as ForgotPasswordModels from './models';
@@ -43,6 +43,6 @@ export const forgotPassReducer = createReducer(
 
 export const reducer = (state: State | undefined, action: Action) => {
     return forgotPassReducer(state, action);
-}
+};
 
 export const key = 'forgot-password';

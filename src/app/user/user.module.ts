@@ -7,7 +7,6 @@ import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 import { SharedModule } from '@app/shared/shared.module';
 
-
 @NgModule({
   declarations: [UserComponent],
   imports: [

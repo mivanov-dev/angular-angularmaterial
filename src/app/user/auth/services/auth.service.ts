@@ -15,38 +15,38 @@ import { environment } from 'src/environments/environment';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private _registerUrl: string = environment.request.apiUserRegister;
-  private _loginUrl: string = environment.request.apiUserLogin;
-  private _isLoggedInUrl: string = environment.request.apiUserIsLoggedIn;
-  private _logoutUrl: string = environment.request.apiUserLogout;
+  private registerUrl: string = environment.request.apiUserRegister;
+  private loginUrl: string = environment.request.apiUserLogin;
+  private isLoggedInUrl: string = environment.request.apiUserIsLoggedIn;
+  private logoutUrl: string = environment.request.apiUserLogout;
 
-  private _expirationTimer: any;
+  private expirationTimer: any;
 
   constructor(
-    private _store$: Store<fromApp.AppState>,
-    private _http: HttpClient,
-    @Inject(PLATFORM_ID) private _platformId) { }
+    private store$: Store<fromApp.AppState>,
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId) { }
 
   login$ = (data: AuthModels.LoginStart): Observable<AuthModels.Login> =>
-    this._http.post<AuthModels.Login>(this._loginUrl, data);
+    this.http.post<AuthModels.Login>(this.loginUrl, data)
 
   register$ = (data: AuthModels.RegisterStart): Observable<AuthModels.Register> =>
-    this._http.post<AuthModels.Register>(this._registerUrl, data);
+    this.http.post<AuthModels.Register>(this.registerUrl, data)
 
   autoLogin$ = (): Observable<AuthModels.Login> =>
-    this._http.get<AuthModels.Login>(this._isLoggedInUrl);
+    this.http.get<AuthModels.Login>(this.isLoggedInUrl)
 
   logout$ = (): Observable<any> =>
-    this._http.post(this._logoutUrl, {});
+    this.http.post(this.logoutUrl, {})
 
 
 
   setLogoutTimer(expirationDate: number): void {
 
-    if (isPlatformBrowser(this._platformId)) {
-      this._expirationTimer = setTimeout(() => {
+    if (isPlatformBrowser(this.platformId)) {
+      this.expirationTimer = setTimeout(() => {
 
-        this._store$.dispatch(AuthActions.logout());
+        this.store$.dispatch(AuthActions.logout());
 
       }, expirationDate);
     }
@@ -55,9 +55,9 @@ export class AuthService {
 
   clearLogoutTimer(): void {
 
-    if (this._expirationTimer && isPlatformBrowser(this._platformId)) {
-      clearTimeout(this._expirationTimer);
-      this._expirationTimer = null;
+    if (this.expirationTimer && isPlatformBrowser(this.platformId)) {
+      clearTimeout(this.expirationTimer);
+      this.expirationTimer = null;
     }
 
   }

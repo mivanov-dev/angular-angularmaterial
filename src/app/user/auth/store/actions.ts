@@ -16,7 +16,7 @@ export enum ActionTypes {
     AUTOLOGIN_START = '[Auth] AutoLogin Start',
     AUTH_MODE = '[Auth] Auth Mode',
     RESET_ON_SUCCESSFUL_LOGIN = '[Auth] Reset On Successful Login',
-};
+}
 
 // LOGIN
 export const loginStart = createAction(

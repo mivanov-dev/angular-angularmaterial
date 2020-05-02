@@ -10,11 +10,11 @@ import * as ResetPasswordModels from '../store/models';
 @Injectable({ providedIn: 'root' })
 export class ResetPasswordService {
 
-    private _resetPasswordUrl: string = environment.request.apiUserResetPassword;
+    private resetPasswordUrl: string = environment.request.apiUserResetPassword;
 
-    constructor(private _http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
     resetPassword$ = (data: ResetPasswordModels.ResetPasswordStart): Observable<any> =>
-        this._http.post<any>(this._resetPasswordUrl, data);
+        this.http.post<any>(this.resetPasswordUrl, data)
 
 }

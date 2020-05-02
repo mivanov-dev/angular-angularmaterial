@@ -7,9 +7,9 @@ import { LoggerService } from '../services';
 @Injectable()
 export class ErrorInterceptor implements ErrorHandler {
 
-    constructor(private _logger: LoggerService) { }
+    constructor(private logger: LoggerService) { }
 
 
-    handleError = (error): void => this._logger.error(error);
+    handleError = (error): void => this.logger.error(error);
 
 }

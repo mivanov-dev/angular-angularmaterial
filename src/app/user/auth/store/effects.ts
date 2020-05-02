@@ -14,30 +14,30 @@ import * as AuthActions from './actions';
 export class AuthEffects {
 
 
-    constructor(private _actions$: Actions, private _router: Router, private _authService: AuthService) { }
+    constructor(private actions$: Actions, private router: Router, private authService: AuthService) { }
 
     /**
      * LOGIN
      */
-    loginStart$ = createEffect(() => this._actions$
+    loginStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(AuthActions.loginStart),
             map(action => action.data),
-            exhaustMap((data) => this._authService.login$(data)
+            exhaustMap((data) => this.authService.login$(data)
                 .pipe(
-                    tap((res) => this._authService.setLogoutTimer(+res.expires)),
+                    tap((res) => this.authService.setLogoutTimer(+res.expires)),
                     map((res) => AuthActions.login({ data: res })),
                     catchError((error) => of(AuthActions.loginError({ error: error.error.message })))
                 )
             )
         ));
 
-    login$ = createEffect(() => this._actions$
+    login$ = createEffect(() => this.actions$
         .pipe(
             ofType(AuthActions.login),
             tap((res) => {
 
-                if (res.data.redirect) { this._router.navigate(['/']) }
+                if (res.data.redirect) { this.router.navigate(['/']); }
 
             })
         ), { dispatch: false });
@@ -45,11 +45,11 @@ export class AuthEffects {
     /**
      * REGISTER
      */
-    registerStart$ = createEffect(() => this._actions$
+    registerStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(AuthActions.registerStart),
             map(action => action.data),
-            exhaustMap((data) => this._authService.register$(data)
+            exhaustMap((data) => this.authService.register$(data)
                 .pipe(
                     map((res) => AuthActions.register({ data: { message: res.message } })),
                     catchError((error) => of(AuthActions.registerError({ error: error.error.message })))
@@ -57,7 +57,7 @@ export class AuthEffects {
             )
         ));
 
-    register$ = createEffect(() => this._actions$
+    register$ = createEffect(() => this.actions$
         .pipe(
             ofType(AuthActions.register),
             tap(() => { })
@@ -66,16 +66,16 @@ export class AuthEffects {
     /**
      * AUTOLOGIN
      */
-    autoLoginStart$ = createEffect(() => this._actions$
+    autoLoginStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(AuthActions.autologinStart),
             exhaustMap(
-                () => this._authService.autoLogin$()
+                () => this.authService.autoLogin$()
                     .pipe(
                         tap((data) => {
 
                             const duration = (+data.expires) - Date.now();
-                            this._authService.setLogoutTimer(duration);
+                            this.authService.setLogoutTimer(duration);
 
                         }),
                         map((data) => AuthActions.login({ data })),
@@ -87,11 +87,11 @@ export class AuthEffects {
     /**
      * LOGOUT
      */
-    logoutStart$ = createEffect(() => this._actions$
+    logoutStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(AuthActions.logoutStart),
             exhaustMap(
-                () => this._authService.logout$()
+                () => this.authService.logout$()
                     .pipe(
                         map(() => AuthActions.logout()),
                         catchError(() => of(AuthActions.logoutError(null)))
@@ -99,13 +99,13 @@ export class AuthEffects {
             )
         ));
 
-    logout$ = createEffect(() => this._actions$
+    logout$ = createEffect(() => this.actions$
         .pipe(
             ofType(AuthActions.logout),
             tap(() => {
 
-                this._authService.clearLogoutTimer();
-                this._router.navigate(['/']);
+                this.authService.clearLogoutTimer();
+                this.router.navigate(['/']);
 
             })
         ), { dispatch: false });
@@ -113,7 +113,7 @@ export class AuthEffects {
     /**
      * AUTHMODE
      */
-    authMode$ = createEffect(() => this._actions$
+    authMode$ = createEffect(() => this.actions$
         .pipe(
             ofType(AuthActions.switchModeTo),
             mergeMap((data) => this.changeAuthMode$(data.authMode.mode)),

@@ -31,7 +31,7 @@ export class ConfirmEqualValidatorDirective implements Validator {
         .subscribe(res => {
           control.updateValueAndValidity();
           comparison.unsubscribe();
-        })
+        });
     }
 
     return isNotEqual ? { notEqual: true } : null;

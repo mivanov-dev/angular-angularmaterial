@@ -15,16 +15,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   typed: Typed;
 
-  constructor(private _seoService: SeoService,
-    @Inject(PLATFORM_ID) private _platformId) {
+  constructor(private seoService: SeoService,
+              @Inject(PLATFORM_ID) private platformId) {
 
-    this._seoService.config({ title: 'Home', url: 'home' });
+    this.seoService.config({ title: 'Home', url: 'home' });
 
   }
 
   ngOnInit(): void {
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       this.typed = new Typed('.typed', {
         strings: [
           'Angular',
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       this.typed.destroy();
     }
 

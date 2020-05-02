@@ -16,13 +16,13 @@ export class ImageFallbackDirective {
 
   @Input() appImageFallback: string;
 
-  constructor(private _eRef: ElementRef, @Inject(PLATFORM_ID) private _platformId) { }
+  constructor(private elementRef: ElementRef, @Inject(PLATFORM_ID) private platformId) { }
 
   @HostListener('error')
   loadFallbackOnError(): void {
 
-    if (isPlatformBrowser(this._platformId)) {
-      const element: HTMLImageElement = this._eRef.nativeElement as HTMLImageElement;
+    if (isPlatformBrowser(this.platformId)) {
+      const element: HTMLImageElement = this.elementRef.nativeElement as HTMLImageElement;
       element.src = this.appImageFallback;
     }
 

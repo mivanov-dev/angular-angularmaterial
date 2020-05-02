@@ -12,11 +12,11 @@ import { ForgotPasswordService } from '@app/user/forgot-password/services/forgot
 @Injectable()
 export class ForgotPasswordEffects {
 
-    forgotPasswordStart$ = createEffect(() => this._actions$
+    forgotPasswordStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(ForgotPasswordActions.forgotPasswordStart),
             map(action => action.data),
-            exhaustMap((data) => this._forgotPasswordService.forgotPassword$(data)
+            exhaustMap((data) => this.forgotPasswordService.forgotPassword$(data)
                 .pipe(
                     // tslint:disable-next-line: no-shadowed-variable
                     map((data) => ForgotPasswordActions.forgotPassword({ data })),
@@ -25,14 +25,14 @@ export class ForgotPasswordEffects {
             )
         ));
 
-    forgotPassword$ = createEffect(() => this._actions$
+    forgotPassword$ = createEffect(() => this.actions$
         .pipe(
             ofType(ForgotPasswordActions.forgotPassword),
             tap((res) => { })
         ), { dispatch: false });
 
     constructor(
-        private _actions$: Actions,
-        private _forgotPasswordService: ForgotPasswordService) { }
+        private actions$: Actions,
+        private forgotPasswordService: ForgotPasswordService) { }
 
 }

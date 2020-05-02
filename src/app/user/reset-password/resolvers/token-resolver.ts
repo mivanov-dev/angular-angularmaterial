@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class TokenResolver implements Resolve<string> {
 
     resolve = (activatedRouteSnapshot: ActivatedRouteSnapshot,
-        routerStateSnapshot: RouterStateSnapshot): Observable<string> | Promise<string> | string =>
-        activatedRouteSnapshot.params.id.toString();
+               routerStateSnapshot: RouterStateSnapshot): Observable<string> | Promise<string> | string =>
+        activatedRouteSnapshot.params.id.toString()
 
 }

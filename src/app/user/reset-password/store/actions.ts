@@ -7,7 +7,7 @@ export enum ActionTypes {
     RESET_PASSWORD_START = '[Reset_Password] Reset Password Start',
     RESET_PASSWORD = '[Reset_Password] Reset Password',
     RESET_PASSWORD_ERROR = '[Reset_Password] Reset Password Error',
-};
+}
 
 export const resetPasswordStart = createAction(
     ActionTypes.RESET_PASSWORD_START,

@@ -16,20 +16,20 @@ export class CapsLockComponent implements OnInit, AfterViewInit {
   @Input() field: HTMLElement;
   @Output() isActiveCapsLock: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
-  constructor(private _renderer2: Renderer2,
-    private _logger: LoggerService,
-    @Inject(PLATFORM_ID) private _platformId) { }
+  constructor(private renderer2: Renderer2,
+              private logger: LoggerService,
+              @Inject(PLATFORM_ID) private platformId) { }
 
   ngOnInit(): void { }
 
   ngAfterViewInit(): void {
 
-    if (isPlatformBrowser(this._platformId)) {
-      this._renderer2.listen(this.field, 'keydown', (event) => {
+    if (isPlatformBrowser(this.platformId)) {
+      this.renderer2.listen(this.field, 'keydown', (event) => {
 
         if (this._isMobile()) {
           // TODO: detect  mobile caps lock
-          this._logger.log(`${event.key} - ${event.code} - ${event.keyCode} - ${event.which}`); // Shift - - 16 - 16
+          this.logger.log(`${event.key} - ${event.code} - ${event.keyCode} - ${event.which}`); // Shift - - 16 - 16
         }
         else {
           this.isActive = event.getModifierState('CapsLock');

@@ -11,7 +11,7 @@ export { app };
 function run() {
 
   // Start up the Node server
-  const httpServer = http.createServer(app)
+  const httpServer = http.createServer(app);
   httpServer.listen(app.get('port'));
   httpServer.on('listening', () => log.info(`Node Express server listening on http://${app.get('host')}:${app.get('port')}`));
   httpServer.on('error', err => log.error(err));

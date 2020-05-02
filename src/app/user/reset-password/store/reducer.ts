@@ -33,6 +33,6 @@ export const resetPassReducer = createReducer(
 
 export const reducer = (state: State | undefined, action: Action) => {
     return resetPassReducer(state, action);
-}
+};
 
 export const key = 'reset-password';

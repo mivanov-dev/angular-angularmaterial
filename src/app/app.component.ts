@@ -26,22 +26,22 @@ export class AppComponent implements OnInit, OnDestroy {
   isLoading = true;
 
   constructor(
-    private _breakpointObserver: BreakpointObserver,
-    private _store$: Store<fromApp.AppState>,
-    private _router: Router,
-    @Inject(PLATFORM_ID) private _platformId,
-    @Inject(DOCUMENT) private _document: Document,
+    private breakpointObserver: BreakpointObserver,
+    private store$: Store<fromApp.AppState>,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId,
+    @Inject(DOCUMENT) private document: Document,
   ) { }
 
   ngOnInit(): void {
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       particlesJS.load('particles-js', './assets/particlesjs-config.json', () => { });
     }
 
     this._isLoading();
 
-    this.isHandset$ = this._breakpointObserver
+    this.isHandset$ = this.breakpointObserver
       .observe(Breakpoints.Handset)
       .pipe(
         map(result => result.matches),
@@ -62,16 +62,16 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private _isLoading(): void {
-    this._store$
+    this.store$
       .pipe(
         select(fromAuth.selectLoading),
         filter(res => !res)
       )
       .subscribe((res) => {
 
-        if (isPlatformBrowser(this._platformId)) {
+        if (isPlatformBrowser(this.platformId)) {
           this.isLoading = res;
-          this._document.getElementById('loading-box').style.display = 'none';
+          this.document.getElementById('loading-box').style.display = 'none';
         }
 
       });

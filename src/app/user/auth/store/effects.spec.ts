@@ -15,16 +15,16 @@ import * as AuthActions from './actions';
 describe('loginStart$', () => {
 
     let authEffects: AuthEffects;
-    let _actions$: any;
-    let _router: any;
-    let _authService: any;
+    let actions$: any;
+    let router: any;
+    let authService: any;
 
     beforeEach(() => {
 
         TestBed.configureTestingModule({
             providers: [
                 AuthEffects,
-                provideMockActions(() => _actions$),
+                provideMockActions(() => actions$),
                 {
                     provide: Router,
                     useValue: jasmine.createSpyObj('Router', ['navigate'])
@@ -37,9 +37,9 @@ describe('loginStart$', () => {
         });
 
         authEffects = TestBed.inject(AuthEffects);
-        _actions$ = TestBed.inject(Actions);
-        _router = TestBed.inject(Router);
-        _authService = TestBed.inject(AuthService);
+        actions$ = TestBed.inject(Actions);
+        router = TestBed.inject(Router);
+        authService = TestBed.inject(AuthService);
 
     });
 
@@ -53,17 +53,17 @@ describe('loginStart$', () => {
             const startAction = AuthActions.loginStart({ data: req });
             const endAction = AuthActions.login({ data: res });
 
-            _actions$ = hot('-a', { a: startAction });
+            actions$ = hot('-a', { a: startAction });
             const res$ = cold('-a|', { a: res });
             const exprecred$ = cold('--b', { b: endAction });
 
-            _authService.setLogoutTimer.and.returnValue();
-            _authService.login$.and.returnValue(res$);
+            authService.setLogoutTimer.and.returnValue();
+            authService.login$.and.returnValue(res$);
 
             expect(authEffects.loginStart$).toBeObservable(exprecred$);
 
         });
 
-    })
+    });
 
 });

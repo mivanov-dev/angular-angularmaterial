@@ -42,7 +42,7 @@ export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
 
     };
 
-};
+}
 
 export const metaReducers: MetaReducer<any>[] = !environment.production ? [debug, storeFreeze] : [];
 

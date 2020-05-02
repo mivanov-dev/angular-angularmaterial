@@ -26,8 +26,8 @@ import { isPlatformBrowser } from '@angular/common';
 export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   form: FormGroup;
-  private _onDestroy$: Subject<void> = new Subject<void>();
-  private _isSubmitted = false;
+  private onDestroy$: Subject<void> = new Subject<void>();
+  private isSubmitted = false;
   private readonly _EMAIL_VALIDATOR = [
     Validators.required,
     Validators.email,
@@ -38,15 +38,15 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
   @ViewChild(PlaceholderDirective, { static: true }) alert: PlaceholderDirective;
   @ViewChild('email', { static: true }) email: ElementRef;
   @ViewChild('submitButton', { static: true }) submitButton: MatButton;
-  isLoading$: Observable<boolean> = this._store$.pipe(takeUntil(this._onDestroy$), select(fromForgotPassword.selectLoading));
+  isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromForgotPassword.selectLoading));
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver,
-    private _formBuilder: FormBuilder,
-    private _store$: Store<fromApp.AppState>,
-    private _seoService: SeoService,
-    @Inject(PLATFORM_ID) private _platformId) {
+  constructor(private componentFactoryResolver: ComponentFactoryResolver,
+              private formBuilder: FormBuilder,
+              private store$: Store<fromApp.AppState>,
+              private seoService: SeoService,
+              @Inject(PLATFORM_ID) private platformId) {
 
-    this._seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
+    this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
 
   }
 
@@ -60,16 +60,16 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   ngOnDestroy(): void {
 
-    this._store$.dispatch(ForgotPasswordActions.reset());
-    this._onDestroy$.next();
-    this._onDestroy$.complete();
+    this.store$.dispatch(ForgotPasswordActions.reset());
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
 
   }
 
   private _initForm(): void {
 
-    this.form = this._formBuilder.group({
-      user: this._formBuilder.group({
+    this.form = this.formBuilder.group({
+      user: this.formBuilder.group({
         email: [null,
           {
             validators: this._EMAIL_VALIDATOR
@@ -79,11 +79,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
       })
     }, { updateOn: 'blur' });
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       this.emailElement.focus({ preventScroll: true });
     }
 
-  };
+  }
 
   get userGroup(): AbstractControl {
 
@@ -99,7 +99,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   get emailElement(): HTMLElement {
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       return this.email.nativeElement;
     }
 
@@ -107,7 +107,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   get submitButtonElement(): HTMLElement {
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       return this.submitButton._elementRef.nativeElement;
     }
 
@@ -115,12 +115,12 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   onSubmit(): void {
 
-    this._isSubmitted = true;
+    this.isSubmitted = true;
     const data = this.userGroup.value;
 
     if (!this.form.valid) { return; }
 
-    this._store$.dispatch(ForgotPasswordActions.forgotPasswordStart({ data }));
+    this.store$.dispatch(ForgotPasswordActions.forgotPasswordStart({ data }));
 
   }
 
@@ -128,9 +128,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   private _getSuccessfulMessage() {
 
-    this._store$
+    this.store$
       .pipe(
-        takeUntil(this._onDestroy$),
+        takeUntil(this.onDestroy$),
         select(fromForgotPassword.selectForgotPassword),
         filter(res => res !== null)
       )
@@ -142,9 +142,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   private _getUnsuccessfulMessage(): void {
 
-    this._store$
+    this.store$
       .pipe(
-        takeUntil(this._onDestroy$),
+        takeUntil(this.onDestroy$),
         select(fromForgotPassword.selectError),
         filter(res => res !== null)
       )
@@ -154,7 +154,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   canDeactivate(): boolean {
 
-    if (!this._isSubmitted && this.form.dirty) {
+    if (!this.isSubmitted && this.form.dirty) {
       return confirm('Are you shure ?');
     }
 
@@ -165,7 +165,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
   private _showAlertMessage(message: string, hasError: boolean): void {
 
     if (message !== undefined) {
-      const alertComponent = this._componentFactoryResolver.resolveComponentFactory(AlertComponent);
+      const alertComponent = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
       const viewCntrRef = this.alert.viewCntrRef;
       viewCntrRef.clear();
       this.alertComponentRef = viewCntrRef.createComponent(alertComponent);
@@ -184,7 +184,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
   }
 
   hasEmailControlErrorRequired = (control: AbstractControl): boolean =>
-    (control.hasError('required') || control.hasError('email')) && (control.dirty || control.touched);
+    (control.hasError('required') || control.hasError('email')) && (control.dirty || control.touched)
 
   hasControlErrorLengtgh = (control: AbstractControl): boolean =>
     !(control.hasError('minLength') && control.hasError('maxLength')) && (control.dirty || control.touched)

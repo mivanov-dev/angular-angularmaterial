@@ -7,13 +7,13 @@ import { isPlatformBrowser } from '@angular/common';
 @Injectable({ providedIn: 'root' })
 export class LoggerService {
 
-    constructor(@Inject(PLATFORM_ID) private _platformId) { }
+    constructor(@Inject(PLATFORM_ID) private platformId) { }
 
     log(value: any, ...rest: any[]): void {
 
         if (!environment.production) {
-            if (isPlatformBrowser(this._platformId)) {
-                console.log('LOG', value, ...rest)
+            if (isPlatformBrowser(this.platformId)) {
+                console.log('LOG', value, ...rest);
             }
         }
 
@@ -21,7 +21,7 @@ export class LoggerService {
 
     error = (value: any, ...rest: any[]): void => {
 
-        if (isPlatformBrowser(this._platformId)) {
+        if (isPlatformBrowser(this.platformId)) {
             console.error('ERROR', value, ...rest);
         }
 
@@ -29,7 +29,7 @@ export class LoggerService {
 
     warn = (value: any, ...rest: any[]): void => {
 
-        if (isPlatformBrowser(this._platformId)) {
+        if (isPlatformBrowser(this.platformId)) {
             console.warn('WARN', value, ...rest);
         }
 

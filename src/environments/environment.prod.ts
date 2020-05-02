@@ -7,7 +7,7 @@ const proxyBaseUrl = process.env.PROXY_BASE_URL;
 
 export const environment = {
   production: true,
-  baseUrl: baseUrl,
+  baseUrl,
   host: process.env.HOST,
   port: +process.env.PORT,
   google: {

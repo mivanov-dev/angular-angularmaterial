@@ -11,12 +11,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class SocialAuthComponent {
 
-  @Input('isLoading') isLoading: boolean;
+  @Input() isLoading: boolean;
 
-  constructor(private _iconRegistry: MatIconRegistry, private _domSanitizer: DomSanitizer) {
+  constructor(private iconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
 
-    this._iconRegistry.addSvgIcon('google', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/google-icon.svg'));
-    this._iconRegistry.addSvgIcon('facebook', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/facebook-icon.svg'));
+    this.iconRegistry.addSvgIcon('google', this.domSanitizer.bypassSecurityTrustResourceUrl('assets/google-icon.svg'));
+    this.iconRegistry.addSvgIcon('facebook', this.domSanitizer.bypassSecurityTrustResourceUrl('assets/facebook-icon.svg'));
 
   }
 

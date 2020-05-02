@@ -13,12 +13,13 @@ import { SeoService } from '@app/shared/services';
 })
 export class PageNotFoundComponent {
 
-  constructor(private _seoService: SeoService, private _matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer) {
+  constructor(private seoService: SeoService,
+              private matIconRegistry: MatIconRegistry,
+              private domSanitizer: DomSanitizer) {
 
-    this._seoService.config({ title: 'Page not found', url: 'page-not-found' });
+    this.seoService.config({ title: 'Page not found', url: 'page-not-found' });
 
-    this._matIconRegistry.addSvgIcon(
+    this.matIconRegistry.addSvgIcon(
       'searching',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/searching.svg')
     );

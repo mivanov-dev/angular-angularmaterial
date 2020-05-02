@@ -11,9 +11,9 @@ declare var gtag;
 @Injectable({ providedIn: 'root' })
 export class GoogleAnalyticsService {
 
-    constructor(private _router: Router) {
+    constructor(private router: Router) {
 
-        this._router.events
+        this.router.events
             .pipe(filter(res => res instanceof NavigationEnd))
             .subscribe((res: NavigationEnd) => {
 

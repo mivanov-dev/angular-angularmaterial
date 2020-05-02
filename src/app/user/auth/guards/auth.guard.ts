@@ -14,16 +14,16 @@ import * as fromAuth from '@app/user/auth/store';
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, OnDestroy {
 
-    private _onDestroy$: Subject<void> = new Subject<void>();
+    private onDestroy$: Subject<void> = new Subject<void>();
 
     constructor(
-        private _router: Router,
-        private _store$: Store<fromApp.AppState>) { }
+        private router: Router,
+        private store$: Store<fromApp.AppState>) { }
 
     ngOnDestroy(): void {
 
-        this._onDestroy$.next();
-        this._onDestroy$.complete();
+        this.onDestroy$.next();
+        this.onDestroy$.complete();
 
     }
 
@@ -31,9 +31,9 @@ export class AuthGuard implements CanActivate, OnDestroy {
         activatedRouteSnapshot: ActivatedRouteSnapshot,
         routerStateSnapshot: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
 
-        return this._store$
+        return this.store$
             .pipe(
-                takeUntil(this._onDestroy$),
+                takeUntil(this.onDestroy$),
                 take(1),
                 select(fromAuth.selectLogin),
                 map((user) => {
@@ -45,7 +45,7 @@ export class AuthGuard implements CanActivate, OnDestroy {
                     }
 
                     // return this.router.createUrlTree(['/user/auth']);
-                    this._router.navigate(['/user/auth']);
+                    this.router.navigate(['/user/auth']);
                     return false;
 
                 })

@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules, ExtraOptions } from '@angular/router';
 // custom
 import { HomeComponent } from './home';
-import { environment } from '@env/environment';
-
 
 const routes: Routes = [
   {

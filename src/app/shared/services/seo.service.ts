@@ -18,10 +18,10 @@ export class SeoService {
     htmlMetaElement: HTMLMetaElement[] = [];
 
     constructor(
-        private _router: Router,
-        private _activatedRoute: ActivatedRoute,
-        private _title: Title,
-        private _meta: Meta) { }
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        private title: Title,
+        private meta: Meta) { }
 
 
     // getTitle(): void {
@@ -71,23 +71,23 @@ export class SeoService {
         const title = seo.title + ' | AngularAngularMaterial';
         const descriptionContent = 'This angular application is with test purpose, here we test all angular technics.';
 
-        this._title.setTitle(title);
-        this._title.getTitle();
+        this.title.setTitle(title);
+        this.title.getTitle();
 
-        this._meta.updateTag({ property: 'og:url', content: url });
-        this._meta.updateTag({ property: 'og:title', content: title });
-        this._meta.updateTag({ property: 'og:type', content: 'website' });
-        this._meta.updateTag({ property: 'og:site_name', content: 'AngularAngularMaterial' });
-        this._meta.updateTag({ property: 'og:image', content: `${environment.baseUrl}/assets/icons/icon-192x192.png` });
-        this._meta.updateTag({ property: 'og:description', content: descriptionContent });
+        this.meta.updateTag({ property: 'og:url', content: url });
+        this.meta.updateTag({ property: 'og:title', content: title });
+        this.meta.updateTag({ property: 'og:type', content: 'website' });
+        this.meta.updateTag({ property: 'og:site_name', content: 'AngularAngularMaterial' });
+        this.meta.updateTag({ property: 'og:image', content: `${environment.baseUrl}/assets/icons/icon-192x192.png` });
+        this.meta.updateTag({ property: 'og:description', content: descriptionContent });
 
-        this._meta.updateTag({ name: 'twitter:title', content: title });
-        this._meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-        this._meta.updateTag({ name: 'twitter:site', content: '@AngularAngularMaterial' });
-        this._meta.updateTag({ name: 'twitter:creator', content: '@AngularAngularMaterial' });
-        this._meta.updateTag({ name: 'twitter:image', content: `${environment.baseUrl}/assets/icons/icon-192x192.png` });
+        this.meta.updateTag({ name: 'twitter:title', content: title });
+        this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+        this.meta.updateTag({ name: 'twitter:site', content: '@AngularAngularMaterial' });
+        this.meta.updateTag({ name: 'twitter:creator', content: '@AngularAngularMaterial' });
+        this.meta.updateTag({ name: 'twitter:image', content: `${environment.baseUrl}/assets/icons/icon-192x192.png` });
 
-        this._meta.updateTag({ name: 'description', content: descriptionContent })
+        this.meta.updateTag({ name: 'description', content: descriptionContent });
 
     }
 

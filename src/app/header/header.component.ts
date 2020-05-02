@@ -23,23 +23,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   @Input() sidenav: MatSidenav;
-  private _onDestroy$: Subject<void> = new Subject<void>();
-  user$: Observable<AuthModels.Login> = this._store$.pipe(takeUntil(this._onDestroy$), select(fromAuth.selectLogin));
+  private onDestroy$: Subject<void> = new Subject<void>();
+  user$: Observable<AuthModels.Login> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLogin));
   userImage = '../../assets/user.png';
 
-  constructor(private _store$: Store<fromApp.AppState>) { }
+  constructor(private store$: Store<fromApp.AppState>) { }
 
   ngOnInit(): void { }
 
   ngOnDestroy(): void {
 
-    this._onDestroy$.next();
-    this._onDestroy$.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
 
   }
 
-  onLogout = (): void => this._store$.dispatch(AuthActions.logoutStart());
+  onLogout = (): void => this.store$.dispatch(AuthActions.logoutStart());
 
-  switchAuthModeTo = (mode: string): void => this._store$.dispatch(AuthActions.switchModeTo({ authMode: { mode } }));
+  switchAuthModeTo = (mode: string): void => this.store$.dispatch(AuthActions.switchModeTo({ authMode: { mode } }));
 
 }

@@ -13,21 +13,21 @@ import * as fromAuth from '@app/user/auth/store';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor, OnDestroy {
 
-    private _onDestroy$: Subject<void> = new Subject<void>();
+    private onDestroy$: Subject<void> = new Subject<void>();
 
-    constructor(private _store$: Store<fromApp.AppState>) { }
+    constructor(private store$: Store<fromApp.AppState>) { }
 
     ngOnDestroy(): void {
-        this._onDestroy$.next();
-        this._onDestroy$.complete();
+        this.onDestroy$.next();
+        this.onDestroy$.complete();
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        return this._store$
+        return this.store$
             .pipe(
                 select(fromAuth.selectLogin),
-                takeUntil(this._onDestroy$),
+                takeUntil(this.onDestroy$),
                 take(1),
                 exhaustMap((res) => {
 

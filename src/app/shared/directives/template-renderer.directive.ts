@@ -6,20 +6,20 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 })
 export class TemplateRendererDirective {
 
-  private _hasView = true;
+  private hasView = true;
 
   constructor(
-    private _templateRef: TemplateRef<any>,
-    private _viewContainerRef: ViewContainerRef) { }
+    private templateRef: TemplateRef<any>,
+    private viewContainerRef: ViewContainerRef) { }
 
   @Input() set appTemplateRenderer(tmpl) {
 
-    if (tmpl && this._hasView) {
-      this._viewContainerRef.createEmbeddedView(this._templateRef);
-      this._hasView = false;
-    } else if (!tmpl && !this._hasView) {
-      this._viewContainerRef.clear();
-      this._hasView = true;
+    if (tmpl && this.hasView) {
+      this.viewContainerRef.createEmbeddedView(this.templateRef);
+      this.hasView = false;
+    } else if (!tmpl && !this.hasView) {
+      this.viewContainerRef.clear();
+      this.hasView = true;
     }
 
   }

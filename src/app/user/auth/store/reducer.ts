@@ -143,6 +143,6 @@ export const authReducer = createReducer<State>(
 
 export const reducer = (state: State | undefined, action: Action) => {
     return authReducer(state, action);
-}
+};
 
 export const key = 'auth';

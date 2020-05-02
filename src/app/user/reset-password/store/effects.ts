@@ -13,11 +13,11 @@ import { ResetPasswordService } from '@app/user/reset-password/services/reset-pa
 @Injectable()
 export class ResetPasswordEffects {
 
-    resetPasswordStart$ = createEffect(() => this._actions$
+    resetPasswordStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(ResetPasswordActions.resetPasswordStart),
             map(action => action.data),
-            exhaustMap((data) => this._resetPasswordService.resetPassword$(data)
+            exhaustMap((data) => this.resetPasswordService.resetPassword$(data)
                 .pipe(
                     map(() => ResetPasswordActions.resetPassword()),
                     catchError((error) => of(ResetPasswordActions.resetPasswordError({ error: error.error.message })))
@@ -25,18 +25,18 @@ export class ResetPasswordEffects {
             )
         ));
 
-    resetPassword$ = createEffect(() => this._actions$
+    resetPassword$ = createEffect(() => this.actions$
         .pipe(
             ofType(ResetPasswordActions.resetPassword),
             tap((res) => {
 
-                this._router.navigate(['/user/auth']);
+                this.router.navigate(['/user/auth']);
 
             })
         ), { dispatch: false });
 
-    constructor(private _actions$: Actions,
-        private _router: Router,
-        private _resetPasswordService: ResetPasswordService) { }
+    constructor(private actions$: Actions,
+                private router: Router,
+                private resetPasswordService: ResetPasswordService) { }
 
 }

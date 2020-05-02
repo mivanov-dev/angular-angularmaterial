@@ -62,7 +62,7 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
         ondata: (fd: any) => {
 
           fd = new FormData();
-          fd.append('file', this.filepond.getFile().file)
+          fd.append('file', this.filepond.getFile().file);
           fd.append('unsigned', true);
           fd.append('upload_preset', environment.cloudinary.presets);
           return fd;
@@ -71,9 +71,9 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
       },
     }
   };
-  pondFiles: []
-  private _onDestroy$: Subject<void> = new Subject<void>();
-  private _isSubmitted = false;
+  pondFiles: [];
+  private onDestroy$: Subject<void> = new Subject<void>();
+  private isSubmitted = false;
   private readonly _EMAIL_VALIDATOR = [
     Validators.required,
     Validators.email,
@@ -85,10 +85,10 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
     Validators.minLength(10),
     Validators.maxLength(100)
   ];
-  private _alertComponentRef: ComponentRef<AlertComponent>;
-  private _isSwitchedAuthModeFromHere: boolean;
-  private _isConfirmedChanges: boolean = false;
-  isLoading$: Observable<boolean> = this._store$.pipe(takeUntil(this._onDestroy$), select(fromAuth.selectLoading));
+  private alertComponentRef: ComponentRef<AlertComponent>;
+  private isSwitchedAuthModeFromHere: boolean;
+  private isConfirmedChanges = false;
+  isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLoading));
   @ViewChild(PlaceholderDirective, { static: true }) alert: PlaceholderDirective;
   @ViewChild('email', { static: true }) email: ElementRef;
   @ViewChild('submitButton', { static: true }) submitButton: MatButton;
@@ -96,15 +96,15 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
   @ViewChild('formDirective') formDirective: FormGroupDirective;
 
   constructor(
-    private _componentFactoryResolver: ComponentFactoryResolver,
-    private _formBuilder: FormBuilder,
-    private _logger: LoggerService,
-    private _store$: Store<fromApp.AppState>,
-    private _seoService: SeoService,
-    @Inject(DOCUMENT) private _document: Document,
-    @Inject(PLATFORM_ID) private _platformId) {
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private formBuilder: FormBuilder,
+    private logger: LoggerService,
+    private store$: Store<fromApp.AppState>,
+    private seoService: SeoService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId) {
 
-    this._seoService.config({ title: 'Auth', url: 'user/auth' });
+    this.seoService.config({ title: 'Auth', url: 'user/auth' });
 
   }
 
@@ -119,16 +119,16 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   ngOnDestroy(): void {
 
-    this._store$.dispatch(AuthActions.resetOnSuccessfulLogin());
-    this._onDestroy$.next();
-    this._onDestroy$.complete();
+    this.store$.dispatch(AuthActions.resetOnSuccessfulLogin());
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
 
   }
 
   private _initForm(): void {
 
-    this.form = this._formBuilder.group({
-      user: this._formBuilder.group({
+    this.form = this.formBuilder.group({
+      user: this.formBuilder.group({
         email: [null,
           {
             validators: this._EMAIL_VALIDATOR
@@ -145,7 +145,7 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
       })
     }, { updateOn: 'blur' });
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       this.emailElement.focus({ preventScroll: true });
     }
 
@@ -171,7 +171,7 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   get emailElement(): HTMLElement {
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       return this.email.nativeElement;
     }
 
@@ -179,15 +179,15 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   get fileElement(): HTMLElement {
 
-    if (isPlatformBrowser(this._platformId)) {
-      return this._document.getElementsByName('filepond')[1];
+    if (isPlatformBrowser(this.platformId)) {
+      return this.document.getElementsByName('filepond')[1];
     }
 
   }
 
   get submitButtonElement(): HTMLElement {
 
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       return this.submitButton._elementRef.nativeElement;
     }
 
@@ -213,16 +213,16 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
     }
 
     this.form.reset();
-    if (isPlatformBrowser(this._platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       this.emailElement.focus({ preventScroll: true });
     }
-    this._isSubmitted = false;
+    this.isSubmitted = false;
 
   }
 
   onSubmit(): void {
 
-    this._isSubmitted = true;
+    this.isSubmitted = true;
 
     if (this.form.invalid) {
       return;
@@ -235,10 +235,10 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
         data = Object.assign({ file: file.url }, data);
       }
 
-      this._store$.dispatch(AuthActions.registerStart({ data }));
+      this.store$.dispatch(AuthActions.registerStart({ data }));
     }
     else {
-      this._store$.dispatch(AuthActions.loginStart({ data: this.userGroup.value }));
+      this.store$.dispatch(AuthActions.loginStart({ data: this.userGroup.value }));
     }
 
   }
@@ -247,9 +247,9 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   private _getSuccessfulMessage(): void {
 
-    this._store$
+    this.store$
       .pipe(
-        takeUntil(this._onDestroy$),
+        takeUntil(this.onDestroy$),
         select(fromAuth.selectRegister),
         filter(res => res !== null)
       )
@@ -264,9 +264,9 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   private _getUnsuccessfulMessage(): void {
 
-    this._store$
+    this.store$
       .pipe(
-        takeUntil(this._onDestroy$),
+        takeUntil(this.onDestroy$),
         select(fromAuth.selectError),
         filter(res => res !== null)
       )
@@ -276,9 +276,9 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   canDeactivate(): boolean {
 
-    if (!this._isSubmitted && this.form.dirty) {
-      this._isConfirmedChanges = confirm('Are you shure ?');
-      return this._isConfirmedChanges;
+    if (!this.isSubmitted && this.form.dirty) {
+      this.isConfirmedChanges = confirm('Are you shure ?');
+      return this.isConfirmedChanges;
     }
 
     return true;
@@ -287,18 +287,18 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   private _onChangeAuthMode() {
 
-    this._store$
+    this.store$
       .pipe(
-        takeUntil(this._onDestroy$),
+        takeUntil(this.onDestroy$),
         select(fromAuth.selectAuthMode)
       )
       .subscribe(res => {
 
-        if (this._isSwitchedAuthModeFromHere && this._isConfirmedChanges) {
+        if (this.isSwitchedAuthModeFromHere && this.isConfirmedChanges) {
           this.authMode = res.mode;
           this._editForm();
         }
-        else if (!this._isSwitchedAuthModeFromHere && !this._isConfirmedChanges) {
+        else if (!this.isSwitchedAuthModeFromHere && !this.isConfirmedChanges) {
           if (this.canDeactivate()) {
             this.authMode = res.mode;
             this._editForm();
@@ -309,8 +309,8 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
           this._editForm();
         }
 
-        this._isSwitchedAuthModeFromHere = false;
-        this._isConfirmedChanges = false;
+        this.isSwitchedAuthModeFromHere = false;
+        this.isConfirmedChanges = false;
 
       });
 
@@ -319,17 +319,17 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
   private _showAlertMessage(message: string, hasError: boolean): void {
 
     if (message !== undefined) {
-      const alertComponent = this._componentFactoryResolver.resolveComponentFactory(AlertComponent);
+      const alertComponent = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
       const viewCntrRef = this.alert.viewCntrRef;
       viewCntrRef.clear();
-      this._alertComponentRef = viewCntrRef.createComponent(alertComponent);
-      this._alertComponentRef.instance.message = message;
-      this._alertComponentRef.instance.hasError = hasError;
-      this._alertComponentRef.instance.close
+      this.alertComponentRef = viewCntrRef.createComponent(alertComponent);
+      this.alertComponentRef.instance.message = message;
+      this.alertComponentRef.instance.hasError = hasError;
+      this.alertComponentRef.instance.close
         .subscribe((res: boolean) => {
 
           if (res) {
-            this._alertComponentRef.destroy();
+            this.alertComponentRef.destroy();
           }
 
         });
@@ -340,19 +340,19 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
   switchAuthModeTo(mode: string): void {
 
     if (this.canDeactivate()) {
-      this._isSwitchedAuthModeFromHere = true;
-      this._store$.dispatch(AuthActions.switchModeTo({ authMode: { mode } }));
+      this.isSwitchedAuthModeFromHere = true;
+      this.store$.dispatch(AuthActions.switchModeTo({ authMode: { mode } }));
     }
 
   }
 
 
   hasEmailControlErrorRequired = (control: AbstractControl): boolean =>
-    (control.hasError('required') || control.hasError('email')) && (control.dirty || control.touched);
+    (control.hasError('required') || control.hasError('email')) && (control.dirty || control.touched)
 
 
   hasPasswordControlErrorRequired = (control: AbstractControl): boolean =>
-    control.hasError('required') && (control.dirty || control.touched);
+    control.hasError('required') && (control.dirty || control.touched)
 
 
   hasControlErrorLengtgh = (control: AbstractControl): boolean =>

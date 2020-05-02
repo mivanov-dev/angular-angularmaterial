@@ -69,10 +69,10 @@ export class AppModule {
     @Inject(APP_ID) private appId: string) {
 
     if (isPlatformBrowser(this.platformId)) {
-      console.log(`browser:appId=${appId}`)
+      console.log(`browser:appId=${appId}`);
     }
     if (isPlatformServer(this.platformId)) {
-      console.log(`server:appId=${appId}`)
+      console.log(`server:appId=${appId}`);
     }
 
   }
