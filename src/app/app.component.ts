@@ -23,7 +23,7 @@ declare const particlesJS: any;
 export class AppComponent implements OnInit, OnDestroy {
   mediaQueryList: MediaQueryList;
   isHandset$: Observable<boolean>;
-  isLoading: boolean;
+  isLoading = true;
 
   constructor(
     private _breakpointObserver: BreakpointObserver,
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .observe(Breakpoints.Handset)
       .pipe(
         map(result => result.matches),
-        shareReplay()
+        shareReplay(1)
       );
   }
 
@@ -70,6 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
 
         if (isPlatformBrowser(this._platformId)) {
+          this.isLoading = res;
           this._document.getElementById('loading-box').style.display = 'none';
         }
 

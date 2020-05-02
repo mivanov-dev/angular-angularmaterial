@@ -38,7 +38,6 @@ export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
         console.log('action', action);
         console.log('next state', result);
         console.groupEnd();
-        console.log('--------------');
         return result;
 
     };
