@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           'Angular Cdk',
           'NgRX',
           'RxJS',
-          '& many others 😉'
+          'and many others 😉'
         ],
         typeSpeed: 25,
         startDelay: 1000,
