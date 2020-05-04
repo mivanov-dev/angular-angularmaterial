@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, Renderer2 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 // cdk
@@ -31,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId,
     @Inject(DOCUMENT) private document: Document,
+    private renderer2: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -71,7 +72,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
         if (isPlatformBrowser(this.platformId)) {
           this.isLoading = res;
-          this.document.getElementById('loading-box').style.display = 'none';
+          const element = this.document.getElementById('loading-box');
+          this.renderer2.setStyle(element, 'display', 'none');
         }
 
       });
