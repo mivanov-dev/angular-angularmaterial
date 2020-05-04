@@ -1,5 +1,10 @@
 // angular
-import { Component, OnInit, Input, EventEmitter, Renderer2, Output, AfterViewInit, ChangeDetectionStrategy, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component, OnInit, Input,
+  EventEmitter, Renderer2, Output,
+  AfterViewInit, ChangeDetectionStrategy,
+  Inject, PLATFORM_ID, NgZone
+} from '@angular/core';
 import { LoggerService } from '@app/shared/services';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -18,23 +23,29 @@ export class CapsLockComponent implements OnInit, AfterViewInit {
 
   constructor(private renderer2: Renderer2,
               private logger: LoggerService,
-              @Inject(PLATFORM_ID) private platformId) { }
+              @Inject(PLATFORM_ID) private platformId,
+              private zone: NgZone) { }
 
   ngOnInit(): void { }
 
   ngAfterViewInit(): void {
 
     if (isPlatformBrowser(this.platformId)) {
-      this.renderer2.listen(this.field, 'keydown', (event) => {
+      this.zone.runOutsideAngular(() => {
 
-        if (this._isMobile()) {
-          // TODO: detect  mobile caps lock
-          this.logger.log(`${event.key} - ${event.code} - ${event.keyCode} - ${event.which}`); // Shift - - 16 - 16
-        }
-        else {
-          this.isActive = event.getModifierState('CapsLock');
-          this.isActiveCapsLock.emit(this.isActive);
-        }
+        this.renderer2.listen(this.field, 'keydown', (event) => {
+
+          if (this._isMobile()) {
+            // TODO: detect  mobile caps lock
+            // Shift: , , 16, 16
+            this.zone.run(() => this.logger.log(`${event.key}, ${event.code}, ${event.keyCode}, ${event.which}`));
+          }
+          else {
+            this.isActive = event.getModifierState('CapsLock');
+            this.zone.run(() => this.isActiveCapsLock.emit(this.isActive));
+          }
+
+        });
 
       });
     }
