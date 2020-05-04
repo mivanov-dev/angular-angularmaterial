@@ -23,6 +23,7 @@ import { HeaderComponent } from './header';
 import { AuthEffects } from './user/auth/store/effects';
 import { ForgotPasswordEffects } from './user/forgot-password/store/effects';
 import { ResetPasswordEffects } from './user/reset-password/store/effects';
+import { LoggerService } from './shared/services';
 
 @NgModule({
   declarations: [
@@ -66,13 +67,14 @@ export class AppModule {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    @Inject(APP_ID) private appId: string) {
+    @Inject(APP_ID) private appId: string,
+    private logger: LoggerService) {
 
     if (isPlatformBrowser(this.platformId)) {
-      console.log(`browser:appId=${appId}`);
+      this.logger.log(`browser:appId=${appId}`);
     }
     if (isPlatformServer(this.platformId)) {
-      console.log(`server:appId=${appId}`);
+      this.logger.log(`server:appId=${appId}`);
     }
 
   }
