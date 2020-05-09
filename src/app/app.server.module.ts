@@ -4,7 +4,6 @@ import { FlexLayoutServerModule } from '@angular/flex-layout/server';
 
 import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
-import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   imports: [
