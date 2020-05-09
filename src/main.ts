@@ -9,15 +9,16 @@ if (environment.production) {
   enableProdMode();
 }
 
+function loadServiceWorker() {
+  if ('serviceWorker' in navigator && environment.production) {
+    navigator.serviceWorker.register('/ngsw-worker.js')
+      .catch(err => console.error('Service worker registration failed with:', err));
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   platformBrowserDynamic()
     .bootstrapModule(AppModule)
-    .then(() => {
-
-      if ('serviceWorker' in navigator && environment.production) {
-        navigator.serviceWorker.register('/ngsw-worker.js');
-      }
-
-    })
+    .then(() => loadServiceWorker())
     .catch(err => console.error(err));
 });
