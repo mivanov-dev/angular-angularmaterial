@@ -1,0 +1,26 @@
+version: "3.3"
+services:
+  angular:
+    container_name: angular
+    build:
+      context: .
+      dockerfile: angular.Dockerfile
+    ports:
+      - "4200:4200"
+    env_file: .env
+    networks:
+      - backend
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - backend
+    depends_on:
+      - angular
+networks:
+  backend:
+    driver: bridge
