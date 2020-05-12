@@ -2,6 +2,8 @@ import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
 import 'core-js';
 import * as http from 'http';
+import * as https from 'https';
+import * as fs from 'fs';
 // custom
 import { app } from './backend';
 import { log } from './backend/logger';
@@ -10,11 +12,27 @@ export { app };
 
 function run() {
 
+  function onError(error) {
+    log.error(error);
+  }
+
+  function onListening(protocol, host, port) {
+    log.info(`Node Express server listening on ${protocol}://${host}:${port}`);
+  }
+
   // Start up the Node server
   const httpServer = http.createServer(app);
-  httpServer.listen(app.get('port'));
-  httpServer.on('listening', () => log.info(`Node Express server listening on http://${app.get('host')}:${app.get('port')}`));
-  httpServer.on('error', err => log.error(err));
+  httpServer.listen(app.get('httpPort'));
+  httpServer.on('listening', () => onListening('http', app.get('host'), app.get('httpPort')));
+  httpServer.on('error', err => onError);
+
+  const httpsServer = https.createServer({
+    key: fs.readFileSync('./certificates/server.key'),
+    cert: fs.readFileSync('./certificates/server.crt')
+  }, app);
+  httpsServer.listen(app.get('httpsPort'));
+  httpsServer.on('listening', () => onListening('https', app.get('host'), app.get('httpsPort')));
+  httpsServer.on('error', err => onError);
 
 }
 
