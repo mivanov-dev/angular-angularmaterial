@@ -17,6 +17,7 @@ services:
       dockerfile: nginx.Dockerfile
     ports:
       - "80:80"
+      - "443:443"
     networks:
       - backend
     depends_on:

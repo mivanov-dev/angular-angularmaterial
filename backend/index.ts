@@ -58,8 +58,8 @@ app.set('view cache', true);
 
 app.use(compression());
 app.use(methodOverride());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(expressSession(config.expressSessionOptions));
 app.use(cors(config.corsOptions));

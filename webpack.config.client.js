@@ -5,12 +5,11 @@ dotenv.config({ path: "./.env", encoding: 'utf-8' });
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || '4200';
-const baseUrl = `http://${host}:${port}`;
+const protocol = process.env.PROTOCOL = 'http';
 
-const hasProxy = process.env.HAS_PROXY || false;
-const proxyHost = process.env.PROXY_HOST || 'localhost';
-const proxyPort = process.env.PROXY_PORT || '3000';
-const proxyBaseUrl = `http://${proxyHost}:${proxyPort}`;
+const seoHost = process.env.SEO_HOST || host;
+const seoPort = process.env.SEO_PORT || port;
+const seoProtocol = process.env.SEO_PROTOCOL || protocol;
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -20,12 +19,11 @@ let config = {
         new webpack.DefinePlugin({
             "process.env": {
                 // Base
-                BASE_URL: JSON.stringify(baseUrl),
                 HOST: JSON.stringify(host),
                 PORT: JSON.stringify(port),
-                // Proxy
-                HAS_PROXY: Boolean(hasProxy),
-                PROXY_BASE_URL: JSON.stringify(proxyBaseUrl),
+                SEO_HOST: JSON.stringify(seoHost),
+                SEO_PORT: JSON.stringify(seoPort),
+                SEO_PROTOCOL: JSON.stringify(seoProtocol),
                 // Google
                 GOOGLE_ANALYTICS_ID: JSON.stringify(process.env.GOOGLE_ANALYTICS_ID || 'G-XXXXXXXXXX'),
                 // Cloudinary
