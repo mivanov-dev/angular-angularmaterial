@@ -53,7 +53,6 @@ app.set('views', distFolder);
 
 app.set('view engine', 'html');
 app.set('httpPort', +config.port);
-app.set('httpsPort', 443);
 app.set('host', config.host);
 app.set('view cache', true);
 
