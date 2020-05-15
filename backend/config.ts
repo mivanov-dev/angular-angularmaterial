@@ -60,7 +60,7 @@ export const config = {
             'Cookie',
             'X-Forwarded-Proto'],
         credentials: true,
-        maxAge: ms('2 days'),
+        maxAge: ms('1d'),
         methods: ['GET', 'PUT', 'POST', 'HEAD', 'PATCH'],
         optionsSuccessStatus: 200,
         origin: true

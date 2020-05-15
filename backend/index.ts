@@ -5,7 +5,6 @@ import * as fs from 'fs';
 import * as domino from 'domino';
 import * as compression from 'compression';
 import * as methodOverride from 'method-override';
-import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as expressSession from 'express-session';
 import * as passport from 'passport';
@@ -21,14 +20,12 @@ import { log } from './logger';
 
 import { AppServerModule, ngExpressEngine, APP_BASE_HREF } from '../src/main.server';
 
-// The Express app is exported so that it can be used by serverless Functions.
 export const app = express();
 
 const distFolder = path.join(process.cwd(), 'dist/browser');
 
 const indexHtml = fs.existsSync(path.join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
-// Our index.html we'll use as our template
 const template = fs.readFileSync(path.join(distFolder, 'index.html'), { encoding: 'utf-8' }).toString();
 
 const window: Window = domino.createWindow(template);
@@ -42,10 +39,8 @@ global.particlesJS = window.particlesJS;
 // @ts-ignore
 global.Typed = window.Typed;
 // @ts-ignore
-// global.Image = window.Image;
 global.Image = window.Image;
 
-// Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 app.engine('html', ngExpressEngine({ bootstrap: AppServerModule }));
 
 app.set('view engine', 'html');
@@ -56,7 +51,10 @@ app.set('httpPort', +config.port);
 app.set('host', config.host);
 app.set('view cache', true);
 
-app.use(compression());
+app.use(compression({
+    memLevel: 9,
+    level: 9
+}));
 app.use(methodOverride());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -65,13 +63,12 @@ app.use(expressSession(config.expressSessionOptions));
 app.use(cors(config.corsOptions));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Serve static files from /browser
-app.get('*.*', express.static(distFolder, {
-    maxAge: '1y'
+app.use(express.static(distFolder, {
+    dotfiles: 'ignore',
+    extensions: ['html', 'htm'],
+    maxAge: ms('1d')
 }));
 
-// All regular routes use the Universal engine
 app.get('/', (req: Request, res: Response) => {
 
     res.render(indexHtml, {
@@ -85,7 +82,10 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use((error: any, req: Request, res: Response, next: NextFunction): void => {
 
-    if (!error.status) { log.error(error.stack); }
+    if (!error.status) {
+        log.error(error.stack);
+    }
+
     res.status(error.status || 500).send({ message: error.message || 'Something broken!' });
 
 });
