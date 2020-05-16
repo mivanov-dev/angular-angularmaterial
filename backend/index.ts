@@ -64,8 +64,6 @@ app.use(cors(config.corsOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(distFolder, {
-    dotfiles: 'ignore',
-    extensions: ['html', 'htm'],
     maxAge: ms('1d')
 }));
 
