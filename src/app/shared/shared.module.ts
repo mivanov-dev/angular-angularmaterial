@@ -5,7 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // custom
 import { FilepondModule, LayoutModule, MaterialModule } from './modules';
 import { AlertComponent, CapsLockComponent } from './components';
-import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorDirective, ImageFallbackDirective } from './directives';
+import {
+  PlaceholderDirective, TemplateRendererDirective,
+  ConfirmEqualValidatorDirective, ImageFallbackDirective
+} from './directives';
 
 // Without services
 @NgModule({
@@ -40,7 +43,6 @@ import { PlaceholderDirective, TemplateRendererDirective, ConfirmEqualValidatorD
     FilepondModule,
     CommonModule,
   ],
-  entryComponents: [AlertComponent],
 })
 export class SharedModule {
 
