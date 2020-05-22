@@ -43,12 +43,12 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
   isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromResetPassword.selectLoading));
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
-              private formBuilder: FormBuilder,
-              private logger: LoggerService,
-              private store$: Store<fromApp.AppState>,
-              private seoService: SeoService,
-              private activatedRoute: ActivatedRoute,
-              @Inject(PLATFORM_ID) private platformId) {
+    private formBuilder: FormBuilder,
+    private logger: LoggerService,
+    private store$: Store<fromApp.AppState>,
+    private seoService: SeoService,
+    private activatedRoute: ActivatedRoute,
+    @Inject(PLATFORM_ID) private platformId) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
 
@@ -193,6 +193,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
       this.alertComponentRef.instance.message = message;
       this.alertComponentRef.instance.hasError = hasError;
       this.alertComponentRef.instance.close
+        .pipe(takeUntil(this.onDestroy$))
         .subscribe((res: boolean) => {
 
           if (res) {

@@ -41,10 +41,10 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
   isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromForgotPassword.selectLoading));
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
-              private formBuilder: FormBuilder,
-              private store$: Store<fromApp.AppState>,
-              private seoService: SeoService,
-              @Inject(PLATFORM_ID) private platformId) {
+    private formBuilder: FormBuilder,
+    private store$: Store<fromApp.AppState>,
+    private seoService: SeoService,
+    @Inject(PLATFORM_ID) private platformId) {
 
     this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
 
@@ -172,6 +172,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
       this.alertComponentRef.instance.message = message;
       this.alertComponentRef.instance.hasError = hasError;
       this.alertComponentRef.instance.close
+        .pipe(takeUntil(this.onDestroy$))
         .subscribe((res: boolean) => {
 
           if (res) {
