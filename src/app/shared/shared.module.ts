@@ -4,17 +4,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // custom
 import { FilepondModule, LayoutModule, MaterialModule } from './modules';
-import { AlertComponent, CapsLockComponent } from './components';
+import { CapsLockComponent } from './components';
 import {
-  PlaceholderDirective, TemplateRendererDirective,
-  ConfirmEqualValidatorDirective, ImageFallbackDirective
+  TemplateRendererDirective, ConfirmEqualValidatorDirective, ImageFallbackDirective
 } from './directives';
 
 // Without services
 @NgModule({
   declarations: [
-    AlertComponent,
-    PlaceholderDirective,
     TemplateRendererDirective,
     ConfirmEqualValidatorDirective,
     CapsLockComponent,
@@ -29,8 +26,6 @@ import {
     MaterialModule,
   ],
   exports: [
-    AlertComponent,
-    PlaceholderDirective,
     TemplateRendererDirective,
     ConfirmEqualValidatorDirective,
     ImageFallbackDirective,

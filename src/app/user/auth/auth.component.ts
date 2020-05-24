@@ -1,6 +1,13 @@
 // angular
-import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver, OnDestroy, Inject, ComponentRef, PLATFORM_ID } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, FormGroupDirective } from '@angular/forms';
+import {
+  Component, OnInit, ViewChild, ElementRef,
+  ComponentFactoryResolver, OnDestroy, Inject,
+  PLATFORM_ID, ViewContainerRef, Injector
+} from '@angular/core';
+import {
+  FormGroup, FormBuilder, Validators,
+  FormControl, AbstractControl, FormGroupDirective
+} from '@angular/forms';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
@@ -10,12 +17,10 @@ import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import { PlaceholderDirective } from '@app/shared/directives';
 import { LoggerService, SeoService } from '@app/shared/services';
 import * as fromApp from '@app/store';
 import * as AuthActions from './store/actions';
 import * as fromAuth from './store';
-import { AlertComponent } from '@app/shared/components';
 import { environment } from '@env/environment';
 import { IDirtyCheckGuard } from '@app/shared/guards';
 
@@ -85,24 +90,29 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
     Validators.minLength(10),
     Validators.maxLength(100)
   ];
-  private alertComponentRef: ComponentRef<AlertComponent>;
   private isSwitchedAuthModeFromHere: boolean;
   private isConfirmedChanges = false;
   isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLoading));
-  @ViewChild(PlaceholderDirective, { static: true }) alert: PlaceholderDirective;
-  @ViewChild('email', { static: true }) email: ElementRef;
-  @ViewChild('submitButton', { static: true }) submitButton: MatButton;
-  @ViewChild('filepond') filepond: any;
-  @ViewChild('formDirective') formDirective: FormGroupDirective;
+  @ViewChild('alertContainer', { read: ViewContainerRef })
+  alertContainer: ViewContainerRef;
+  @ViewChild('email', { static: true })
+  email: ElementRef;
+  @ViewChild('submitButton', { static: true })
+  submitButton: MatButton;
+  @ViewChild('filepond')
+  filepond: any;
+  @ViewChild('formDirective')
+  formDirective: FormGroupDirective;
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
+    private cfr: ComponentFactoryResolver,
     private formBuilder: FormBuilder,
     private logger: LoggerService,
     private store$: Store<fromApp.AppState>,
     private seoService: SeoService,
     @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformId) {
+    @Inject(PLATFORM_ID) private platformId,
+    private injector: Injector) {
 
     this.seoService.config({ title: 'Auth', url: 'user/auth' });
 
@@ -316,22 +326,27 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   }
 
-  private _showAlertMessage(message: string, hasError: boolean): void {
+  private _showAlertMessage(message: string, hasError: boolean) {
 
     if (message !== undefined) {
-      const alertComponent = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
-      const viewCntrRef = this.alert.viewCntrRef;
-      viewCntrRef.clear();
-      this.alertComponentRef = viewCntrRef.createComponent(alertComponent);
-      this.alertComponentRef.instance.message = message;
-      this.alertComponentRef.instance.hasError = hasError;
-      this.alertComponentRef.instance.close
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe((res: boolean) => {
+      this.alertContainer.clear();
 
-          if (res) {
-            this.alertComponentRef.destroy();
-          }
+      import('../../shared/components')
+        .then(({ AlertComponent }) => {
+
+          const alertFactory = this.cfr.resolveComponentFactory(AlertComponent);
+          const alertComponentRef = this.alertContainer.createComponent(alertFactory, null, this.injector);
+          alertComponentRef.instance.message = message;
+          alertComponentRef.instance.hasError = hasError;
+          alertComponentRef.instance.close
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((res: boolean) => {
+
+              if (res) {
+                alertComponentRef.destroy();
+              }
+
+            });
 
         });
     }

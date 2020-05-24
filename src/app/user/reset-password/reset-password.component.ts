@@ -1,5 +1,8 @@
 // angular
-import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver, OnDestroy, ComponentRef, PLATFORM_ID, Inject } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver,
+  OnDestroy, PLATFORM_ID, Inject, ViewContainerRef, Injector
+} from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Data } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
@@ -11,10 +14,8 @@ import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import { PlaceholderDirective } from '@app/shared/directives';
 import { LoggerService, SeoService } from '@app/shared/services';
 import * as fromApp from '@app/store';
-import { AlertComponent } from '@app/shared/components';
 import * as fromResetPassword from './store';
 import * as ResetPasswordActions from './store/actions';
 import * as ResetPasswordModels from './store/models';
@@ -36,19 +37,22 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
     Validators.minLength(10),
     Validators.maxLength(100)
   ];
-  private alertComponentRef: ComponentRef<AlertComponent>;
-  @ViewChild(PlaceholderDirective, { static: true }) alert: PlaceholderDirective;
-  @ViewChild('password', { static: true }) password: ElementRef;
-  @ViewChild('submitButton', { static: true }) submitButton: MatButton;
+  @ViewChild('alertContainer', { read: ViewContainerRef })
+  alertContainer: ViewContainerRef;
+  @ViewChild('password', { static: true })
+  password: ElementRef;
+  @ViewChild('submitButton', { static: true })
+  submitButton: MatButton;
   isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromResetPassword.selectLoading));
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver,
-    private formBuilder: FormBuilder,
-    private logger: LoggerService,
-    private store$: Store<fromApp.AppState>,
-    private seoService: SeoService,
-    private activatedRoute: ActivatedRoute,
-    @Inject(PLATFORM_ID) private platformId) {
+  constructor(private cfr: ComponentFactoryResolver,
+              private formBuilder: FormBuilder,
+              private logger: LoggerService,
+              private store$: Store<fromApp.AppState>,
+              private seoService: SeoService,
+              private activatedRoute: ActivatedRoute,
+              @Inject(PLATFORM_ID) private platformId,
+              private injector: Injector) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
 
@@ -183,22 +187,27 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
 
   }
 
-  private _showAlertMessage(message: string, hasError: boolean): void {
+  private _showAlertMessage(message: string, hasError: boolean) {
 
     if (message !== undefined) {
-      const alertComponent = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
-      const viewCntrRef = this.alert.viewCntrRef;
-      viewCntrRef.clear();
-      this.alertComponentRef = viewCntrRef.createComponent(alertComponent);
-      this.alertComponentRef.instance.message = message;
-      this.alertComponentRef.instance.hasError = hasError;
-      this.alertComponentRef.instance.close
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe((res: boolean) => {
+      this.alertContainer.clear();
 
-          if (res) {
-            this.alertComponentRef.destroy();
-          }
+      import('../../shared/components')
+        .then(({ AlertComponent }) => {
+
+          const alertFactory = this.cfr.resolveComponentFactory(AlertComponent);
+          const alertComponentRef = this.alertContainer.createComponent(alertFactory, null, this.injector);
+          alertComponentRef.instance.message = message;
+          alertComponentRef.instance.hasError = hasError;
+          alertComponentRef.instance.close
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((res: boolean) => {
+
+              if (res) {
+                alertComponentRef.destroy();
+              }
+
+            });
 
         });
     }
