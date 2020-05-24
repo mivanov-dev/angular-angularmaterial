@@ -1,20 +1,20 @@
 // angular
 import {
-  Component, OnInit, OnDestroy, ViewChild, ElementRef, ComponentFactoryResolver,
-  PLATFORM_ID, Inject, Injector, ViewContainerRef
+  Component, OnInit, OnDestroy, ViewChild, ElementRef,
+  PLATFORM_ID, Inject, ViewContainerRef
 } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
 import { IDirtyCheckGuard } from '@app/shared/guards';
-import { SeoService } from '@app/shared/services';
+import { SeoService, AlertService } from '@app/shared/services';
 import * as fromApp from '@app/store';
 import * as fromForgotPassword from './store';
 import * as ForgotPasswordActions from './store/actions';
@@ -43,12 +43,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
   submitButton: MatButton;
   isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromForgotPassword.selectLoading));
 
-  constructor(private cfr: ComponentFactoryResolver,
-              private formBuilder: FormBuilder,
+  constructor(private formBuilder: FormBuilder,
               private store$: Store<fromApp.AppState>,
               private seoService: SeoService,
               @Inject(PLATFORM_ID) private platformId,
-              private injector: Injector) {
+              private alertService: AlertService) {
 
     this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
 
@@ -168,28 +167,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   private _showAlertMessage(message: string, hasError: boolean) {
 
-    if (message !== undefined) {
-      this.alertContainer.clear();
-
-      import('../../shared/components')
-        .then(({ AlertComponent }) => {
-
-          const alertFactory = this.cfr.resolveComponentFactory(AlertComponent);
-          const alertComponentRef = this.alertContainer.createComponent(alertFactory, null, this.injector);
-          alertComponentRef.instance.message = message;
-          alertComponentRef.instance.hasError = hasError;
-          alertComponentRef.instance.close
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe((res: boolean) => {
-
-              if (res) {
-                alertComponentRef.destroy();
-              }
-
-            });
-
-        });
-    }
+    of(this.alertService.showMessage(this.alertContainer, message, hasError))
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe();
 
   }
 

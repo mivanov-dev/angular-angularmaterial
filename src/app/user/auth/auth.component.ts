@@ -1,8 +1,8 @@
 // angular
 import {
   Component, OnInit, ViewChild, ElementRef,
-  ComponentFactoryResolver, OnDestroy, Inject,
-  PLATFORM_ID, ViewContainerRef, Injector
+  OnDestroy, Inject,
+  PLATFORM_ID, ViewContainerRef
 } from '@angular/core';
 import {
   FormGroup, FormBuilder, Validators,
@@ -12,12 +12,12 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable, pipe } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import { LoggerService, SeoService } from '@app/shared/services';
+import { LoggerService, SeoService, AlertService } from '@app/shared/services';
 import * as fromApp from '@app/store';
 import * as AuthActions from './store/actions';
 import * as fromAuth from './store';
@@ -105,14 +105,13 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
   formDirective: FormGroupDirective;
 
   constructor(
-    private cfr: ComponentFactoryResolver,
     private formBuilder: FormBuilder,
     private logger: LoggerService,
     private store$: Store<fromApp.AppState>,
     private seoService: SeoService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId,
-    private injector: Injector) {
+    private alertService: AlertService) {
 
     this.seoService.config({ title: 'Auth', url: 'user/auth' });
 
@@ -328,28 +327,9 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   private _showAlertMessage(message: string, hasError: boolean) {
 
-    if (message !== undefined) {
-      this.alertContainer.clear();
-
-      import('../../shared/components')
-        .then(({ AlertComponent }) => {
-
-          const alertFactory = this.cfr.resolveComponentFactory(AlertComponent);
-          const alertComponentRef = this.alertContainer.createComponent(alertFactory, null, this.injector);
-          alertComponentRef.instance.message = message;
-          alertComponentRef.instance.hasError = hasError;
-          alertComponentRef.instance.close
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe((res: boolean) => {
-
-              if (res) {
-                alertComponentRef.destroy();
-              }
-
-            });
-
-        });
-    }
+    of(this.alertService.showMessage(this.alertContainer, message, hasError))
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe();
 
   }
 

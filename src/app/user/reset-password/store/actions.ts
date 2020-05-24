@@ -7,6 +7,7 @@ export enum ActionTypes {
     RESET_PASSWORD_START = '[Reset_Password] Reset Password Start',
     RESET_PASSWORD = '[Reset_Password] Reset Password',
     RESET_PASSWORD_ERROR = '[Reset_Password] Reset Password Error',
+    RESET = '[Reset_Password] Reset',
 }
 
 export const resetPasswordStart = createAction(
@@ -19,4 +20,7 @@ export const resetPassword = createAction(
 export const resetPasswordError = createAction(
     ActionTypes.RESET_PASSWORD_ERROR,
     props<ResetPassword.IError>()
+);
+export const reset = createAction(
+    ActionTypes.RESET
 );

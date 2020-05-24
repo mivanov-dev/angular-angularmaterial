@@ -29,6 +29,10 @@ export const resetPassReducer = createReducer(
         error,
         loading: false
     })),
+    on(ResetPasswordActions.reset, (state) => ({
+        ...state,
+        error: null
+    })),
 );
 
 export const reducer = (state: State | undefined, action: Action) => {

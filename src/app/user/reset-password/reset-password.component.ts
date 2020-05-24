@@ -1,7 +1,7 @@
 // angular
 import {
-  Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver,
-  OnDestroy, PLATFORM_ID, Inject, ViewContainerRef, Injector
+  Component, OnInit, ViewChild, ElementRef,
+  OnDestroy, PLATFORM_ID, Inject, ViewContainerRef
 } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Data } from '@angular/router';
@@ -9,12 +9,12 @@ import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import { LoggerService, SeoService } from '@app/shared/services';
+import { LoggerService, SeoService, AlertService } from '@app/shared/services';
 import * as fromApp from '@app/store';
 import * as fromResetPassword from './store';
 import * as ResetPasswordActions from './store/actions';
@@ -45,14 +45,13 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
   submitButton: MatButton;
   isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromResetPassword.selectLoading));
 
-  constructor(private cfr: ComponentFactoryResolver,
-              private formBuilder: FormBuilder,
+  constructor(private formBuilder: FormBuilder,
               private logger: LoggerService,
               private store$: Store<fromApp.AppState>,
               private seoService: SeoService,
               private activatedRoute: ActivatedRoute,
               @Inject(PLATFORM_ID) private platformId,
-              private injector: Injector) {
+              private alertService: AlertService) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
 
@@ -67,7 +66,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
   }
 
   ngOnDestroy(): void {
-
+    this.store$.dispatch(ResetPasswordActions.reset());
     this.onDestroy$.next();
     this.onDestroy$.complete();
 
@@ -189,28 +188,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
 
   private _showAlertMessage(message: string, hasError: boolean) {
 
-    if (message !== undefined) {
-      this.alertContainer.clear();
-
-      import('../../shared/components')
-        .then(({ AlertComponent }) => {
-
-          const alertFactory = this.cfr.resolveComponentFactory(AlertComponent);
-          const alertComponentRef = this.alertContainer.createComponent(alertFactory, null, this.injector);
-          alertComponentRef.instance.message = message;
-          alertComponentRef.instance.hasError = hasError;
-          alertComponentRef.instance.close
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe((res: boolean) => {
-
-              if (res) {
-                alertComponentRef.destroy();
-              }
-
-            });
-
-        });
-    }
+    of(this.alertService.showMessage(this.alertContainer, message, hasError))
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe();
 
   }
 
