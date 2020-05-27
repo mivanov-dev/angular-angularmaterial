@@ -17,6 +17,7 @@ export class AlertComponent implements OnInit {
 
   @Input() message: string;
   @Input() hasError: boolean;
+  // tslint:disable-next-line: no-output-native
   @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
   constructor() { }
@@ -31,6 +32,4 @@ export class AlertComponent implements OnInit {
   imports: [CommonModule, MatCardModule, MatButtonModule],
   declarations: [AlertComponent]
 })
-class AlertModule {
-  constructor() { }
-}
+class AlertModule { }

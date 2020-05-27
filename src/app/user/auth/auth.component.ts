@@ -12,7 +12,7 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -327,9 +327,7 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   private _showAlertMessage(message: string, hasError: boolean) {
 
-    of(this.alertService.showMessage(this.alertContainer, message, hasError))
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe();
+    this.alertService.showMessage(this.alertContainer, message, hasError);
 
   }
 

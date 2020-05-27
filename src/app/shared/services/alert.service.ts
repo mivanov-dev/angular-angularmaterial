@@ -1,37 +1,43 @@
 // angular
 import {
     Injectable, ViewContainerRef,
-    ComponentFactoryResolver, Injector
+    ComponentFactoryResolver,
 } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
 
-    constructor(private cfr: ComponentFactoryResolver,
-                private injector: Injector) { }
+    constructor(private cfr: ComponentFactoryResolver) { }
 
-    showMessage(vcr: ViewContainerRef, message: string, hasError: boolean) {
+    async showMessage(vcr: ViewContainerRef, message: string, hasError: boolean) {
 
         if (message !== undefined) {
             vcr.clear();
 
-            import('../components')
-                .then(({ AlertComponent }) => {
+            /**
+             * Read❗
+             * https://webpack.js.org/api/module-methods/#magic-comments
+             */
 
-                    const alertFactory = this.cfr.resolveComponentFactory(AlertComponent);
-                    const alertComponentRef = vcr.createComponent(alertFactory, null, this.injector);
-                    alertComponentRef.instance.message = message;
-                    alertComponentRef.instance.hasError = hasError;
-                    alertComponentRef.instance.close
-                        .subscribe((res: boolean) => {
+            const { AlertComponent } = await import(
+                /* webpackPrefetch: true */
+                /* webpackMode: "lazy" */
+                `../components`
+            );
 
-                            if (res) {
-                                alertComponentRef.destroy();
-                            }
+            const alertFactory = this.cfr.resolveComponentFactory(AlertComponent);
+            const alertComponentRef = vcr.createComponent(alertFactory);
+            alertComponentRef.instance.message = message;
+            alertComponentRef.instance.hasError = hasError;
+            alertComponentRef.instance.close
+                .subscribe((res: boolean) => {
 
-                        });
+                    if (res) {
+                        alertComponentRef.destroy();
+                    }
 
                 });
+
         }
 
     }

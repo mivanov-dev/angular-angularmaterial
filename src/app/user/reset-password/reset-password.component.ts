@@ -1,7 +1,8 @@
 // angular
 import {
   Component, OnInit, ViewChild, ElementRef,
-  OnDestroy, PLATFORM_ID, Inject, ViewContainerRef
+  OnDestroy, Inject,
+  PLATFORM_ID, ViewContainerRef
 } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Data } from '@angular/router';
@@ -9,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -188,9 +189,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
 
   private _showAlertMessage(message: string, hasError: boolean) {
 
-    of(this.alertService.showMessage(this.alertContainer, message, hasError))
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe();
+    this.alertService.showMessage(this.alertContainer, message, hasError);
 
   }
 

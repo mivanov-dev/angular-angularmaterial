@@ -1,14 +1,15 @@
 // angular
 import {
-  Component, OnInit, OnDestroy, ViewChild, ElementRef,
-  PLATFORM_ID, Inject, ViewContainerRef
+  Component, OnInit, ViewChild, ElementRef,
+  OnDestroy, Inject,
+  PLATFORM_ID, ViewContainerRef
 } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -167,9 +168,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   private _showAlertMessage(message: string, hasError: boolean) {
 
-    of(this.alertService.showMessage(this.alertContainer, message, hasError))
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe();
+    this.alertService.showMessage(this.alertContainer, message, hasError);
 
   }
 
