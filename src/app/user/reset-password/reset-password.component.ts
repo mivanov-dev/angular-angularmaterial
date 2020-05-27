@@ -67,6 +67,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
   }
 
   ngOnDestroy(): void {
+
     this.store$.dispatch(ResetPasswordActions.reset());
     this.onDestroy$.next();
     this.onDestroy$.complete();
@@ -182,8 +183,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
 
     this.activatedRoute.data
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(
-        (data: Data) => this.token = data.token);
+      .subscribe((data: Data) => this.token = data.token);
 
   }
 
@@ -193,10 +193,16 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGua
 
   }
 
-  hasPasswordControlErrorRequired = (control: AbstractControl): boolean =>
-    control.hasError('required') && (control.dirty || control.touched)
+  hasPasswordControlErrorRequired(control: AbstractControl): boolean {
 
-  hasControlErrorLengtgh = (control: AbstractControl): boolean =>
-    !(control.hasError('minLength') && control.hasError('maxLength')) && (control.dirty || control.touched)
+    return control.hasError('required') && (control.dirty || control.touched);
+
+  }
+
+  hasControlErrorLengtgh(control: AbstractControl): boolean {
+
+    return !(control.hasError('minLength') && control.hasError('maxLength')) && (control.dirty || control.touched);
+
+  }
 
 }

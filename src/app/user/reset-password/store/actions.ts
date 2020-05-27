@@ -19,7 +19,7 @@ export const resetPassword = createAction(
 );
 export const resetPasswordError = createAction(
     ActionTypes.RESET_PASSWORD_ERROR,
-    props<ResetPassword.IError>()
+    props<ResetPassword.Error>()
 );
 export const reset = createAction(
     ActionTypes.RESET

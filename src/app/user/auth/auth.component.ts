@@ -341,15 +341,26 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
   }
 
 
-  hasEmailControlErrorRequired = (control: AbstractControl): boolean =>
-    (control.hasError('required') || control.hasError('email')) && (control.dirty || control.touched)
+  hasEmailControlErrorRequired(control: AbstractControl): boolean {
+
+    return (control.hasError('required') || control.hasError('email'))
+      && (control.dirty || control.touched);
+
+  }
 
 
-  hasPasswordControlErrorRequired = (control: AbstractControl): boolean =>
-    control.hasError('required') && (control.dirty || control.touched)
+  hasPasswordControlErrorRequired(control: AbstractControl): boolean {
+
+    return control.hasError('required') && (control.dirty || control.touched);
+
+  }
 
 
-  hasControlErrorLengtgh = (control: AbstractControl): boolean =>
-    !(control.hasError('minLength') && control.hasError('maxLength')) && (control.dirty || control.touched)
+  hasControlErrorLengtgh(control: AbstractControl): boolean {
+
+    return !(control.hasError('minLength') && control.hasError('maxLength'))
+      && (control.dirty || control.touched);
+
+  }
 
 }

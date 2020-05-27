@@ -7,12 +7,12 @@ import {
 @Injectable({ providedIn: 'root' })
 export class AlertService {
 
-    constructor(private cfr: ComponentFactoryResolver) { }
+    constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
-    async showMessage(vcr: ViewContainerRef, message: string, hasError: boolean) {
+    async showMessage(viewContainerRef: ViewContainerRef, message: string, hasError: boolean) {
 
         if (message !== undefined) {
-            vcr.clear();
+            viewContainerRef.clear();
 
             /**
              * Read❗
@@ -25,8 +25,8 @@ export class AlertService {
                 `../components`
             );
 
-            const alertFactory = this.cfr.resolveComponentFactory(AlertComponent);
-            const alertComponentRef = vcr.createComponent(alertFactory);
+            const alertFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+            const alertComponentRef = viewContainerRef.createComponent(alertFactory);
             alertComponentRef.instance.message = message;
             alertComponentRef.instance.hasError = hasError;
             alertComponentRef.instance.close

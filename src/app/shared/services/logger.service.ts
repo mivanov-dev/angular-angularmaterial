@@ -19,7 +19,7 @@ export class LoggerService {
 
     }
 
-    error = (value: any, ...rest: any[]): void => {
+    error(value: any, ...rest: any[]): void {
 
         if (isPlatformBrowser(this.platformId)) {
             console.error('ERROR', value, ...rest);
@@ -27,7 +27,7 @@ export class LoggerService {
 
     }
 
-    warn = (value: any, ...rest: any[]): void => {
+    warn(value: any, ...rest: any[]): void {
 
         if (isPlatformBrowser(this.platformId)) {
             console.warn('WARN', value, ...rest);

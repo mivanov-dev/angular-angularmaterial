@@ -71,10 +71,10 @@ export class AppModule {
     private logger: LoggerService) {
 
     if (isPlatformBrowser(this.platformId)) {
-      this.logger.log(`browser:appId=${appId}`);
+      this.logger.log(`browser:appId=${this.appId}`);
     }
     if (isPlatformServer(this.platformId)) {
-      this.logger.log(`server:appId=${appId}`);
+      this.logger.log(`server:appId=${this.appId}`);
     }
 
   }

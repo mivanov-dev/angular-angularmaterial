@@ -14,8 +14,6 @@ export class ConfirmEqualValidatorDirective implements Validator {
 
   @Input() appConfirmEqualValidator: string;
 
-  constructor() { }
-
   validate(control: AbstractControl): ValidationErrors | null {
 
     const compare = control.parent.get(this.appConfirmEqualValidator);

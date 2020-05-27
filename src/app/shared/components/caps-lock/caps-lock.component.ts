@@ -1,6 +1,6 @@
 // angular
 import {
-  Component, OnInit, Input,
+  Component, Input,
   EventEmitter, Renderer2, Output,
   AfterViewInit, ChangeDetectionStrategy,
   Inject, PLATFORM_ID, NgZone
@@ -14,7 +14,7 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrls: ['./caps-lock.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CapsLockComponent implements OnInit, AfterViewInit {
+export class CapsLockComponent implements AfterViewInit {
 
   isShiftOn: boolean;
   isActive: boolean;
@@ -25,8 +25,6 @@ export class CapsLockComponent implements OnInit, AfterViewInit {
               private logger: LoggerService,
               @Inject(PLATFORM_ID) private platformId,
               private zone: NgZone) { }
-
-  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
 

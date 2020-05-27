@@ -14,7 +14,10 @@ export class ForgotPasswordService {
 
   constructor(private http: HttpClient) { }
 
-  forgotPassword$ = (data: ForgotPasswordModels.ForgotPasswordStart): Observable<ForgotPasswordModels.ForgotPassword> =>
-    this.http.post<ForgotPasswordModels.ForgotPassword>(this.forgotPasswordUrl, data)
+  forgotPassword$(data: ForgotPasswordModels.ForgotPasswordStart): Observable<ForgotPasswordModels.ForgotPassword> {
+
+    return this.http.post<ForgotPasswordModels.ForgotPassword>(this.forgotPasswordUrl, data);
+
+  }
 
 }

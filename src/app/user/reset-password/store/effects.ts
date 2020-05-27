@@ -13,6 +13,10 @@ import { ResetPasswordService } from '@app/user/reset-password/services/reset-pa
 @Injectable()
 export class ResetPasswordEffects {
 
+    constructor(private actions$: Actions,
+                private router: Router,
+                private resetPasswordService: ResetPasswordService) { }
+
     resetPasswordStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(ResetPasswordActions.resetPasswordStart),
@@ -34,9 +38,5 @@ export class ResetPasswordEffects {
 
             })
         ), { dispatch: false });
-
-    constructor(private actions$: Actions,
-                private router: Router,
-                private resetPasswordService: ResetPasswordService) { }
 
 }

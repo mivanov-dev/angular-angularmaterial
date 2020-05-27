@@ -18,8 +18,4 @@ import { SharedModule } from '@app/shared/shared.module';
         SharedModule
     ],
 })
-export class PageNotFoundModule {
-
-    constructor() { }
-
-}
+export class PageNotFoundModule { }

@@ -28,17 +28,29 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId,
     private zone: NgZone) { }
 
-  login$ = (data: AuthModels.LoginStart): Observable<AuthModels.Login> =>
-    this.http.post<AuthModels.Login>(this.loginUrl, data)
+  login$(data: AuthModels.LoginStart): Observable<AuthModels.Login> {
 
-  register$ = (data: AuthModels.RegisterStart): Observable<AuthModels.Register> =>
-    this.http.post<AuthModels.Register>(this.registerUrl, data)
+    return this.http.post<AuthModels.Login>(this.loginUrl, data);
 
-  autoLogin$ = (): Observable<AuthModels.Login> =>
-    this.http.get<AuthModels.Login>(this.isLoggedInUrl)
+  }
 
-  logout$ = (): Observable<any> =>
-    this.http.post(this.logoutUrl, {})
+  register$(data: AuthModels.RegisterStart): Observable<AuthModels.Register> {
+
+    return this.http.post<AuthModels.Register>(this.registerUrl, data);
+
+  }
+
+  autoLogin$(): Observable<AuthModels.Login> {
+
+    return this.http.get<AuthModels.Login>(this.isLoggedInUrl);
+
+  }
+
+  logout$(): Observable<any> {
+
+    return this.http.post(this.logoutUrl, {});
+
+  }
 
 
 

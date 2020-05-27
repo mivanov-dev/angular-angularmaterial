@@ -39,8 +39,4 @@ import {
     CommonModule,
   ],
 })
-export class SharedModule {
-
-  constructor() { }
-
-}
+export class SharedModule { }

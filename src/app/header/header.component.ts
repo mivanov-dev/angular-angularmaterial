@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 // material
 import { MatSidenav } from '@angular/material/sidenav';
 // rxjs
@@ -19,7 +19,7 @@ import * as AuthModels from '@app/user/auth/store/models';
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnDestroy {
 
 
   @Input() sidenav: MatSidenav;
@@ -29,8 +29,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(private store$: Store<fromApp.AppState>) { }
 
-  ngOnInit(): void { }
-
   ngOnDestroy(): void {
 
     this.onDestroy$.next();
@@ -38,8 +36,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   }
 
-  onLogout = (): void => this.store$.dispatch(AuthActions.logoutStart());
+  onLogout(): void {
 
-  switchAuthModeTo = (mode: string): void => this.store$.dispatch(AuthActions.switchModeTo({ authMode: { mode } }));
+    this.store$.dispatch(AuthActions.logoutStart());
+
+  }
+
+  switchAuthModeTo(mode: string): void {
+
+    this.store$.dispatch(AuthActions.switchModeTo({ authMode: { mode } }));
+
+  }
 
 }

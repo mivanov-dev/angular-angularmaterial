@@ -3,6 +3,6 @@ export interface ResetPasswordStart {
     repeatedPassword: string;
     token: string;
 }
-export interface IError {
+export interface Error {
     error: any;
 }

@@ -10,6 +10,10 @@ export class ErrorInterceptor implements ErrorHandler {
     constructor(private logger: LoggerService) { }
 
 
-    handleError = (error): void => this.logger.error(error);
+    handleError(error): void {
+
+        this.logger.error(error);
+
+    }
 
 }

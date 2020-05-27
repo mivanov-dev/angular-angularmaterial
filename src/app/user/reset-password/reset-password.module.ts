@@ -22,8 +22,4 @@ import { DirtyCheckGuard } from '@app/shared/guards';
     ],
     exports: [RouterModule],
 })
-export class ResetPasswordModule {
-
-    constructor() { }
-
-}
+export class ResetPasswordModule { }

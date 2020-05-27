@@ -12,6 +12,10 @@ import { ForgotPasswordService } from '@app/user/forgot-password/services/forgot
 @Injectable()
 export class ForgotPasswordEffects {
 
+    constructor(
+        private actions$: Actions,
+        private forgotPasswordService: ForgotPasswordService) { }
+
     forgotPasswordStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(ForgotPasswordActions.forgotPasswordStart),
@@ -30,9 +34,5 @@ export class ForgotPasswordEffects {
             ofType(ForgotPasswordActions.forgotPassword),
             tap((res) => { })
         ), { dispatch: false });
-
-    constructor(
-        private actions$: Actions,
-        private forgotPasswordService: ForgotPasswordService) { }
 
 }

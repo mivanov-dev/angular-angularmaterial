@@ -14,7 +14,8 @@ export class ResetPasswordService {
 
     constructor(private http: HttpClient) { }
 
-    resetPassword$ = (data: ResetPasswordModels.ResetPasswordStart): Observable<any> =>
-        this.http.post<any>(this.resetPasswordUrl, data)
+    resetPassword$(data: ResetPasswordModels.ResetPasswordStart): Observable<any> {
+        return this.http.post<any>(this.resetPasswordUrl, data);
+    }
 
 }

@@ -1,6 +1,6 @@
 // angular
 import {
-  Component, OnInit, Input, ChangeDetectionStrategy,
+  Component, Input, ChangeDetectionStrategy,
   Output, EventEmitter, NgModule
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,18 +13,18 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './alert.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AlertComponent implements OnInit {
+export class AlertComponent {
 
   @Input() message: string;
   @Input() hasError: boolean;
   // tslint:disable-next-line: no-output-native
   @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
-  constructor() { }
+  onClose(): void {
 
-  ngOnInit(): void { }
+    this.close.emit(true);
 
-  onClose = (): void => this.close.emit(true);
+  }
 
 }
 

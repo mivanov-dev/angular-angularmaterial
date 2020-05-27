@@ -1,5 +1,5 @@
 // ngrx
-import { createReducer, Action, on, createSelector, createFeatureSelector } from '@ngrx/store';
+import { createReducer, Action, on } from '@ngrx/store';
 // custom
 import * as AuthModels from './models';
 import * as AuthActions from './actions';

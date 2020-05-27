@@ -1,6 +1,5 @@
 // angular
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 // rxjs
 import { } from 'rxjs/operators';
@@ -17,11 +16,7 @@ export class SeoService {
 
     htmlMetaElement: HTMLMetaElement[] = [];
 
-    constructor(
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private title: Title,
-        private meta: Meta) { }
+    constructor(private title: Title, private meta: Meta) { }
 
 
     // getTitle(): void {
