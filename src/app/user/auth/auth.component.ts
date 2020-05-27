@@ -252,7 +252,11 @@ export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
 
   }
 
-  onTriggerSubmit = (): void => this.submitButtonElement.click();
+  onTriggerSubmit(): void {
+
+    this.submitButtonElement.click();
+
+  }
 
   private _getSuccessfulMessage(): void {
 

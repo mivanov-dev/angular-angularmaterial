@@ -128,7 +128,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGu
 
   }
 
-  onTriggerClick = (): void => this.submitButtonElement.click();
+  onTriggerClick(): void {
+
+    this.submitButtonElement.click();
+
+  }
 
   private _getSuccessfulMessage() {
 
