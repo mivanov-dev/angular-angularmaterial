@@ -12,14 +12,13 @@ const localStrategy = new LocalStrategy(
         session: true,
         passReqToCallback: true
     },
-    (request, _email, _password, cb) => {
+    (request, email, password, cb) => {
 
         process.nextTick(async () => {
 
             try {
 
-                const { password, email } = request.body;
-                const user = await User.authenticate(email, password);
+                const user = await User.authenticate(request.body);
 
                 if (user == null) {
                     return cb(null, false, { message: 'Wrong credentials!' });

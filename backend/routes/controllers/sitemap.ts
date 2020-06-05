@@ -5,7 +5,7 @@ import { createGzip } from 'zlib';
 import { handleErrors } from '../../middlewares';
 import { config } from '../../config';
 
-let sitemap;
+let sitemap: Buffer;
 
 class Controller {
 
@@ -17,8 +17,7 @@ class Controller {
         res.header('Content-Encoding', 'gzip');
         // if we have a cached entry send it
         if (sitemap) {
-            res.send(sitemap)
-            return
+            return res.send(sitemap);
         }
 
         try {
@@ -34,9 +33,9 @@ class Controller {
             smStream.end();
 
             // cache the response
-            streamToPromise(pipeline).then(sm => sitemap = sm)
+            streamToPromise(pipeline).then(sm => sitemap = sm);
             // stream write the response
-            pipeline.pipe(res).on('error', (e) => { throw e })
+            pipeline.pipe(res).on('error', (e) => { throw e; });
 
         } catch (error) {
             handleErrors(error, res);

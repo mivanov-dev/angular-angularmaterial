@@ -4,7 +4,7 @@ import * as bluebird from 'bluebird';
 import { User, UserImage } from './models';
 import { log } from '../logger';
 
-(<any>mongoose).Promise = bluebird.Promise;
+( mongoose as any).Promise = bluebird.Promise;
 mongoose.set('debug', false);
 
 export function database(uri: string): void {
@@ -40,7 +40,7 @@ function dropModels(): void {
 
             })
             .catch((error) => {
-                log.error(`mongoose:drop models: ${JSON.stringify(error)}`)
+                log.error(`mongoose:drop models: ${JSON.stringify(error)}`);
             });
 
     });

@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 import * as bcrypt from 'bcryptjs';
 const ms = require('ms');
 // custom
-import { UserImage, User } from '../../mongoose/models';
+import { UserImage, User, IUserImageDocument } from '../../mongoose/models';
 import { handleErrors } from '../../middlewares';
 import { passportStrategy } from '../../passport';
 import { Smtp } from '../../smtp';
@@ -18,9 +18,10 @@ class Controller {
 
         try {
 
-            let { password, email } = req.body;
-            const errors: any = await validationResult(req);
-            let userImage;
+            let { password } = req.body;
+            const { email } = req.body;
+            const errors: any = validationResult(req);
+            let userImage: IUserImageDocument;
 
             if (!errors.isEmpty()) {
                 throw { message: errors.errors[0].msg };
@@ -48,12 +49,12 @@ class Controller {
 
         }
 
-    };
+    }
 
     static login = async (req: Request, res: Response, next: NextFunction) => {
 
         const expires = ms('1m');
-        const errors: any = await validationResult(req);
+        const errors: any = validationResult(req);
 
         if (!errors.isEmpty()) {
             throw { message: errors.errors[0].msg };
@@ -73,7 +74,9 @@ class Controller {
 
             req.login(user, (error) => {
 
-                if (error) { handleErrors(error, res); }
+                if (error) {
+                    handleErrors(error, res);
+                }
                 else if (req.body.remember) {
                     req.session.cookie.originalMaxAge = expires;
                     return res.status(200).send(json);
@@ -87,21 +90,21 @@ class Controller {
 
         })(req, res, next);
 
-    };
+    }
 
     static isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
 
         try {
 
             const body = req.user as { id: any };
-            let expires = null;
+            let expires: number;
             const user = await User.isLoggedIn(body.id);
 
             if (!req.session.cookie.expires) {
-                expires = await new Date(Date.now() + ms('1m')).getTime();
+                expires = new Date(Date.now() + ms('1m')).getTime();
             }
             else {
-                expires = await new Date(req.session.cookie.expires as Date).getTime();
+                expires = new Date(req.session.cookie.expires as Date).getTime();
             }
 
             return res.status(200)
@@ -121,8 +124,8 @@ class Controller {
 
     static logout = async (req: Request, res: Response, next: NextFunction) => {
 
-        await req.logout();
-        await res.clearCookie('uid');
+        req.logout();
+        res.clearCookie('uid');
         res.status(200).send();
 
     }
@@ -134,7 +137,7 @@ class Controller {
         try {
 
             const { email } = req.body;
-            const errors: any = await validationResult(req);
+            const errors: any = validationResult(req);
 
             if (!errors.isEmpty()) {
                 throw { message: errors.errors[0].msg };
@@ -158,7 +161,7 @@ class Controller {
                     <a href="http://${host}:${port}/#/user/reset-password/${user.resetPasswordToken}" target="_blank">
                         Click here !
                     </a>`;
-                await smtp.sendMail(to, subject, html);
+                smtp.sendMail(to, subject, html);
             }
 
             smtp.close();
@@ -175,8 +178,8 @@ class Controller {
 
         try {
 
-            let { token, password, repeatedPassword } = req.body;
-            const errors: any = await validationResult(req);
+            const { token, password, repeatedPassword } = req.body;
+            const errors: any = validationResult(req);
 
             if (!errors.isEmpty()) {
                 throw { message: errors.errors[0].msg };
@@ -198,8 +201,8 @@ class Controller {
             user.password = await bcrypt.hashSync(password, 10);
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
+            user.save();
 
-            await user.save();
             return res.sendStatus(200);
         }
         catch (error) {

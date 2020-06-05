@@ -7,8 +7,8 @@ import { config } from './config';
 
 export class Smtp {
 
-    private static _instance: Smtp;
-    private _smtpTransport: Transporter;
+    private static instance: Smtp;
+    private smtpTransport: Transporter;
 
     private constructor() {
 
@@ -18,11 +18,11 @@ export class Smtp {
 
     public static getInstance(): Smtp {
 
-        if (!Smtp._instance) {
-            Smtp._instance = new Smtp();
+        if (!Smtp.instance) {
+            Smtp.instance = new Smtp();
         }
 
-        return Smtp._instance;
+        return Smtp.instance;
 
     }
 
@@ -31,9 +31,9 @@ export class Smtp {
         log.info('smtp:init');
 
         // https://ethereal.email/create
-        this._smtpTransport = nodemailer.createTransport(config.smtp);
+        this.smtpTransport = nodemailer.createTransport(config.smtp);
 
-        this._smtpTransport.on('error', (error) => log.error(`smtp:error: ${JSON.stringify(error)}`));
+        this.smtpTransport.on('error', (error) => log.error(`smtp:error: ${JSON.stringify(error)}`));
 
     }
 
@@ -41,26 +41,25 @@ export class Smtp {
 
         try {
 
-            const result = await this._smtpTransport.verify();
-
             log.info('smtp:verify');
 
-            if (!result) {
-                this._smtpTransport.close();
+            if (!await this.smtpTransport.verify()) {
+                this.smtpTransport.close();
             }
+
         }
         catch (error) {
 
             log.error(`smtp:verify: ${JSON.stringify(error)}`);
-            this._smtpTransport.close();
+            this.smtpTransport.close();
 
-        };
+        }
 
     }
 
-    sendMail(to, subject, html): Promise<any> {
+    sendMail(to: any, subject: any, html: any): Promise<any> {
 
-        return this._smtpTransport
+        return this.smtpTransport
             .sendMail({
                 from: 'bryon29@ethereal.email',
                 to,
@@ -73,8 +72,8 @@ export class Smtp {
     close(): void {
 
         log.info(`smtp:close`);
-        this._smtpTransport.close();
+        this.smtpTransport.close();
 
     }
 
-};
+}

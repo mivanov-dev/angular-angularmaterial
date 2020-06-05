@@ -13,7 +13,7 @@ export function isAuthenticate(request: Request, response: Response, next: NextF
         return response.sendStatus(401);
     }
 
-};
+}
 
 export function handleErrors(error: any, res: Response): Response<any> {
 

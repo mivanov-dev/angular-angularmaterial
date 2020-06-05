@@ -1,10 +1,10 @@
 import { NextFunction, Response, Request } from 'express';
-import robotstxt from "generate-robotstxt";
+import robotstxt from 'generate-robotstxt';
 // custom
 import { handleErrors } from '../../middlewares';
 import { config } from '../../config';
 
-let robotsTxt;
+let robotsTxt: any;
 
 class Controller {
 
@@ -16,18 +16,17 @@ class Controller {
 
         if (robotsTxt) {
             res.write(robotsTxt);
-            res.end();
-            return;
+            return res.end();
         }
 
         try {
 
-            let content = await robotstxt({
+            const content = await robotstxt({
                 policy: [
                     {
-                        userAgent: "*",
-                        allow: "/",
-                        disallow: "",
+                        userAgent: '*',
+                        allow: '/',
+                        disallow: '',
                     },
                 ],
                 sitemap: `http://${host}:${port}/sitemap.xml`,
