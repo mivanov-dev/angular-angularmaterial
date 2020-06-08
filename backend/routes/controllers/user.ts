@@ -192,7 +192,8 @@ class Controller {
             const user = await User.findOne({
                 resetPasswordToken: token,
                 resetPasswordExpires: { $gt: Date.now() }
-            });
+            })
+            .exec();
 
             if (!user) {
                 throw { message: 'Reset password token is invalid or has expired!' };
@@ -203,7 +204,7 @@ class Controller {
             user.resetPasswordExpires = undefined;
             user.save();
 
-            return res.sendStatus(200);
+            return res.status(200).end();
         }
         catch (error) {
 
