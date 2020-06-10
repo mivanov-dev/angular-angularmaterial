@@ -3,10 +3,10 @@ import 'reflect-metadata';
 import 'core-js';
 import * as http from 'http';
 // custom
-import { app } from './backend';
+import { App } from './backend';
 import { log } from './backend/logger';
 
-export { app };
+export const { app } = App.getInstance();
 
 function run() {
 
