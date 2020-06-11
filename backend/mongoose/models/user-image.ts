@@ -3,7 +3,7 @@ import { Schema } from 'mongoose';
 
 const Types = Schema.Types;
 
-export interface IUserImageDocument extends mongoose.Document {
+export interface UserImageDocument extends mongoose.Document {
     url: string;
 }
 
@@ -16,4 +16,4 @@ export const userImageSchema = new Schema({
     timestamps: { createdAt: 'createdAt' },
 });
 
-export const UserImage = mongoose.model<IUserImageDocument>('UserImage', userImageSchema);
+export const UserImage = mongoose.model<UserImageDocument>('UserImage', userImageSchema);

@@ -6,7 +6,7 @@ import { UserImage } from './user-image';
 
 const Types = Schema.Types;
 
-export interface IUserDocument extends Document {
+export interface UserDocument extends Document {
     email: string;
     password: string;
     resetPasswordToken?: string;
@@ -14,7 +14,7 @@ export interface IUserDocument extends Document {
     imageId?: any;
 }
 
-export interface IUserModel extends Model<any> {
+export interface UserModel extends Model<any> {
     authenticate(body: { email: string, password: string }): Promise<any>;
     isLoggedIn(id: string): Promise<any>;
 }
@@ -93,4 +93,4 @@ userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
 
 
 
-export const User = mongoose.model<IUserDocument, IUserModel>('User', userSchema);
+export const User = mongoose.model<UserDocument, UserModel>('User', userSchema);

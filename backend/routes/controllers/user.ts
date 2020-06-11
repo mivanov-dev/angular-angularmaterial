@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 import * as bcrypt from 'bcryptjs';
 const ms = require('ms');
 // custom
-import { UserImage, User, IUserImageDocument } from '../../mongoose/models';
+import { UserImage, User, UserImageDocument } from '../../mongoose/models';
 import { handleErrors } from '../../middlewares';
 import { passportStrategy } from '../../passport';
 import { Smtp } from '../../smtp';
@@ -21,7 +21,7 @@ class Controller {
             let { password } = req.body;
             const { email } = req.body;
             const errors: any = validationResult(req);
-            let userImage: IUserImageDocument;
+            let userImage: UserImageDocument;
 
             if (!errors.isEmpty()) {
                 throw { message: errors.errors[0].msg };
