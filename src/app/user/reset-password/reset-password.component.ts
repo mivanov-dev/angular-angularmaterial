@@ -20,14 +20,14 @@ import * as fromApp from '@app/store';
 import * as fromResetPassword from './store';
 import * as ResetPasswordActions from './store/actions';
 import * as ResetPasswordModels from './store/models';
-import { IDirtyCheckGuard } from '@app/shared/guards';
+import { DirtyCheck } from '@app/shared/guards';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
-export class ResetPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
+export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   form: FormGroup;
   private token: string;

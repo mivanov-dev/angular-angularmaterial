@@ -14,7 +14,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import { IDirtyCheckGuard } from '@app/shared/guards';
+import { DirtyCheck } from '@app/shared/guards';
 import { SeoService, AlertService } from '@app/shared/services';
 import * as fromApp from '@app/store';
 import * as fromForgotPassword from './store';
@@ -25,7 +25,7 @@ import * as ForgotPasswordActions from './store/actions';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss']
 })
-export class ForgotPasswordComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
+export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   form: FormGroup;
   private onDestroy$: Subject<void> = new Subject<void>();

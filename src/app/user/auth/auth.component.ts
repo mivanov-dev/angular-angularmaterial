@@ -22,14 +22,14 @@ import * as fromApp from '@app/store';
 import * as AuthActions from './store/actions';
 import * as fromAuth from './store';
 import { environment } from '@env/environment';
-import { IDirtyCheckGuard } from '@app/shared/guards';
+import { DirtyCheck } from '@app/shared/guards';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit, OnDestroy, IDirtyCheckGuard {
+export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   authMode: string;
   form: FormGroup;
