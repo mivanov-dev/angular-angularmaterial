@@ -37,21 +37,21 @@ export class Smtp {
 
     }
 
-    async verify() {
+    async verify(): Promise<void> {
 
         try {
 
             log.info('smtp:verify');
 
             if (!await this.smtpTransport.verify()) {
-                this.smtpTransport.close();
+                this.close();
             }
 
         }
         catch (error) {
 
             log.error(`smtp:verify: ${JSON.stringify(error)}`);
-            this.smtpTransport.close();
+            this.close();
 
         }
 
@@ -61,7 +61,7 @@ export class Smtp {
 
         return this.smtpTransport
             .sendMail({
-                from: 'bryon29@ethereal.email',
+                from: config.smtp.auth.user,
                 to,
                 subject,
                 html

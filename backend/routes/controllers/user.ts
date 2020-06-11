@@ -33,7 +33,7 @@ class Controller {
                 userImage = await UserImage.create({ url: req.body.file });
             }
             else {
-                userImage = await UserImage.create({});
+                userImage = await UserImage.create();
             }
 
             password = await bcrypt.hashSync(password, 10);
