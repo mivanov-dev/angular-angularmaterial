@@ -1,8 +1,6 @@
 // angular
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules, ExtraOptions } from '@angular/router';
-// custom
-import { HomeComponent } from './home';
 
 const routes: Routes = [
   {
@@ -14,7 +12,7 @@ const routes: Routes = [
     }
   }, {
     path: 'home',
-    component: HomeComponent,
+    loadChildren: () => import('./home').then(m => m.HomeModule),
     data: {
       animation: 'home'
     }

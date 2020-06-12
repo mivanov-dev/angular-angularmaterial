@@ -17,7 +17,6 @@ import * as fromApp from './store/reducer';
 import { environment } from '@env/environment';
 import { ProviderModule } from './provider.module';
 import { SharedModule } from './shared/shared.module';
-import { HomeComponent } from './home';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header';
 import { AuthEffects } from './user/auth/store/effects';
@@ -29,7 +28,6 @@ import { LoggerService } from './shared/services';
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent,
     FooterComponent
   ],
   imports: [

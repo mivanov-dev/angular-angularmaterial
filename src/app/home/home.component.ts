@@ -1,8 +1,6 @@
 // angular
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-// typed
-import Typed from 'typed.js';
+import { Component, Inject, OnDestroy, AfterViewInit, PLATFORM_ID } from '@angular/core';
 // custom
 import { SeoService } from '@app/shared/services';
 
@@ -11,9 +9,9 @@ import { SeoService } from '@app/shared/services';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements AfterViewInit, OnDestroy {
 
-  typed: Typed;
+  typed: any;
 
   constructor(private seoService: SeoService,
               @Inject(PLATFORM_ID) private platformId) {
@@ -22,9 +20,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit(): void {
+  async ngAfterViewInit(): Promise<void> {
 
     if (isPlatformBrowser(this.platformId)) {
+      const Typed = await import(
+        /* webpackPrefetch: true */
+        /* webpackMode: "lazy" */
+        'typed.js'
+      ).then((res) => res.default);
+
       this.typed = new Typed('.typed', {
         strings: [
           'Angular',
