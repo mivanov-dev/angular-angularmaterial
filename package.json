@@ -53,7 +53,7 @@
     "filepond-plugin-file-validate-type": "1.2.5",
     "filepond-plugin-image-exif-orientation": "^1.0.9",
     "filepond-plugin-image-preview": "4.6.4",
-    "filepond-plugin-image-validate-size": "1.2.3",
+    "filepond-plugin-image-validate-size": "^1.2.3",
     "generate-robotstxt": "^8.0.3",
     "jasmine-marbles": "0.6.0",
     "lodash": "^4.17.15",
@@ -75,7 +75,7 @@
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "~9.2.0",
+    "@angular-builders/custom-webpack": "^9.2.0",
     "@angular-devkit/build-angular": "^0.1000.1",
     "@angular-devkit/schematics": "^10.0.1",
     "@angular/cli": "^10.0.1",
@@ -85,6 +85,7 @@
     "@nguniversal/builders": "~10.0.1",
     "@nguniversal/express-engine": "^10.0.1",
     "@schematics/angular": "^10.0.1",
+    "@types/bcryptjs": "^2.4.2",
     "@types/bluebird": "^3.5.31",
     "@types/chai": "^4.2.11",
     "@types/compression": "1.7.0",

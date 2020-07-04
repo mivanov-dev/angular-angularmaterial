@@ -210,7 +210,7 @@
   "defaultProject": "angular-angularmaterial",
   "cli": {
     "packageManager": "npm",
-    "analytics": true,
-    "defaultCollection": "@ngrx/schematics"
+    "defaultCollection": "@ngrx/schematics",
+    "analytics": "57023531-2a8d-4b68-b6e9-1a6dd81277f9"
   }
 }

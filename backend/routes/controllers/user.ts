@@ -14,7 +14,7 @@ const smtp = Smtp.getInstance();
 
 class Controller {
 
-    static register = async (req: Request | any, res: Response, next: NextFunction) => {
+    static register = async (req: Request | any, res: Response, next: NextFunction): Promise<void> => {
 
         try {
 
@@ -26,32 +26,32 @@ class Controller {
             if (!errors.isEmpty()) {
                 throw { message: errors.errors[0].msg };
             }
-            if (await User.findOne({ email })) {
+            else if (await User.findOne({ email })) {
                 throw { message: 'This email already exists!' };
             }
-            if (new Object(req.body).hasOwnProperty('file')) {
-                userImage = await UserImage.create({ url: req.body.file });
+            else if (new Object(req.body).hasOwnProperty('file')) {
+                userImage = await new UserImage({ url: req.body.file }).save();
             }
             else {
-                userImage = await UserImage.create();
+                userImage = await new UserImage().save();
             }
 
             password = await bcrypt.hashSync(password, 10);
 
-            await User.create({ email, password, imageId: userImage.id });
+            await User.create({ email, password, imageId: userImage._id });
 
             res.status(200).send({ message: 'Registration successful!' });
 
         }
         catch (error) {
-
+            console.log(error);
             handleErrors(error, res);
 
         }
 
     }
 
-    static login = async (req: Request, res: Response, next: NextFunction) => {
+    static login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
         const expires = ms('1m');
         const errors: any = validationResult(req);
@@ -92,7 +92,7 @@ class Controller {
 
     }
 
-    static isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
+    static isLoggedIn = async (req: Request, res: Response, next: NextFunction): Promise<Response<any>> => {
 
         try {
 
@@ -122,7 +122,7 @@ class Controller {
         }
     }
 
-    static logout = async (req: Request, res: Response, next: NextFunction) => {
+    static logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
         req.logout();
         res.clearCookie('uid');
@@ -130,7 +130,7 @@ class Controller {
 
     }
 
-    static forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
+    static forgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<Response<any>> => {
 
         const { host, port } = config;
 
@@ -174,7 +174,7 @@ class Controller {
         }
     }
 
-    static resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+    static resetPassword = async (req: Request, res: Response, next: NextFunction): Promise<void | Response<any>> => {
 
         try {
 
@@ -193,7 +193,7 @@ class Controller {
                 resetPasswordToken: token,
                 resetPasswordExpires: { $gt: Date.now() }
             })
-            .exec();
+                .exec();
 
             if (!user) {
                 throw { message: 'Reset password token is invalid or has expired!' };
