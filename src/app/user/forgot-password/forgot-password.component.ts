@@ -134,7 +134,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _getSuccessfulMessage() {
+  private _getSuccessfulMessage(): void {
 
     this.store$
       .pipe(
@@ -170,7 +170,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _showAlertMessage(message: string, hasError: boolean) {
+  private _showAlertMessage(message: string, hasError: boolean): void {
 
     this.alertService.showMessage(this.alertContainer, message, hasError);
 

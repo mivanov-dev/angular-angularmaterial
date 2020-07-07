@@ -2,11 +2,11 @@ import { browser } from 'protractor';
 
 export class HomePage {
 
-  navigateTo() {
+  navigateTo(): Promise<any> {
     return browser.get(browser.baseUrl) as Promise<any>;
   }
 
-  getTitleText() {
+  getTitleText(): Promise<string> {
     return browser.getTitle() as Promise<string>;
   }
 

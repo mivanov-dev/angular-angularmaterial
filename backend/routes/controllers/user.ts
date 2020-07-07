@@ -72,7 +72,7 @@ class Controller {
                 redirect: true
             };
 
-            req.login(user, (error) => {
+            req.login(user, (err: any) => {
 
                 if (error) {
                     handleErrors(error, res);

@@ -298,7 +298,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _onChangeAuthMode() {
+  private _onChangeAuthMode(): void {
 
     this.store$
       .pipe(
@@ -329,7 +329,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _showAlertMessage(message: string, hasError: boolean) {
+  private _showAlertMessage(message: string, hasError: boolean): void {
 
     this.alertService.showMessage(this.alertContainer, message, hasError);
 

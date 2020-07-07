@@ -59,7 +59,7 @@ userSchema.index({ imageId: 1 }, { background: true });
 // Methods
 
 // Statics
-userSchema.statics.authenticate = async function(body: { email: string, password: string }) {
+userSchema.statics.authenticate = async function(body: { email: string, password: string }): Promise<any> {
     const user: any = this;
     const { email, password } = body;
     const result = await user.findOne({ email })

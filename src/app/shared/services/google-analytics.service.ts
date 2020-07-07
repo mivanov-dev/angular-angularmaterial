@@ -6,7 +6,7 @@ import { filter } from 'rxjs/operators';
 // custom
 import { environment } from '@env/environment';
 
-declare var gtag;
+declare var gtag: any;
 
 @Injectable({ providedIn: 'root' })
 export class GoogleAnalyticsService {

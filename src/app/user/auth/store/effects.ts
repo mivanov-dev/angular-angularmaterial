@@ -79,7 +79,7 @@ export class AuthEffects {
 
                         }),
                         map((data) => AuthActions.login({ data })),
-                        catchError(() => of(AuthActions.loginError(null)))
+                        catchError((error) => of(AuthActions.loginError({error: ''})))
                     )
             )
         ));
@@ -94,7 +94,7 @@ export class AuthEffects {
                 () => this.authService.logout$()
                     .pipe(
                         map(() => AuthActions.logout()),
-                        catchError(() => of(AuthActions.logoutError(null)))
+                        catchError((error) => of(AuthActions.logoutError({error: ''})))
                     )
             )
         ));

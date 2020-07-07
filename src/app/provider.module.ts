@@ -16,8 +16,8 @@ import { TokenResolver } from './user/reset-password/resolvers';
 import { AuthInterceptor, HttpErrorInterceptor, ErrorInterceptor } from './shared/interceptors';
 import { DirtyCheckGuard } from './shared/guards';
 
-export function appInit(store: Store<fromApp.AppState>) {
-  return () => new Promise(resolve => {
+export const appInit = (store: Store<fromApp.AppState>) => {
+  return () => new Promise((resolve: any) => {
 
     store.dispatch(AuthActions.autologinStart());
     store.select(fromAuth.selectLoading)
@@ -28,7 +28,7 @@ export function appInit(store: Store<fromApp.AppState>) {
         }
       });
   });
-}
+};
 
 @NgModule({
   providers: [

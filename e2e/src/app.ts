@@ -1,8 +1,8 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, ElementFinder } from 'protractor';
 
 export class App {
 
-    getLoadingIndicator(id: string) {
+    getLoadingIndicator(id: string): ElementFinder {
         return element(by.id(id));
     }
 

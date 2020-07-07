@@ -8,8 +8,8 @@ import { map, take, takeUntil } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import * as fromApp from '@app/store';
-import * as fromAuth from '@app/user/auth/store';
+import * as fromApp from '../../../store';
+import * as fromAuth from '../store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, OnDestroy {

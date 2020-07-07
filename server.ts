@@ -8,13 +8,13 @@ import { log } from './backend/logger';
 
 export const { app } = App.getInstance();
 
-function run() {
+function run(): void {
 
-  function onError(error) {
+  function onError(error): void {
     log.error(error);
   }
 
-  function onListening(protocol, host, port) {
+  function onListening(protocol, host, port): void {
     log.info(`Node Express server listening on ${protocol}://${host}:${port}`);
   }
 

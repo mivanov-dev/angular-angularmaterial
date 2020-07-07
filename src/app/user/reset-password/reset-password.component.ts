@@ -117,7 +117,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  get passwordElement() {
+  get passwordElement(): HTMLElement {
 
     if (isPlatformBrowser(this.platformId)) {
       return this.password.nativeElement;
@@ -187,7 +187,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _showAlertMessage(message: string, hasError: boolean) {
+  private _showAlertMessage(message: string, hasError: boolean): void {
 
     this.alertService.showMessage(this.alertContainer, message, hasError);
 

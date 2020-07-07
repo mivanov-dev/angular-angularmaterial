@@ -9,7 +9,7 @@ if (environment.production) {
   enableProdMode();
 }
 
-function loadServiceWorker() {
+function loadServiceWorker(): void {
   if ('serviceWorker' in navigator && environment.production) {
     navigator.serviceWorker.register('/ngsw-worker.js')
       .catch(err => console.error('Service worker registration failed with:', err));

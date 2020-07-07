@@ -9,7 +9,7 @@ export class AlertService {
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
-    async showMessage(viewContainerRef: ViewContainerRef, message: string, hasError: boolean) {
+    async showMessage(viewContainerRef: ViewContainerRef, message: string, hasError: boolean): Promise<void> {
 
         if (message !== undefined) {
             viewContainerRef.clear();

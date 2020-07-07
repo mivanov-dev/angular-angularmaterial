@@ -15,7 +15,7 @@ export class DirtyCheckGuard implements CanDeactivate<DirtyCheck> {
         dcg: DirtyCheck,
         currentRoute: ActivatedRouteSnapshot,
         currentState: RouterStateSnapshot,
-        nextState?: RouterStateSnapshot) {
+        nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
         return dcg.canDeactivate ? dcg.canDeactivate() : true;
 
