@@ -40,7 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
       particlesJS.load('particles-js', './assets/particlesjs-config.json', () => { });
     }
 
-    this._isLoading();
+    this.onLoading();
 
     this.isHandset$ = this.breakpointObserver
       .observe(Breakpoints.Handset)
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-  private _isLoading(): void {
+  private onLoading(): void {
     this.store$
       .pipe(
         select(fromAuth.selectLoading),

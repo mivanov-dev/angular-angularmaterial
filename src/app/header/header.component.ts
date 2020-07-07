@@ -23,11 +23,15 @@ export class HeaderComponent implements OnDestroy {
 
 
   @Input() sidenav: MatSidenav;
-  private onDestroy$: Subject<void> = new Subject<void>();
-  user$: Observable<AuthModels.Login> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLogin));
+  user$: Observable<AuthModels.Login>;
   userImage = '../../assets/user.png';
+  private onDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private store$: Store<fromApp.AppState>) { }
+  constructor(private store$: Store<fromApp.AppState>) {
+
+    this.user$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLogin));
+
+  }
 
   ngOnDestroy(): void {
 

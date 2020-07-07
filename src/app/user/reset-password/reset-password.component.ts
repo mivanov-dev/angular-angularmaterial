@@ -30,6 +30,10 @@ import { DirtyCheck } from '@app/shared/guards';
 export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   form: FormGroup;
+  isLoading$: Observable<boolean>;
+  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer: ViewContainerRef;
+  @ViewChild('password', { static: true }) password: ElementRef;
+  @ViewChild('submitButton', { static: true }) submitButton: MatButton;
   private token: string;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
@@ -38,13 +42,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
     Validators.minLength(10),
     Validators.maxLength(100)
   ];
-  @ViewChild('alertContainer', { read: ViewContainerRef })
-  alertContainer: ViewContainerRef;
-  @ViewChild('password', { static: true })
-  password: ElementRef;
-  @ViewChild('submitButton', { static: true })
-  submitButton: MatButton;
-  isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromResetPassword.selectLoading));
 
   constructor(private formBuilder: FormBuilder,
               private logger: LoggerService,
@@ -55,14 +52,15 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
               private alertService: AlertService) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
+    this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromResetPassword.selectLoading));
 
   }
 
   ngOnInit(): void {
 
-    this._getToken();
-    this._getUnsuccessfulMessage();
-    this._initForm();
+    this.getToken();
+    this.getUnsuccessfulMessage();
+    this.initForm();
 
   }
 
@@ -74,20 +72,18 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _initForm(): void {
+  private initForm(): void {
 
     this.form = this.formBuilder.group({
       user: this.formBuilder.group({
         password: [null,
           {
             validators: this._PASSWORD_VALIDATOR
-
           },
         ],
         repeatedPassword: [null,
           {
             validators: this._PASSWORD_VALIDATOR
-
           },
         ]
       })
@@ -157,7 +153,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _getUnsuccessfulMessage(): void {
+  private getUnsuccessfulMessage(): void {
 
     this.store$
       .pipe(
@@ -165,7 +161,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
         select(fromResetPassword.selectError),
         filter(res => res !== null)
       )
-      .subscribe((res) => this._showAlertMessage(res, true));
+      .subscribe((res) => this.showAlertMessage(res, true));
 
   }
 
@@ -179,7 +175,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _getToken(): void {
+  private getToken(): void {
 
     this.activatedRoute.data
       .pipe(takeUntil(this.onDestroy$))
@@ -187,7 +183,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _showAlertMessage(message: string, hasError: boolean): void {
+  private showAlertMessage(message: string, hasError: boolean): void {
 
     this.alertService.showMessage(this.alertContainer, message, hasError);
 

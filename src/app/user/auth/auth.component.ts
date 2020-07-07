@@ -77,32 +77,27 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
     }
   };
   pondFiles: [];
+  isLoading$: Observable<boolean>;
+  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer: ViewContainerRef;
+  @ViewChild('email', { static: true }) email: ElementRef;
+  @ViewChild('submitButton', { static: true }) submitButton: MatButton;
+  @ViewChild('filepond') filepond: any;
+  @ViewChild('formDirective') formDirective: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
-  private readonly _EMAIL_VALIDATOR = [
+  private readonly EMAIL_VALIDATOR = [
     Validators.required,
     Validators.email,
     Validators.minLength(10),
     Validators.maxLength(100)
   ];
-  private readonly _PASSWORD_VALIDATOR = [
+  private readonly PASSWORD_VALIDATOR = [
     Validators.required,
     Validators.minLength(10),
     Validators.maxLength(100)
   ];
   private isSwitchedAuthModeFromHere: boolean;
   private isConfirmedChanges = false;
-  isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLoading));
-  @ViewChild('alertContainer', { read: ViewContainerRef })
-  alertContainer: ViewContainerRef;
-  @ViewChild('email', { static: true })
-  email: ElementRef;
-  @ViewChild('submitButton', { static: true })
-  submitButton: MatButton;
-  @ViewChild('filepond')
-  filepond: any;
-  @ViewChild('formDirective')
-  formDirective: FormGroupDirective;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -114,15 +109,16 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
     private alertService: AlertService) {
 
     this.seoService.config({ title: 'Auth', url: 'user/auth' });
+    this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLoading));
 
   }
 
   ngOnInit(): void {
 
-    this._initForm();
-    this._getSuccessfulMessage();
-    this._getUnsuccessfulMessage();
-    this._onChangeAuthMode();
+    this.initForm();
+    this.getSuccessfulMessage();
+    this.getUnsuccessfulMessage();
+    this.onChangeAuthMode();
 
   }
 
@@ -134,20 +130,18 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _initForm(): void {
+  private initForm(): void {
 
     this.form = this.formBuilder.group({
       user: this.formBuilder.group({
         email: [null,
           {
-            validators: this._EMAIL_VALIDATOR
-
+            validators: this.EMAIL_VALIDATOR
           }
         ],
         password: [null,
           {
-            validators: this._PASSWORD_VALIDATOR
-
+            validators: this.PASSWORD_VALIDATOR
           }
         ],
         remember: [null]
@@ -202,9 +196,9 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _editForm(): void {
+  private editForm(): void {
 
-    this._resetForm();
+    this.resetForm();
 
     if (this.authMode === 'register') {
       (this.userGroup as FormGroup).removeControl('remember');
@@ -215,13 +209,14 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _resetForm(): void {
+  private resetForm(): void {
 
     if (this.formDirective) {
       this.formDirective.resetForm();
     }
 
     this.form.reset();
+
     if (isPlatformBrowser(this.platformId)) {
       this.emailElement.focus({ preventScroll: true });
     }
@@ -258,7 +253,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _getSuccessfulMessage(): void {
+  private getSuccessfulMessage(): void {
 
     this.store$
       .pipe(
@@ -268,14 +263,14 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
       )
       .subscribe((res) => {
 
-        this._showAlertMessage(res.message, false);
+        this.showAlertMessage(res.message, false);
         this.switchAuthModeTo('login');
 
       });
 
   }
 
-  private _getUnsuccessfulMessage(): void {
+  private getUnsuccessfulMessage(): void {
 
     this.store$
       .pipe(
@@ -283,7 +278,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
         select(fromAuth.selectError),
         filter(res => res !== null)
       )
-      .subscribe((res) => this._showAlertMessage(res, true));
+      .subscribe((res) => this.showAlertMessage(res, true));
 
   }
 
@@ -298,7 +293,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _onChangeAuthMode(): void {
+  private onChangeAuthMode(): void {
 
     this.store$
       .pipe(
@@ -309,17 +304,17 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
         if (this.isSwitchedAuthModeFromHere && this.isConfirmedChanges) {
           this.authMode = res.mode;
-          this._editForm();
+          this.editForm();
         }
         else if (!this.isSwitchedAuthModeFromHere && !this.isConfirmedChanges) {
           if (this.canDeactivate()) {
             this.authMode = res.mode;
-            this._editForm();
+            this.editForm();
           }
         }
         else {
           this.authMode = res.mode;
-          this._editForm();
+          this.editForm();
         }
 
         this.isSwitchedAuthModeFromHere = false;
@@ -329,9 +324,11 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _showAlertMessage(message: string, hasError: boolean): void {
+  private showAlertMessage(message: string, hasError: boolean): void {
 
-    this.alertService.showMessage(this.alertContainer, message, hasError);
+    if (this.alertContainer) {
+      this.alertService.showMessage(this.alertContainer, message, hasError);
+    }
 
   }
 

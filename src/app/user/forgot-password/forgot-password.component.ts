@@ -28,21 +28,18 @@ import * as ForgotPasswordActions from './store/actions';
 export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   form: FormGroup;
+  isLoading$: Observable<boolean>;
+  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer: ViewContainerRef;
+  @ViewChild('email', { static: true }) email: ElementRef;
+  @ViewChild('submitButton', { static: true }) submitButton: MatButton;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
-  private readonly _EMAIL_VALIDATOR = [
+  private readonly EMAIL_VALIDATOR = [
     Validators.required,
     Validators.email,
     Validators.minLength(10),
     Validators.maxLength(100)
   ];
-  @ViewChild('alertContainer', { read: ViewContainerRef })
-  alertContainer: ViewContainerRef;
-  @ViewChild('email', { static: true })
-  email: ElementRef;
-  @ViewChild('submitButton', { static: true })
-  submitButton: MatButton;
-  isLoading$: Observable<boolean> = this.store$.pipe(takeUntil(this.onDestroy$), select(fromForgotPassword.selectLoading));
 
   constructor(private formBuilder: FormBuilder,
               private store$: Store<fromApp.AppState>,
@@ -51,14 +48,15 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
               private alertService: AlertService) {
 
     this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
+    this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromForgotPassword.selectLoading));
 
   }
 
   ngOnInit(): void {
 
-    this._getSuccessfulMessage();
-    this._getUnsuccessfulMessage();
-    this._initForm();
+    this.getSuccessfulMessage();
+    this.getUnsuccessfulMessage();
+    this.initForm();
 
   }
 
@@ -70,14 +68,13 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _initForm(): void {
+  private initForm(): void {
 
     this.form = this.formBuilder.group({
       user: this.formBuilder.group({
         email: [null,
           {
-            validators: this._EMAIL_VALIDATOR
-
+            validators: this.EMAIL_VALIDATOR
           },
         ]
       })
@@ -134,7 +131,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _getSuccessfulMessage(): void {
+  private getSuccessfulMessage(): void {
 
     this.store$
       .pipe(
@@ -143,12 +140,12 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
         filter(res => res !== null)
       )
       .subscribe((res) => {
-        this._showAlertMessage(res.message, false);
+        this.showAlertMessage(res.message, false);
       });
 
   }
 
-  private _getUnsuccessfulMessage(): void {
+  private getUnsuccessfulMessage(): void {
 
     this.store$
       .pipe(
@@ -156,7 +153,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
         select(fromForgotPassword.selectError),
         filter(res => res !== null)
       )
-      .subscribe((res) => this._showAlertMessage(res, true));
+      .subscribe((res) => this.showAlertMessage(res, true));
 
   }
 
@@ -170,7 +167,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private _showAlertMessage(message: string, hasError: boolean): void {
+  private showAlertMessage(message: string, hasError: boolean): void {
 
     this.alertService.showMessage(this.alertContainer, message, hasError);
 

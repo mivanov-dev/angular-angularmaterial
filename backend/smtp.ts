@@ -12,7 +12,7 @@ export class Smtp {
 
     private constructor() {
 
-        this._init();
+        this.init();
 
     }
 
@@ -26,7 +26,7 @@ export class Smtp {
 
     }
 
-    private _init(): void {
+    private init(): void {
 
         log.info('smtp:init');
 
