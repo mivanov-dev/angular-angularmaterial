@@ -76,7 +76,19 @@ export class App {
 
         });
 
-        this.setRoutes(userRouter, sitemapRouter, robotsRouter);
+        this.app.get('/', (req: Request, res: Response) => {
+
+            res.render(indexHtml, {
+                req, providers: [{
+                    provide: APP_BASE_HREF,
+                    useValue: req.baseUrl
+                }]
+            });
+
+        });
+        this.app.use(userRouter);
+        this.app.use(sitemapRouter);
+        this.app.use(robotsRouter);
 
         Smtp.getInstance().verify();
 
@@ -92,22 +104,6 @@ export class App {
 
         return App.instance;
 
-    }
-
-    private setRoutes(...routes: Router[]): void {
-
-        this.app.get('/', (req: Request, res: Response) => {
-
-            res.render(indexHtml, {
-                req, providers: [{
-                    provide: APP_BASE_HREF,
-                    useValue: req.baseUrl
-                }]
-            });
-
-        });
-
-        _.forEach(routes, (value) => this.app.use(value));
     }
 
 }
