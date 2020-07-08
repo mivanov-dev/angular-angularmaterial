@@ -25,7 +25,6 @@ class Controller {
                 policy: [
                     {
                         userAgent: '*',
-                        allow: '/',
                         disallow: '',
                     },
                 ],
