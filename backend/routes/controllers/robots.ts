@@ -10,7 +10,7 @@ class Controller {
 
     static robots = async (req: Request | any, res: Response, next: NextFunction) => {
 
-        const { host, port } = config;
+        const { seoProtocol, seoHost, seoPort } = config;
 
         res.header('content-type', 'text/plain');
 
@@ -28,8 +28,8 @@ class Controller {
                         disallow: '',
                     },
                 ],
-                sitemap: `http://${host}:${port}/sitemap.xml`,
-                host: `http://${host}:${port}`,
+                sitemap: `${seoProtocol}://${seoHost}:${seoPort}/sitemap.xml`,
+                host: `${seoProtocol}://${seoHost}:${seoPort}`,
             });
 
             robotsTxt = content;

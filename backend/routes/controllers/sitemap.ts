@@ -11,7 +11,7 @@ class Controller {
 
     static sitemap = async (req: Request, res: Response) => {
 
-        const { host, port } = config;
+        const { seoProtocol, seoHost, seoPort } = config;
 
         res.header('Content-Type', 'application/xml');
         res.header('Content-Encoding', 'gzip');
@@ -22,14 +22,21 @@ class Controller {
         }
 
         try {
-            const smStream = new SitemapStream({ hostname: `http://${host}:${port}/` });
+            const smStream = new SitemapStream({
+                hostname: `${seoProtocol}://${seoHost}:${seoPort}/`,
+                xmlns: {
+                    image: false,
+                    news: false,
+                    video: false,
+                    xhtml: false
+                }
+            });
             const pipeline = smStream.pipe(createGzip());
 
             // pipe your entries or directly write them.
-            smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 });
-            smStream.write({ url: '/#/user/auth', changefreq: 'daily', priority: 0.8 });
-            smStream.write({ url: '/#/user/forgot-password', changefreq: 'daily', priority: 0.8 });
-            smStream.write({ url: '/#/page-not-found', changefreq: 'daily', priority: 0.8 });
+            smStream.write({ url: '/#/user/auth' });
+            smStream.write({ url: '/#/user/forgot-password' });
+            smStream.write({ url: '/#/page-not-found' });
 
             // cache the response
             streamToPromise(pipeline).then(sm => sitemap = sm);

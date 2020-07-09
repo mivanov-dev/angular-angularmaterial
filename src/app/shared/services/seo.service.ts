@@ -77,13 +77,17 @@ export class SeoService {
         this.meta.updateTag({ property: 'og:image', content: `${origin}/assets/icons/icon-192x192.png` });
         this.meta.updateTag({ property: 'og:description', content: descriptionContent });
 
+        this.meta.updateTag({ name: 'twitter:url', content: url });
         this.meta.updateTag({ name: 'twitter:title', content: title });
         this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
         this.meta.updateTag({ name: 'twitter:site', content: '@AngularAngularMaterial' });
         this.meta.updateTag({ name: 'twitter:creator', content: '@AngularAngularMaterial' });
         this.meta.updateTag({ name: 'twitter:image', content: `${origin}/assets/icons/icon-192x192.png` });
+        this.meta.updateTag({ name: 'twitter:description', content: descriptionContent });
 
         this.meta.updateTag({ name: 'description', content: descriptionContent });
+        this.meta.updateTag({ name: 'keywords', content: 'angular' });
+        this.meta.updateTag({ name: 'author', content: 'm.ivanov@email.com' });
 
     }
 
