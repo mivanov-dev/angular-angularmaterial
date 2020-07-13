@@ -5,13 +5,17 @@ const ms = require('ms');
 
 dotenv.config({ path: './.env', encoding: 'utf-8' });
 
+const host = process.env.HOST || 'localhost';
+const port = process.env.PORT || 4200;
+const protocol = process.env.PROTOCOL = 'http';
+
 export const config = {
-    host: process.env.HOST || 'localhost',
-    port: process.env.PORT || 4200,
-    protocol: process.env.PROTOCOL = 'http',
-    seoHost: process.env.SEO_HOST || this.host,
-    seoPort: process.env.SEO_PORT || this.port,
-    seoProtocol: process.env.SEO_PROTOCOL || this.protocol,
+    host,
+    port,
+    protocol,
+    seoHost: process.env.SEO_HOST || host,
+    seoPort: process.env.SEO_PORT || port,
+    seoProtocol: process.env.SEO_PROTOCOL || protocol,
     mongodb: {
         uri: process.env.MONGODB_URI
     },
