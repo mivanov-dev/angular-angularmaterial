@@ -112,7 +112,7 @@
     "@types/serve-favicon": "^2.5.0",
     "@types/webpack": "^4.41.21",
     "chai": "^4.2.0",
-    "chromedriver": "^83.0.1",
+    "chromedriver": "^84.0.0",
     "codelyzer": "^6.0.0",
     "cucumber": "^6.0.5",
     "cucumber-html-reporter": "^5.2.0",
