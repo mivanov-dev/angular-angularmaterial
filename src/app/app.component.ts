@@ -13,8 +13,6 @@ import { Store, select } from '@ngrx/store';
 import * as fromApp from './store/reducer';
 import * as fromAuth from './user/auth/store';
 
-declare const particlesJS: any;
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -36,9 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      particlesJS.load('particles-js', './assets/particlesjs-config.json', () => { });
-    }
+    this.particle('particles-js', './assets/particlesjs-config.json');
 
     this.onLoading();
 
@@ -77,6 +73,19 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
       });
+
+  }
+
+  async particle(id: string, config: string): Promise<void> {
+
+    if (isPlatformBrowser(this.platformId)) {
+      const particle = await import(
+        /* webpackMode: "lazy" */
+        'tsparticles'
+      ).then(res => res.tsParticles);
+
+      particle.loadJSON(id, config);
+    }
 
   }
 

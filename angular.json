@@ -44,9 +44,7 @@
               "node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css",
               "src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/particles.js/particles.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -120,16 +118,8 @@
               "src/robots.txt",
               "src/sitemap.xml"
             ],
-            "styles": [
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/filepond/dist/filepond.min.css",
-              "node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css",
-              "src/styles.scss"
-            ],
-            "scripts": [
-              "node_modules/particles.js/particles.js"
-            ]
+            "styles": [],
+            "scripts": []
           }
         },
         "lint": {

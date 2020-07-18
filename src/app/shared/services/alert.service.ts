@@ -20,7 +20,6 @@ export class AlertService {
              */
 
             const { AlertComponent } = await import(
-                /* webpackPrefetch: true */
                 /* webpackMode: "lazy" */
                 `../components`
             );

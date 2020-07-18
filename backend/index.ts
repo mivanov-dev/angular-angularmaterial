@@ -30,8 +30,6 @@ global.window = window;
 // @ts-ignore
 global.document = window.document;
 // @ts-ignore
-global.particlesJS = window.particlesJS;
-// @ts-ignore
 global.Typed = window.Typed;
 // @ts-ignore
 global.Image = window.Image;
