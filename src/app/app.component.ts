@@ -34,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.particle('particles-js', './assets/particlesjs-config.json');
+    this.drawParticle('particles-js', '../assets/particlesjs-config.json');
 
     this.onLoading();
 
@@ -76,13 +76,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-  async particle(id: string, config: string): Promise<void> {
+  async drawParticle(id: string, config: string): Promise<void> {
 
     if (isPlatformBrowser(this.platformId)) {
       const particle = await import(
         /* webpackMode: "lazy" */
         'tsparticles'
-      ).then(res => res.tsParticles);
+      ).then(({ tsParticles }) => tsParticles);
 
       particle.loadJSON(id, config);
     }
