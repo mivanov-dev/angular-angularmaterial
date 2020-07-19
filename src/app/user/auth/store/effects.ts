@@ -7,7 +7,7 @@ import { tap, mergeMap, map, exhaustMap, catchError } from 'rxjs/operators';
 // ngrx
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 // custom
-import { AuthService } from '@app/user/auth/services/auth.service';
+import { AuthService } from '../../../user/auth/services/auth.service';
 import * as AuthActions from './actions';
 
 @Injectable()

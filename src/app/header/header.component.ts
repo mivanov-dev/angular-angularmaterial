@@ -8,10 +8,10 @@ import { takeUntil } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import * as fromApp from '@app/store';
-import * as fromAuth from '@app/user/auth/store';
-import * as AuthActions from '@app/user/auth/store/actions';
-import * as AuthModels from '@app/user/auth/store/models';
+import * as fromApp from '../store';
+import * as fromAuth from '../user/auth/store';
+import * as AuthActions from '../user/auth/store/actions';
+import * as AuthModels from '../user/auth/store/models';
 
 @Component({
   selector: 'app-header',

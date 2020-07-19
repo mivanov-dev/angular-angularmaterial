@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 // custom
 import { HomeComponent } from './home.component';
-import { SharedModule } from '@app/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
     declarations: [HomeComponent],

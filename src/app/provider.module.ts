@@ -9,9 +9,9 @@ import { filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 // custom
 import { SeoService } from './shared/services';
-import * as fromApp from '@app/store';
-import * as fromAuth from '@app/user/auth/store';
-import * as AuthActions from '@app/user/auth/store/actions';
+import * as fromApp from '../app/store';
+import * as fromAuth from './user/auth/store';
+import * as AuthActions from './user/auth/store/actions';
 import { TokenResolver } from './user/reset-password/resolvers';
 import { AuthInterceptor, HttpErrorInterceptor, ErrorInterceptor } from './shared/interceptors';
 import { DirtyCheckGuard } from './shared/guards';

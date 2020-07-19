@@ -5,10 +5,10 @@ import { ActionReducerMap, Action, ActionReducer, MetaReducer, State, RuntimeChe
 import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromRouter from '@ngrx/router-store';
 // custom
-import * as fromAuth from '@app/user/auth/store/reducer';
-import { environment } from '@env/environment';
-import * as fromForgotPassword from '@app/user/forgot-password/store/reducer';
-import * as fromResetPassword from '@app/user/reset-password/store/reducer';
+import * as fromAuth from '../user/auth/store/reducer';
+import { environment } from '../../environments/environment';
+import * as fromForgotPassword from '../user/forgot-password/store/reducer';
+import * as fromResetPassword from '../user/reset-password/store/reducer';
 
 export interface AppState {
     [fromAuth.key]: fromAuth.State;

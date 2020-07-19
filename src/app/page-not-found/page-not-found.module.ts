@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 // custom
 import { PageNotFoundComponent } from './page-not-found.component';
-import { SharedModule } from '@app/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
     declarations: [PageNotFoundComponent],

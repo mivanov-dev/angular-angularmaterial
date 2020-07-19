@@ -17,12 +17,12 @@ import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import { LoggerService, SeoService, AlertService } from '@app/shared/services';
-import * as fromApp from '@app/store';
+import { LoggerService, SeoService, AlertService } from '../../shared/services';
+import * as fromApp from '../../store';
 import * as AuthActions from './store/actions';
 import * as fromAuth from './store';
-import { environment } from '@env/environment';
-import { DirtyCheck } from '@app/shared/guards';
+import { environment } from '../../../environments/environment';
+import { DirtyCheck } from '../../shared/guards';
 
 @Component({
   selector: 'app-auth',

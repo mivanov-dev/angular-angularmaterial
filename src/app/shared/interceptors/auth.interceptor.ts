@@ -7,8 +7,8 @@ import { take, exhaustMap, takeUntil } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import * as fromApp from '@app/store';
-import * as fromAuth from '@app/user/auth/store';
+import * as fromApp from '../../store';
+import * as fromAuth from '../../user/auth/store';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor, OnDestroy {

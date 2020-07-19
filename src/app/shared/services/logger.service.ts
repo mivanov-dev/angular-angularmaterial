@@ -1,8 +1,8 @@
 // angular
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-// custom
-import { environment } from 'src/environments/environment';
 import { isPlatformBrowser } from '@angular/common';
+// custom
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class LoggerService {

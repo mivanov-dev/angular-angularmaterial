@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 // rxjs
 import { Observable } from 'rxjs';
 // custom
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
 import * as ResetPasswordModels from '../store/models';
 
 @Injectable({ providedIn: 'root' })

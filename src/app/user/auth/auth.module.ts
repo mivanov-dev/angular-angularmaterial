@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 // custom
 import { AuthComponent } from './auth.component';
-import { SharedModule } from '@app/shared/shared.module';
-import { DirtyCheckGuard } from '@app/shared/guards';
+import { SharedModule } from '../../shared/shared.module';
+import { DirtyCheckGuard } from '../../shared/guards';
 import { SocialAuthComponent } from './components/social-auth/social-auth.component';
 
 @NgModule({

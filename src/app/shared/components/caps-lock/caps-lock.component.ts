@@ -5,8 +5,9 @@ import {
   AfterViewInit, ChangeDetectionStrategy,
   Inject, PLATFORM_ID, NgZone
 } from '@angular/core';
-import { LoggerService } from '@app/shared/services';
 import { isPlatformBrowser } from '@angular/common';
+// custom
+import { LoggerService } from '../../../shared/services';
 
 @Component({
   selector: 'app-caps-lock',

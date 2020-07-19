@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 // rxjs
 import { Observable } from 'rxjs';
 // custom
-import { environment } from 'src/environments/environment';
-import * as ForgotPasswordModels from '@app/user/forgot-password/store/models';
+import { environment } from '../../../../environments/environment';
+import * as ForgotPasswordModels from '../../../user/forgot-password/store/models';
 
 @Injectable({ providedIn: 'root' })
 export class ForgotPasswordService {

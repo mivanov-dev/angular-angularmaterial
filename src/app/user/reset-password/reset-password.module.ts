@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 // custom
-import { ResetPasswordComponent } from '@app/user/reset-password/reset-password.component';
-import { SharedModule } from '@app/shared/shared.module';
-import { DirtyCheckGuard } from '@app/shared/guards';
+import { ResetPasswordComponent } from '../../user/reset-password/reset-password.component';
+import { SharedModule } from '../../shared/shared.module';
+import { DirtyCheckGuard } from '../../shared/guards';
 
 @NgModule({
     declarations: [ResetPasswordComponent],

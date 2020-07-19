@@ -7,8 +7,8 @@ import { tap, map, exhaustMap, catchError } from 'rxjs/operators';
 // ngrx
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 // custom
-import * as ResetPasswordActions from '@app/user/reset-password/store/actions';
-import { ResetPasswordService } from '@app/user/reset-password/services/reset-password.service';
+import * as ResetPasswordActions from '../../../user/reset-password/store/actions';
+import { ResetPasswordService } from '../../../user/reset-password/services/reset-password.service';
 
 @Injectable()
 export class ResetPasswordEffects {

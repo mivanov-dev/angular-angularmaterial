@@ -15,12 +15,12 @@ import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import { LoggerService, SeoService, AlertService } from '@app/shared/services';
-import * as fromApp from '@app/store';
+import { LoggerService, SeoService, AlertService } from '../../shared/services';
+import * as fromApp from '../../store';
 import * as fromResetPassword from './store';
 import * as ResetPasswordActions from './store/actions';
 import * as ResetPasswordModels from './store/models';
-import { DirtyCheck } from '@app/shared/guards';
+import { DirtyCheck } from '../../shared/guards';
 
 @Component({
   selector: 'app-reset-password',

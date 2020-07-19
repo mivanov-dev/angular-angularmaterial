@@ -4,7 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 // material
 import { MatIconRegistry } from '@angular/material/icon';
 // custom
-import { SeoService } from '@app/shared/services';
+import { SeoService } from '../shared/services';
 
 @Component({
   selector: 'app-page-not-found',

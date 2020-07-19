@@ -7,7 +7,7 @@ import { tap, map, exhaustMap, catchError } from 'rxjs/operators';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 // custom
 import * as ForgotPasswordActions from './actions';
-import { ForgotPasswordService } from '@app/user/forgot-password/services/forgot-password.service';
+import { ForgotPasswordService } from '../../../user/forgot-password/services/forgot-password.service';
 
 @Injectable()
 export class ForgotPasswordEffects {

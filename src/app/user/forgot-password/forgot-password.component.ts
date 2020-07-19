@@ -14,9 +14,9 @@ import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
-import { DirtyCheck } from '@app/shared/guards';
-import { SeoService, AlertService } from '@app/shared/services';
-import * as fromApp from '@app/store';
+import { DirtyCheck } from '../../shared/guards';
+import { SeoService, AlertService } from '../../shared/services';
+import * as fromApp from '../../store';
 import * as fromForgotPassword from './store';
 import * as ForgotPasswordActions from './store/actions';
 
