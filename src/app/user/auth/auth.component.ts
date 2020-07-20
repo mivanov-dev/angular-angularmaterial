@@ -78,6 +78,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
   };
   pondFiles: [];
   isLoading$: Observable<boolean>;
+  hidePassword = true;
   @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer: ViewContainerRef;
   @ViewChild('email', { static: true }) email: ElementRef;
   @ViewChild('submitButton', { static: true }) submitButton: MatButton;

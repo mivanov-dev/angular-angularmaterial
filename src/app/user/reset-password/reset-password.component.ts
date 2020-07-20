@@ -31,6 +31,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
 
   form: FormGroup;
   isLoading$: Observable<boolean>;
+  hidePassword = true;
+  hideRepeatedPassword = true;
   @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer: ViewContainerRef;
   @ViewChild('password', { static: true }) password: ElementRef;
   @ViewChild('submitButton', { static: true }) submitButton: MatButton;
