@@ -4,7 +4,7 @@ import {
   OnDestroy, Inject,
   PLATFORM_ID, ViewContainerRef
 } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
@@ -19,6 +19,7 @@ import { SeoService, AlertService } from '../../shared/services';
 import * as fromApp from '../../store';
 import * as fromForgotPassword from './store';
 import * as ForgotPasswordActions from './store/actions';
+import { UserFormValidatorToken, UserFormValidator } from '../validators';
 
 @Component({
   selector: 'app-forgot-password',
@@ -34,18 +35,13 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
   @ViewChild('submitButton', { static: true }) submitButton: MatButton;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
-  private readonly EMAIL_VALIDATOR = [
-    Validators.required,
-    Validators.email,
-    Validators.minLength(10),
-    Validators.maxLength(100)
-  ];
 
   constructor(private formBuilder: FormBuilder,
               private store$: Store<fromApp.AppState>,
               private seoService: SeoService,
               @Inject(PLATFORM_ID) private platformId,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
     this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromForgotPassword.selectLoading));
@@ -74,7 +70,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
       user: this.formBuilder.group({
         email: [null,
           {
-            validators: this.EMAIL_VALIDATOR
+            validators: this.userFormValidator.EMAIL_VALIDATOR
           },
         ]
       })

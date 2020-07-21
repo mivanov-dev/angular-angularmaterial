@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 import { SharedModule } from '../shared/shared.module';
+import { userFormValidator, UserFormValidatorToken } from './validators';
 
 @NgModule({
   declarations: [UserComponent],
@@ -13,6 +14,12 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     UserRoutingModule,
     SharedModule,
+  ],
+  providers: [
+    {
+      provide: UserFormValidatorToken,
+      useValue: userFormValidator
+    }
   ],
   exports: [RouterModule, UserRoutingModule],
 })

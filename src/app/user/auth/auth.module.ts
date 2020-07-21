@@ -20,6 +20,7 @@ import { SocialAuthComponent } from './components/social-auth/social-auth.compon
       }
     ]),
     SharedModule,
-  ]
+  ],
+  exports: [RouterModule],
 })
 export class AuthModule { }

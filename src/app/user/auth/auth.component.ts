@@ -5,7 +5,7 @@ import {
   PLATFORM_ID, ViewContainerRef
 } from '@angular/core';
 import {
-  FormGroup, FormBuilder, Validators,
+  FormGroup, FormBuilder,
   FormControl, AbstractControl, FormGroupDirective
 } from '@angular/forms';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
@@ -23,6 +23,7 @@ import * as AuthActions from './store/actions';
 import * as fromAuth from './store';
 import { environment } from '../../../environments/environment';
 import { DirtyCheck } from '../../shared/guards';
+import { UserFormValidatorToken, UserFormValidator } from '../validators';
 
 @Component({
   selector: 'app-auth',
@@ -86,17 +87,6 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
   @ViewChild('formDirective') formDirective: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
-  private readonly EMAIL_VALIDATOR = [
-    Validators.required,
-    Validators.email,
-    Validators.minLength(10),
-    Validators.maxLength(100)
-  ];
-  private readonly PASSWORD_VALIDATOR = [
-    Validators.required,
-    Validators.minLength(10),
-    Validators.maxLength(100)
-  ];
   private isSwitchedAuthModeFromHere: boolean;
   private isConfirmedChanges = false;
 
@@ -107,7 +97,8 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
     private seoService: SeoService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId,
-    private alertService: AlertService) {
+    private alertService: AlertService,
+    @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Auth', url: 'user/auth' });
     this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLoading));
@@ -137,12 +128,12 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
       user: this.formBuilder.group({
         email: [null,
           {
-            validators: this.EMAIL_VALIDATOR
+            validators: this.userFormValidator.EMAIL_VALIDATOR
           }
         ],
         password: [null,
           {
-            validators: this.PASSWORD_VALIDATOR
+            validators: this.userFormValidator.PASSWORD_VALIDATOR
           }
         ],
         remember: [null]

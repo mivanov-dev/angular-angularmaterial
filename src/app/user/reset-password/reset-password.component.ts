@@ -4,7 +4,7 @@ import {
   OnDestroy, Inject,
   PLATFORM_ID, ViewContainerRef
 } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Data } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 // material
@@ -21,6 +21,7 @@ import * as fromResetPassword from './store';
 import * as ResetPasswordActions from './store/actions';
 import * as ResetPasswordModels from './store/models';
 import { DirtyCheck } from '../../shared/guards';
+import { UserFormValidator, UserFormValidatorToken } from '../validators';
 
 @Component({
   selector: 'app-reset-password',
@@ -39,11 +40,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
   private token: string;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
-  private readonly _PASSWORD_VALIDATOR = [
-    Validators.required,
-    Validators.minLength(10),
-    Validators.maxLength(100)
-  ];
 
   constructor(private formBuilder: FormBuilder,
               private logger: LoggerService,
@@ -51,7 +47,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
               private seoService: SeoService,
               private activatedRoute: ActivatedRoute,
               @Inject(PLATFORM_ID) private platformId,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
     this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromResetPassword.selectLoading));
@@ -80,12 +77,12 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck {
       user: this.formBuilder.group({
         password: [null,
           {
-            validators: this._PASSWORD_VALIDATOR
+            validators: this.userFormValidator.PASSWORD_VALIDATOR
           },
         ],
         repeatedPassword: [null,
           {
-            validators: this._PASSWORD_VALIDATOR
+            validators: this.userFormValidator.PASSWORD_VALIDATOR
           },
         ]
       })
