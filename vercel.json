@@ -1,9 +1,3 @@
 {
-    "name": "mhi-aam.vercel.app",
-    "routes": [
-        {
-            "src": "/",
-            "dest": "./dist/server/main.js"
-        }
-    ]
+    "name": "mhi-aam.vercel.app"
 }
