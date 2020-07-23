@@ -31,10 +31,11 @@ exports.config = {
     var reporter = require('cucumber-html-reporter');
     var options = {
       theme: 'bootstrap',
-      jsonFile: 'cucmber.json',
-      output: 'cucmber.html',
+      jsonFile: 'e2e/report/cucmber.json',
+      output: 'e2e/report/cucmber.html',
       reportSuiteAsScenarios: true,
-      launchReport: true
+      scenarioTimestamp: true,
+      launchReport: true,
     };
     reporter.generate(options);
   }
