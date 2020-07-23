@@ -52,3 +52,7 @@ Thumbs.db
 firebase.json
 .firebase
 functions
+
+# Custom
+cucumber.html
+cucumber.json

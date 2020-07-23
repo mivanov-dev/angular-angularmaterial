@@ -19,7 +19,7 @@ exports.config = {
   cucumberOpts: {
     require: ['./src/steps/**/*.steps.ts'],
     format: [
-      'json:cucmber.json'
+      `json:${__dirname}\\report\\cucumber.json`
     ],
   },
   onPrepare() {
@@ -31,8 +31,8 @@ exports.config = {
     var reporter = require('cucumber-html-reporter');
     var options = {
       theme: 'bootstrap',
-      jsonFile: 'e2e/report/cucmber.json',
-      output: 'e2e/report/cucmber.html',
+      jsonFile: `${__dirname}\\report\\cucumber.json`,
+      output: `${__dirname}\\report\\cucumber.html`,
       reportSuiteAsScenarios: true,
       scenarioTimestamp: true,
       launchReport: true,
