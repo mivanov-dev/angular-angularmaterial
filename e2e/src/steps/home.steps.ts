@@ -1,23 +1,15 @@
 import { expect } from 'chai';
-import {
-  setDefaultTimeout,
-  Before, Given, When, Then
-} from 'cucumber';
-import {
-  browser,
-  ExpectedConditions as EC
-} from 'protractor';
+import { Before, Given, When, Then } from 'cucumber';
+import { browser, ExpectedConditions as EC } from 'protractor';
 const ms = require('ms');
 // custom
 import { App } from '../app';
 import { HomePage } from '../pages/home.po';
 
-setDefaultTimeout(ms('1m'));
-
 let homePage: HomePage;
 let app: App;
 
-Before(() => {
+Before({timeout: ms('1m')}, () => {
 
   app = new App();
   homePage = new HomePage();
@@ -32,23 +24,40 @@ Given(/^Start application$/,
 
   });
 
-When(/^I see the loading indicator with id "([^"]*)?"$/,
-  async (id) => {
+Then(/^I should see the loading indicator$/,
+  async () => {
 
-    await browser.wait(EC.visibilityOf(app.getLoadingIndicator(id)));
+    expect(await app.getLoadingIndicator().getCssValue('display'))
+      .to.be.not.equal('none');
+
+  });
+
+When(/^I see the loading indicator$/,
+  async () => {
+
+    await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
 
   });
 
 Then(/^I should see the title "([^"]*)?"$/,
   async (title) => {
 
-    expect(await homePage.getTitleText()).to.equal(title);
+    expect(await homePage.getTitleText())
+      .to.be.equal(title);
 
   });
 
-When(/^I can not see more loading indicator with id "([^"]*)?"$/,
-  async (id) => {
+When(/^I am done with the loading process$/,
+  async () => {
 
-    await browser.wait(EC.invisibilityOf(app.getLoadingIndicator(id)));
+    await browser.wait(EC.invisibilityOf(app.getLoadingIndicator()));
+
+  });
+
+Then(/^I should't see more loading indicator$/,
+  async () => {
+
+    expect(await app.getLoadingIndicator().getCssValue('display'))
+      .to.be.equal('none');
 
   });
