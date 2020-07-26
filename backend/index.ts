@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Request, Response, NextFunction, Application, Router, urlencoded } from 'express';
+import { Request, Response, NextFunction, Application, urlencoded } from 'express';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as domino from 'domino';
