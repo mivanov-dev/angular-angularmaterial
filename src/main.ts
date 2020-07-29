@@ -12,7 +12,7 @@ if (environment.production) {
 function loadServiceWorker(): void {
   if ('serviceWorker' in navigator && environment.production) {
     navigator.serviceWorker.register('/ngsw-worker.js')
-      .catch(err => console.error('Service worker registration failed with:', err));
+      .catch((error) => console.error('Service worker registration failed with:', error));
   }
 }
 
@@ -20,5 +20,5 @@ document.addEventListener('DOMContentLoaded', () => {
   platformBrowserDynamic()
     .bootstrapModule(AppModule)
     .then(() => loadServiceWorker())
-    .catch(err => console.error(err));
+    .catch((error) => console.error(error));
 });

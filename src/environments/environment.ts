@@ -1,3 +1,5 @@
+declare var process: any;
+
 export const environment = {
   production: false,
   host: process.env.HOST,

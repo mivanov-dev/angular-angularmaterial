@@ -12,7 +12,7 @@ export class TemplateRendererDirective {
     private templateRef: TemplateRef<any>,
     private viewContainerRef: ViewContainerRef) { }
 
-  @Input() set appTemplateRenderer(tmpl) {
+  @Input() set appTemplateRenderer(tmpl: any) {
 
     if (tmpl && this.hasView) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);

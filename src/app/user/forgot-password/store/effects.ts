@@ -22,8 +22,7 @@ export class ForgotPasswordEffects {
             map(action => action.data),
             exhaustMap((data) => this.forgotPasswordService.forgotPassword$(data)
                 .pipe(
-                    // tslint:disable-next-line: no-shadowed-variable
-                    map((data) => ForgotPasswordActions.forgotPassword({ data })),
+                    map((res) => ForgotPasswordActions.forgotPassword({ data: res })),
                     catchError((error) => of(ForgotPasswordActions.forgotPasswordError({ error: error.error.message })))
                 )
             )

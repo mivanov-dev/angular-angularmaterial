@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private typed: any;
 
   constructor(private seoService: SeoService,
-              @Inject(PLATFORM_ID) private platformId) {
+              @Inject(PLATFORM_ID) private platformId: any) {
 
     this.seoService.config({ title: 'Home', url: 'home' });
 

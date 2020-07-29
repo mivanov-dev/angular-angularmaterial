@@ -6,7 +6,7 @@ import { } from 'rxjs/operators';
 // custom
 import { environment } from '../../../environments/environment';
 
-interface SeoModel {
+export interface SeoModel {
     title: string;
     url: string;
 }
@@ -16,7 +16,8 @@ export class SeoService {
 
     htmlMetaElement: HTMLMetaElement[] = [];
 
-    constructor(private title: Title, private meta: Meta) { }
+    constructor(private title: Title,
+                private meta: Meta) { }
 
 
     // getTitle(): void {

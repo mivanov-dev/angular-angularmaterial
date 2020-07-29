@@ -7,6 +7,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+// @ts-ignore
 import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size';
 registerPlugin(
     FilePondPluginImageExifOrientation,

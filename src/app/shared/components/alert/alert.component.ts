@@ -15,8 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class AlertComponent {
 
-  @Input() message: string;
-  @Input() hasError: boolean;
+  @Input() message?: string;
+  @Input() hasError?: boolean;
   // tslint:disable-next-line: no-output-native
   @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 

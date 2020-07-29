@@ -12,27 +12,34 @@ import { Validator, ValidationErrors, AbstractControl, NG_VALIDATORS } from '@an
 })
 export class ConfirmEqualValidatorDirective implements Validator {
 
-  @Input() appConfirmEqualValidator: string;
+  @Input() appConfirmEqualValidator?: string;
 
   validate(control: AbstractControl): ValidationErrors | null {
 
-    const compare = control.parent.get(this.appConfirmEqualValidator);
+    if (this.appConfirmEqualValidator) {
+      const compare = control.parent.get(this.appConfirmEqualValidator);
 
-    const isNotEqual = compare && compare.value !== control.value;
+      const isNotEqual = compare && compare.value !== control.value;
 
-    if (control.value === null || control.value.length === 0) {
-      return null;
+      if (control.value === null || control.value.length === 0) {
+        return null;
+      }
+
+      if (compare) {
+        const comparison = compare.valueChanges
+          .subscribe((res) => {
+
+            control.updateValueAndValidity();
+            comparison.unsubscribe();
+
+          });
+      }
+
+      return isNotEqual ? { notEqual: true } : null;
+
     }
 
-    if (compare) {
-      const comparison = compare.valueChanges
-        .subscribe(res => {
-          control.updateValueAndValidity();
-          comparison.unsubscribe();
-        });
-    }
-
-    return isNotEqual ? { notEqual: true } : null;
+    return null;
 
   }
 

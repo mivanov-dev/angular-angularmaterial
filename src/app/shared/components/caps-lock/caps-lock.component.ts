@@ -17,15 +17,15 @@ import { LoggerService } from '../../../shared/services';
 })
 export class CapsLockComponent implements AfterViewInit {
 
-  isShiftOn: boolean;
-  isActive: boolean;
-  @Input() field: HTMLElement;
+  isShiftOn?: boolean;
+  isActive?: boolean;
+  @Input() field?: HTMLElement;
   @Output() isActiveCapsLock: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
   constructor(private renderer2: Renderer2,
               private logger: LoggerService,
-              @Inject(PLATFORM_ID) private platformId,
-              private zone: NgZone) { }
+              private zone: NgZone,
+              @Inject(PLATFORM_ID) private platformId: any) { }
 
   ngAfterViewInit(): void {
 

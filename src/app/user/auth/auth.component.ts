@@ -2,7 +2,7 @@
 import {
   Component, OnInit, ViewChild, ElementRef,
   OnDestroy, Inject,
-  PLATFORM_ID, ViewContainerRef
+  PLATFORM_ID, ViewContainerRef, AfterViewInit, ChangeDetectorRef
 } from '@angular/core';
 import {
   FormGroup, FormBuilder,
@@ -12,7 +12,7 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -30,9 +30,9 @@ import { UserFormValidatorToken, UserFormValidator } from '../validators';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
+export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewInit {
 
-  authMode: string;
+  authMode?: string;
   form: FormGroup;
   fileOptions = {
     // Core
@@ -64,7 +64,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
         method: 'POST',
         withCredentials: false,
         onload: null,
-        onerror: (res) => console.error(res),
+        onerror: (res: any) => console.error(res),
         ondata: (fd: any) => {
 
           fd = new FormData();
@@ -77,17 +77,20 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
       },
     }
   };
-  pondFiles: [];
+  pondFiles: [] = [];
   isLoading$: Observable<boolean>;
   hidePassword = true;
-  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer: ViewContainerRef;
-  @ViewChild('email', { static: true }) email: ElementRef;
-  @ViewChild('submitButton', { static: true }) submitButton: MatButton;
+  emailElement?: HTMLElement;
+  fileElement?: HTMLElement;
+  submitButtonElement?: HTMLElement;
+  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
+  @ViewChild('email', { static: true }) email?: ElementRef;
+  @ViewChild('submitButton', { static: true }) submitButton?: MatButton;
   @ViewChild('filepond') filepond: any;
-  @ViewChild('formDirective') formDirective: FormGroupDirective;
+  @ViewChild('formDirective') formDirective?: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
-  private isSwitchedAuthModeFromHere: boolean;
+  private isSwitchedAuthModeFromHere?: boolean;
   private isConfirmedChanges = false;
 
   constructor(
@@ -95,22 +98,54 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
     private logger: LoggerService,
     private store$: Store<fromApp.AppState>,
     private seoService: SeoService,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformId,
     private alertService: AlertService,
+    private cdr: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: any,
     @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Auth', url: 'user/auth' });
     this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLoading));
+    this.form = this.initForm();
+
+  }
+
+  get userGroup(): AbstractControl | null {
+
+    return this.form.get('user');
+
+  }
+
+  get emailControl(): AbstractControl | null {
+
+    return this.form.get('user.email');
+
+  }
+
+  get passwordControl(): AbstractControl | null {
+
+    return this.form.get('user.password');
 
   }
 
   ngOnInit(): void {
 
-    this.initForm();
     this.getSuccessfulMessage();
     this.getUnsuccessfulMessage();
     this.onChangeAuthMode();
+
+  }
+
+  ngAfterViewInit(): void {
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.emailElement = this.email?.nativeElement as HTMLElement;
+      this.fileElement = this.document.getElementsByName('filepond')[1];
+      this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
+      // https://stackoverflow.com/a/54794081
+      this.emailElement?.focus({ preventScroll: true });
+      this.cdr.detectChanges();
+    }
 
   }
 
@@ -122,9 +157,9 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
 
   }
 
-  private initForm(): void {
+  private initForm(): FormGroup {
 
-    this.form = this.formBuilder.group({
+    return this.formBuilder.group({
       user: this.formBuilder.group({
         email: [null,
           {
@@ -139,52 +174,6 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
         remember: [null]
       })
     }, { updateOn: 'blur' });
-
-    if (isPlatformBrowser(this.platformId)) {
-      this.emailElement.focus({ preventScroll: true });
-    }
-
-  }
-
-  get userGroup(): AbstractControl {
-
-    return this.form.get('user');
-
-  }
-
-  get emailControl(): AbstractControl {
-
-    return this.form.get('user').get('email');
-
-  }
-
-  get passwordControl(): AbstractControl {
-
-    return this.form.get('user.password');
-
-  }
-
-  get emailElement(): HTMLElement {
-
-    if (isPlatformBrowser(this.platformId)) {
-      return this.email.nativeElement;
-    }
-
-  }
-
-  get fileElement(): HTMLElement {
-
-    if (isPlatformBrowser(this.platformId)) {
-      return this.document.getElementsByName('filepond')[1];
-    }
-
-  }
-
-  get submitButtonElement(): HTMLElement {
-
-    if (isPlatformBrowser(this.platformId)) {
-      return this.submitButton._elementRef.nativeElement;
-    }
 
   }
 
@@ -210,8 +199,9 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
     this.form.reset();
 
     if (isPlatformBrowser(this.platformId)) {
-      this.emailElement.focus({ preventScroll: true });
+      this.emailElement?.focus({ preventScroll: true });
     }
+
     this.isSubmitted = false;
 
   }
@@ -224,8 +214,10 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
       return;
     }
     if (this.authMode === 'register') {
-      const file = JSON.parse(this.fileElement.getAttribute('value'));
-      let data = this.userGroup.value;
+
+      let file: any = this.fileElement?.getAttribute('value');
+      file = JSON.parse(file ? file : '{}');
+      let data = this.userGroup?.value;
 
       if (new Object(file).hasOwnProperty('url')) {
         data = Object.assign({ file: file.url }, data);
@@ -234,14 +226,14 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
       this.store$.dispatch(AuthActions.registerStart({ data }));
     }
     else {
-      this.store$.dispatch(AuthActions.loginStart({ data: this.userGroup.value }));
+      this.store$.dispatch(AuthActions.loginStart({ data: this.userGroup?.value }));
     }
 
   }
 
   onTriggerSubmit(): void {
 
-    this.submitButtonElement.click();
+    this.submitButtonElement?.click();
 
   }
 
@@ -251,7 +243,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
       .pipe(
         takeUntil(this.onDestroy$),
         select(fromAuth.selectRegister),
-        filter(res => res !== null)
+        filter((res): res is fromAuth.Register => res !== null)
       )
       .subscribe((res) => {
 
@@ -334,25 +326,37 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck {
   }
 
 
-  hasEmailControlErrorRequired(control: AbstractControl): boolean {
+  hasEmailControlErrorRequired(control: AbstractControl | null): boolean {
 
-    return (control.hasError('required') || control.hasError('email'))
-      && (control.dirty || control.touched);
+    if (control) {
+      return (control.hasError('required') || control.hasError('email'))
+        && (control.dirty || control.touched);
+    }
 
-  }
-
-
-  hasPasswordControlErrorRequired(control: AbstractControl): boolean {
-
-    return control.hasError('required') && (control.dirty || control.touched);
+    return false;
 
   }
 
 
-  hasControlErrorLengtgh(control: AbstractControl): boolean {
+  hasPasswordControlErrorRequired(control: AbstractControl | null): boolean {
 
-    return !(control.hasError('minLength') && control.hasError('maxLength'))
-      && (control.dirty || control.touched);
+    if (control) {
+      return control.hasError('required') && (control.dirty || control.touched);
+    }
+
+    return false;
+
+  }
+
+
+  hasControlErrorLengtgh(control: AbstractControl | null): boolean {
+
+    if (control) {
+      return !(control.hasError('minLength') && control.hasError('maxLength'))
+        && (control.dirty || control.touched);
+    }
+
+    return false;
 
   }
 

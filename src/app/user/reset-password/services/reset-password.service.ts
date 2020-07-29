@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // custom
 import { environment } from '../../../../environments/environment';
-import * as ResetPasswordModels from '../store/models';
+import * as fromResetPassword from '../store';
 
 @Injectable({ providedIn: 'root' })
 export class ResetPasswordService {
@@ -14,8 +14,10 @@ export class ResetPasswordService {
 
     constructor(private http: HttpClient) { }
 
-    resetPassword$(data: ResetPasswordModels.ResetPasswordStart): Observable<any> {
+    resetPassword$(data: fromResetPassword.ResetPasswordStart): Observable<any> {
+
         return this.http.post<any>(this.resetPasswordUrl, data);
+
     }
 
 }

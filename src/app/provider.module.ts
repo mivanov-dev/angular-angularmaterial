@@ -17,17 +17,21 @@ import { AuthInterceptor, HttpErrorInterceptor, ErrorInterceptor } from './share
 import { DirtyCheckGuard } from './shared/guards';
 
 export const appInit = (store: Store<fromApp.AppState>) => {
+
   return () => new Promise((resolve: any) => {
 
     store.dispatch(AuthActions.autologinStart());
     store.select(fromAuth.selectLoading)
       .pipe(filter(loading => !loading))
       .subscribe(res => {
+
         if (!res) {
           resolve(true);
         }
+
       });
   });
+
 };
 
 @NgModule({

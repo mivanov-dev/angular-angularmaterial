@@ -3,7 +3,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 // rxjs
 import { Subject, Observable } from 'rxjs';
-import { take, exhaustMap, takeUntil } from 'rxjs/operators';
+import { take, exhaustMap, takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store, select } from '@ngrx/store';
 // custom
@@ -18,8 +18,10 @@ export class AuthInterceptor implements HttpInterceptor, OnDestroy {
     constructor(private store$: Store<fromApp.AppState>) { }
 
     ngOnDestroy(): void {
+
         this.onDestroy$.next();
         this.onDestroy$.complete();
+
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

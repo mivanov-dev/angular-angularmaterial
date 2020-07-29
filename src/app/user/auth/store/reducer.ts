@@ -5,8 +5,8 @@ import * as AuthModels from './models';
 import * as AuthActions from './actions';
 
 export interface State {
-    login: AuthModels.Login;
-    register: AuthModels.Register;
+    login: AuthModels.Login | null;
+    register: AuthModels.Register | null;
     error: any;
     loading: boolean;
     authMode: AuthModels.AuthMode;

@@ -11,7 +11,9 @@ import { Store, select } from '@ngrx/store';
 import * as fromApp from '../../../store';
 import * as fromAuth from '../store';
 
+
 @Injectable({ providedIn: 'root' })
+// @ts-ignore
 export class AuthGuard implements CanActivate, OnDestroy {
 
     private onDestroy$: Subject<void> = new Subject<void>();

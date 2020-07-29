@@ -5,7 +5,7 @@ import * as ForgotPasswordActions from './actions';
 import * as ForgotPasswordModels from './models';
 
 export interface State {
-    forgotPassword: ForgotPasswordModels.ForgotPassword;
+    forgotPassword: ForgotPasswordModels.ForgotPassword | null;
     error: any;
     loading: boolean;
 }

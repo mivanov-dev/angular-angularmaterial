@@ -37,7 +37,9 @@ export class AuthEffects {
             ofType(AuthActions.login),
             tap((res) => {
 
-                if (res.data.redirect) { this.router.navigate(['/']); }
+                if (res.data.redirect) {
+                    this.router.navigate(['/']);
+                }
 
             })
         ), { dispatch: false });

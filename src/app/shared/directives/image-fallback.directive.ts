@@ -14,14 +14,15 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class ImageFallbackDirective {
 
-  @Input() appImageFallback: string;
+  @Input() appImageFallback?: string;
 
-  constructor(private elementRef: ElementRef, @Inject(PLATFORM_ID) private platformId) { }
+  constructor(private elementRef: ElementRef,
+              @Inject(PLATFORM_ID) private platformId: any) { }
 
   @HostListener('error')
   loadFallbackOnError(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId) && this.appImageFallback) {
       const element: HTMLImageElement = this.elementRef.nativeElement as HTMLImageElement;
       element.src = this.appImageFallback;
     }

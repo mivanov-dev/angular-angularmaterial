@@ -27,7 +27,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             );
     }
 
-    extractError(error: any): string | Error {
+    extractError(error: any): string | Error | void {
 
         if (error && error.ngOriginalError) {
             error = error.ngOriginalError;
@@ -58,8 +58,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             // If we don't have any detailed information, fallback to the request message itself.
             return error.message;
         }
-
-        return null;
 
     }
 

@@ -19,17 +19,17 @@ import * as fromAuth from './user/auth/store';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  mediaQueryList: MediaQueryList;
-  isHandset$: Observable<boolean>;
+  mediaQueryList?: MediaQueryList;
+  isHandset$?: Observable<boolean>;
   isLoading = true;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store$: Store<fromApp.AppState>,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId,
-    @Inject(DOCUMENT) private document: Document,
-    private renderer2: Renderer2
+    private renderer2: Renderer2,
+    @Inject(PLATFORM_ID) private platformId: any,
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit(): void {

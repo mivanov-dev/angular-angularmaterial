@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class LoggerService {
 
-    constructor(@Inject(PLATFORM_ID) private platformId) { }
+    constructor(@Inject(PLATFORM_ID) private platformId: any) { }
 
     log(value: any, ...rest: any[]): void {
 

@@ -11,7 +11,6 @@ import { Store, select } from '@ngrx/store';
 import * as fromApp from '../store';
 import * as fromAuth from '../user/auth/store';
 import * as AuthActions from '../user/auth/store/actions';
-import * as AuthModels from '../user/auth/store/models';
 
 @Component({
   selector: 'app-header',
@@ -22,9 +21,9 @@ import * as AuthModels from '../user/auth/store/models';
 export class HeaderComponent implements OnDestroy {
 
 
-  @Input() sidenav: MatSidenav;
-  user$: Observable<AuthModels.Login>;
+  user$: Observable<fromAuth.Login | null>;
   userImage = '../../assets/user.png';
+  @Input() sidenav?: MatSidenav;
   private onDestroy$: Subject<void> = new Subject<void>();
 
   constructor(private store$: Store<fromApp.AppState>) {

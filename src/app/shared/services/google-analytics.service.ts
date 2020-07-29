@@ -13,8 +13,9 @@ export class GoogleAnalyticsService {
 
     constructor(private router: Router) {
 
+        // https://stackoverflow.com/a/54336483
         this.router.events
-            .pipe(filter(res => res instanceof NavigationEnd))
+            .pipe(filter((res): res is NavigationEnd => res instanceof NavigationEnd))
             .subscribe((res: NavigationEnd) => {
 
                 let options = { page_path: res.urlAfterRedirects };

@@ -11,7 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class SocialAuthComponent {
 
-  @Input() isLoading: boolean;
+  @Input() isLoading: boolean | null = false;
 
   constructor(private iconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
 
