@@ -12,7 +12,11 @@ export class Smtp {
 
     private constructor() {
 
-        this.init();
+        log.info('smtp:init');
+
+        // https://ethereal.email/create
+        this.smtpTransport = nodemailer.createTransport(config.smtp);
+        this.smtpTransport.on('error', (error) => log.error(`smtp:error: ${JSON.stringify(error)}`));
 
     }
 
@@ -23,17 +27,6 @@ export class Smtp {
         }
 
         return Smtp.instance;
-
-    }
-
-    private init(): void {
-
-        log.info('smtp:init');
-
-        // https://ethereal.email/create
-        this.smtpTransport = nodemailer.createTransport(config.smtp);
-
-        this.smtpTransport.on('error', (error) => log.error(`smtp:error: ${JSON.stringify(error)}`));
 
     }
 
@@ -59,6 +52,7 @@ export class Smtp {
 
     sendMail(to: any, subject: any, html: any): Promise<any> {
 
+        if (config.smtp.auth){
         return this.smtpTransport
             .sendMail({
                 from: config.smtp.auth.user,
@@ -66,6 +60,9 @@ export class Smtp {
                 subject,
                 html
             });
+        }
+
+        return Promise.reject(new Error('Missing mail options'));
 
     }
 

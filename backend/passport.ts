@@ -1,10 +1,8 @@
 import * as passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 // custom
-import { config } from './config';
 import { User } from './mongoose/models';
 
-const google = config.google;
 const localStrategy = new LocalStrategy(
     {
         usernameField: 'email',

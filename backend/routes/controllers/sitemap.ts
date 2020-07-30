@@ -9,7 +9,7 @@ let sitemap: Buffer;
 
 class Controller {
 
-    static sitemap = async (req: Request, res: Response) => {
+    static sitemap = async (req: Request, res: Response): Promise<void> => {
 
         const { seoProtocol, seoHost, seoPort } = config;
 

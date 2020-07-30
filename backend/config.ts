@@ -17,7 +17,7 @@ export const config = {
     seoPort: process.env.SEO_PORT || port,
     seoProtocol: process.env.SEO_PROTOCOL || protocol,
     mongodb: {
-        uri: process.env.MONGODB_URI
+        uri: (process.env.MONGODB_URI) as string
     },
     cloudinary: {
         name: process.env.CLOUDINARY_NAME,

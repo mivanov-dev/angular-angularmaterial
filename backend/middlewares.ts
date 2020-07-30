@@ -3,7 +3,7 @@ import { checkSchema } from 'express-validator';
 // custom
 import { log } from './logger';
 
-export function isAuthenticate(request: Request, response: Response, next: NextFunction): Response<any> {
+export function isAuthenticate(request: Request, response: Response, next: NextFunction): Response<any> | void {
 
     log.info(`isAuthenticate: ${request.isAuthenticated()}`);
 
@@ -15,18 +15,19 @@ export function isAuthenticate(request: Request, response: Response, next: NextF
 
 }
 
-export function handleErrors(error: any, res: Response): Response<any> {
+export function handleErrors(error: any, res: Response): void {
 
     log.error(`handleErrors: ${JSON.stringify(error)}`);
 
     if (error.hasOwnProperty('errors')) {
-        return res.status(400).send({ error: error.errors });
+        res.status(400).send({ error: error.errors });
     }
-    if (error.hasOwnProperty('message')) {
-        return res.status(400).send(error);
+    else if (error.hasOwnProperty('message')) {
+        res.status(400).send(error);
     }
-
-    return res.status(400).send({ message: 'Unknown an error!' });
+    else {
+        res.status(400).send({ message: 'Unknown an error!' });
+    }
 
 }
 

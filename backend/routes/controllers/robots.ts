@@ -1,4 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
+// @ts-ignore
 import robotstxt from 'generate-robotstxt';
 // custom
 import { handleErrors } from '../../middlewares';
@@ -8,7 +9,7 @@ let robotsTxt: any;
 
 class Controller {
 
-    static robots = async (req: Request | any, res: Response, next: NextFunction) => {
+    static robots = async (req: Request | any, res: Response, next: NextFunction): Promise<void> => {
 
         const { seoProtocol, seoHost, seoPort } = config;
 

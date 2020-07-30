@@ -10,11 +10,11 @@ export const { app } = App.getInstance();
 
 function run(): void {
 
-  function onError(error): void {
-    log.error(error);
+  function onError(error: any): void {
+    log.error(`server:error ${JSON.stringify(error)}`);
   }
 
-  function onListening(protocol, host, port): void {
+  function onListening(protocol: string, host: string, port: string): void {
     log.info(`Node Express server listening on ${protocol}://${host}:${port}`);
   }
 

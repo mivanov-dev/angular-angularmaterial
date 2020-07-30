@@ -3,11 +3,12 @@ import * as bluebird from 'bluebird';
 
 import { User, UserImage } from './models';
 import { log } from '../logger';
+import { config } from '../config';
 
 (mongoose as any).Promise = bluebird.Promise;
 mongoose.set('debug', false);
 
-export function database(uri: string): void {
+export function database(): void {
 
     const connection = mongoose.connection;
     connection.on('open', async () => {
@@ -22,7 +23,7 @@ export function database(uri: string): void {
     connection.on('error', err => log.error('mongoose:error'));
     connection.on('disconnected', () => log.warn('mongoose:disconnected'));
 
-    mongoose.connect(uri, {
+    mongoose.connect(config.mongodb.uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });

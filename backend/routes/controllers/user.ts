@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from 'express';
+import { NextFunction, Response, Request, Express } from 'express';
 import * as crypto from 'crypto';
 import { validationResult } from 'express-validator';
 import * as bcrypt from 'bcryptjs';
@@ -14,7 +14,7 @@ const smtp = Smtp.getInstance();
 
 class Controller {
 
-    static register = async (req: Request | any, res: Response, next: NextFunction): Promise<void> => {
+    static register = async (req: Request | any, res: Response, next: NextFunction): Promise<void | Response<any>> => {
 
         try {
 
@@ -60,7 +60,7 @@ class Controller {
             throw { message: errors.errors[0].msg };
         }
 
-        passportStrategy.authenticate('login', async (error, user, info) => {
+        passportStrategy.authenticate('login', (error, user, info): Response<any> | void => {
 
             if (error) { return handleErrors(error, res); }
             if (info !== undefined) { return res.status(400).send(info); }
@@ -72,10 +72,12 @@ class Controller {
                 redirect: true
             };
 
-            req.login(user, (err: any) => {
+            req.login(user, (err): Response<any> | void => {
+
+                req.session = (req.session as Express.Session);
 
                 if (error) {
-                    handleErrors(error, res);
+                    return handleErrors(error, res);
                 }
                 else if (req.body.remember) {
                     req.session.cookie.originalMaxAge = expires;
@@ -92,7 +94,7 @@ class Controller {
 
     }
 
-    static isLoggedIn = async (req: Request, res: Response, next: NextFunction): Promise<Response<any>> => {
+    static isLoggedIn = async (req: Request, res: Response, next: NextFunction): Promise<Response<any> | void> => {
 
         try {
 
@@ -100,11 +102,11 @@ class Controller {
             let expires: number;
             const user = await User.isLoggedIn(body.id);
 
-            if (!req.session.cookie.expires) {
+            if (!req?.session?.cookie.expires) {
                 expires = new Date(Date.now() + ms('1m')).getTime();
             }
             else {
-                expires = new Date(req.session.cookie.expires as Date).getTime();
+                expires = new Date(req?.session.cookie.expires as Date).getTime();
             }
 
             return res.status(200)
@@ -115,9 +117,10 @@ class Controller {
                     redirect: false
                 });
 
-        } catch (error) {
+        }
+        catch (error) {
 
-            return handleErrors(error, res);
+            handleErrors(error, res);
 
         }
     }
@@ -130,7 +133,7 @@ class Controller {
 
     }
 
-    static forgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<Response<any>> => {
+    static forgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<Response<any> | void> => {
 
         const { host, port } = config;
 
@@ -169,7 +172,7 @@ class Controller {
         }
         catch (error) {
 
-            return handleErrors(error, res);
+            handleErrors(error, res);
 
         }
     }
@@ -208,7 +211,7 @@ class Controller {
         }
         catch (error) {
 
-            return handleErrors(error, res);
+            handleErrors(error, res);
 
         }
 
