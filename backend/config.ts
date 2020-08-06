@@ -17,26 +17,26 @@ export const config = {
     seoPort: process.env.SEO_PORT || port,
     seoProtocol: process.env.SEO_PROTOCOL || protocol,
     mongodb: {
-        uri: (process.env.MONGODB_URI) as string
+        uri: process.env.MONGODB_URI as string
     },
     cloudinary: {
-        name: process.env.CLOUDINARY_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
-        env_var: process.env.CLOUDINARY_ENV_VAR,
-        base_delivery_url: process.env.CLOUDINARY_BASE_DELIVERY_URL,
-        secret_delivery_url: process.env.CLOUDINARY_SECRET_DELIVERY_URL,
-        api_base_url: process.env.CLOUDINARY_API_BASE_URL
+        name: process.env.CLOUDINARY_NAME as string,
+        api_key: process.env.CLOUDINARY_API_KEY as string,
+        api_secret: process.env.CLOUDINARY_API_SECRET as string,
+        env_var: process.env.CLOUDINARY_ENV_VAR as string,
+        base_delivery_url: process.env.CLOUDINARY_BASE_DELIVERY_URL as string,
+        secret_delivery_url: process.env.CLOUDINARY_SECRET_DELIVERY_URL as string,
+        api_base_url: process.env.CLOUDINARY_API_BASE_URL as string
     },
     google: {
-        client_id: process.env.GOOGLE_CLIENT_ID,
-        project_id: process.env.GOOGLE_PROJECT_ID,
-        auth_uri: process.env.GOOGLE_AUTH_URI,
-        token_uri: process.env.GOOGLE_TOKEN_URI,
-        auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uris: process.env.GOOGLE_REDIRECT_URIS,
-        javascript_origins: process.env.GOOGLE_JAVASCRIPT_ORIGINS
+        client_id: process.env.GOOGLE_CLIENT_ID as string,
+        project_id: process.env.GOOGLE_PROJECT_ID as string,
+        auth_uri: process.env.GOOGLE_AUTH_URI as string,
+        token_uri: process.env.GOOGLE_TOKEN_URI as string,
+        auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL as string,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
+        redirect_uris: process.env.GOOGLE_REDIRECT_URIS as string,
+        javascript_origins: process.env.GOOGLE_JAVASCRIPT_ORIGINS as string
     },
     expressSessionOptions: {
         cookie: {
@@ -74,11 +74,11 @@ export const config = {
         origin: true
     },
     smtp: {
-        host: process.env.SMTP_HOST,
+        host: process.env.SMTP_HOST as string,
         port: 587,
         auth: {
-            user: process.env.SMTP_AUTH_USER,
-            pass: process.env.SMTP_AUTH_PASS
+            user: process.env.SMTP_AUTH_USER as string,
+            pass: process.env.SMTP_AUTH_PASS as string
         },
         logger: true,
         debug: true,

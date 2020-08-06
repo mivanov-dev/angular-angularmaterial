@@ -14,8 +14,11 @@
     "build:ssr": "ng build --prod && ng run angular-angularmaterial:server:production",
     "prod:ssr": "npm run build:ssr && npm run serve:ssr",
     "prerender": "ng run angular-angularmaterial:prerender",
-    "preinstall": "npm i -g @angular/cli typescript tslint rimraf node-sass && rimraf package-lock.json",
+    "preinstall": "npm i -g @angular/cli typescript tslint node-sass",
     "docker:deploy": "docker-compose -f \"docker-compose.yml\" up -d --build"
+  },
+  "config": {
+    "unsafe-perm": true
   },
   "dependencies": {
     "@angular/animations": "10.0.6",
@@ -133,7 +136,7 @@
     "typescript": "^3.9.7"
   },
   "engines": {
-    "node": "12.16.3",
-    "npm": "6.14.5"
+    "node": "12.18.3",
+    "npm": "6.14.7"
   }
 }

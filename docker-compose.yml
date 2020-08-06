@@ -4,17 +4,19 @@ services:
     container_name: angular
     build:
       context: .
-      dockerfile: angular.Dockerfile
+      dockerfile: ./docker/angular.Dockerfile
     ports:
       - "4200:4200"
     env_file: .env
     networks:
       - backend
+    volumes:
+      - './:/usr/src/app'
   nginx:
     container_name: nginx
     build:
       context: .
-      dockerfile: nginx.Dockerfile
+      dockerfile: ./docker/nginx.Dockerfile
     ports:
       - "80:80"
       - "443:443"
