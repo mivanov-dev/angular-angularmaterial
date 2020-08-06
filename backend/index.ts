@@ -14,7 +14,7 @@ import * as _ from 'lodash';
 const ms = require('ms');
 // custom
 import { config } from './config';
-import { Smtp } from './smtp';
+import { smtp } from './smtp';
 import { database } from './mongoose';
 import { userRouter, sitemapRouter, robotsRouter } from './routes';
 import { log } from './logger';
@@ -88,7 +88,7 @@ export class App {
         this.app.use(sitemapRouter);
         this.app.use(robotsRouter);
 
-        Smtp.getInstance().verify();
+        smtp.verify();
 
         database();
 

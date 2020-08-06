@@ -7,10 +7,8 @@ const ms = require('ms');
 import { UserImage, User, UserImageDocument } from '../../mongoose/models';
 import { handleErrors } from '../../middlewares';
 import { passportStrategy } from '../../passport';
-import { Smtp } from '../../smtp';
+import { smtp } from '../../smtp';
 import { config } from '../../config';
-
-const smtp = Smtp.getInstance();
 
 class Controller {
 

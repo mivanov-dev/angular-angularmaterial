@@ -5,7 +5,7 @@ import { log } from './logger';
 import { config } from './config';
 
 
-export class Smtp {
+class Smtp {
 
     private static instance: Smtp;
     private smtpTransport: Transporter;
@@ -52,14 +52,14 @@ export class Smtp {
 
     sendMail(to: any, subject: any, html: any): Promise<any> {
 
-        if (config.smtp.auth){
-        return this.smtpTransport
-            .sendMail({
-                from: config.smtp.auth.user,
-                to,
-                subject,
-                html
-            });
+        if (config.smtp.auth) {
+            return this.smtpTransport
+                .sendMail({
+                    from: config.smtp.auth.user,
+                    to,
+                    subject,
+                    html
+                });
         }
 
         return Promise.reject(new Error('Missing mail options'));
@@ -74,3 +74,5 @@ export class Smtp {
     }
 
 }
+
+export const smtp = Smtp.getInstance();
