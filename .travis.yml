@@ -18,4 +18,6 @@ cache:
     - node_modules
 
 script:
+  - npm run test
+  - npm run e2e
   - npm run build:ssr
