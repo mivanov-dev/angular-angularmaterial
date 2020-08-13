@@ -3,4 +3,4 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY ./ ./
 EXPOSE 4200
-CMD [ "npm", "run", "prod:ssr" ]
+CMD [ "npm", "run", "ssr" ]
