@@ -9,7 +9,10 @@ exports.config = {
   allScriptsTimeout: 11000,
   specs: ['./src/features/**/*.feature'],
   capabilities: {
-    browserName: 'chrome'
+    browserName: 'chrome',
+    chromeOptions: {
+      args: ["--headless", "--disable-gpu"]
+    }
   },
   chromeDriver: "../node_modules/chromedriver/lib/chromedriver/chromedriver.exe",
   directConnect: true,
