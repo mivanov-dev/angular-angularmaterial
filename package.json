@@ -10,6 +10,7 @@
     "test-headless": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "e2e-headless": "ng e2e --protractor-config=e2e/ci.protractor.conf.js",
     "dev:ssr": "ng run angular-angularmaterial:serve-ssr",
     "serve:ssr": "node dist/server/main.js",
     "build:ssr": "ng build --prod && ng run angular-angularmaterial:server:production",
