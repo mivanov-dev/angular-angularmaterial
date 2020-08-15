@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Before, Given, When, Then } from 'cucumber';
+import { Before, Given, When, Then, setDefaultTimeout } from 'cucumber';
 import { browser, ExpectedConditions as EC } from 'protractor';
 const ms = require('ms');
 // custom
@@ -9,7 +9,9 @@ import { HomePage } from '../pages/home.po';
 let homePage: HomePage;
 let app: App;
 
-Before({timeout: ms('1m')}, () => {
+setDefaultTimeout(ms('1m'));
+
+Before(() => {
 
   app = new App();
   homePage = new HomePage();
