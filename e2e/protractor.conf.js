@@ -11,7 +11,6 @@ exports.config = {
   capabilities: {
     browserName: 'chrome'
   },
-  chromeDriver: "../node_modules/chromedriver/lib/chromedriver/chromedriver.exe",
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
   framework: 'custom',
