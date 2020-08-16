@@ -1,0 +1,26 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.0.0
+jobs:
+  build-and-test:
+    working_directory: ~/angular-angularmaterial
+    docker:
+      - image: circleci/node:12-browsers
+        environment: 
+          NG_CLI_ANALYTICS: ci
+    steps:
+      - checkout
+      - restore_cache:
+          key: angular-angularmaterial-{{ .Branch }}-{{ checksum "package-lock.json"}}
+      - run:
+          command: echo "export NG_CLI_ANALYTICS=ci"
+      - run: sudo npm install
+      - save_cache:
+          key: angular-angularmaterial-{{ .Branch }}-{{ checksum "package-lock.json"}}
+          paths:
+            - "nodes_modules"
+      - run: npm run test-headless
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
