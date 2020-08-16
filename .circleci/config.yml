@@ -6,10 +6,14 @@ jobs:
     working_directory: ~/angular-angularmaterial
     docker:
       - image: circleci/node:12-browsers
+        environment: 
+          NG_CLI_ANALYTICS: ci
     steps:
       - checkout
       - restore_cache:
           key: angular-angularmaterial-{{ .Branch }}-{{ checksum "package-lock.json"}}
+      - run:
+          command: echo "export NG_CLI_ANALYTICS=ci"
       - run: sudo npm install
       - save_cache:
           key: angular-angularmaterial-{{ .Branch }}-{{ checksum "package-lock.json"}}
