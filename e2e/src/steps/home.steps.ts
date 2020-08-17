@@ -27,9 +27,9 @@ Given(/^Start application$/,
   });
 
 When(/^I see the loading indicator$/,
-  () => {
+  async () => {
 
-    browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
+    await app.checkVisibilityLoadingIndicator();
 
   });
 
