@@ -37,5 +37,6 @@ exports.config = {
       launchReport: true,
     };
     reporter.generate(options);
-  }
+  },
+  SELENIUM_PROMISE_MANAGER: false
 };
