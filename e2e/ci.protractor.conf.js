@@ -31,6 +31,7 @@ exports.config = {
         format: [
             `json:${__dirname}\\report\\cucumber.json`
         ],
+        strict: true
     },
     onPrepare() {
         require('ts-node').register({

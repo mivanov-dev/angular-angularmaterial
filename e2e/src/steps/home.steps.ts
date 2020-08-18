@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Before, Given, When, Then, setDefaultTimeout } from 'cucumber';
+import { Given, When, Then, setDefaultTimeout, BeforeAll } from 'cucumber';
 import { browser, ExpectedConditions as EC } from 'protractor';
 const ms = require('ms');
 // custom
@@ -9,14 +9,14 @@ import { HomePage } from '../pages/home.po';
 let homePage: HomePage;
 let app: App;
 
-// setDefaultTimeout(ms('20s'));
+// setDefaultTimeout(ms('1m'));
 
-Before(async () => {
+BeforeAll({ timeout: ms('1m') }, () => {
+
+  setDefaultTimeout(ms('1m'));
 
   app = new App();
   homePage = new HomePage();
-
-  await browser.waitForAngularEnabled(false);
 
 });
 
