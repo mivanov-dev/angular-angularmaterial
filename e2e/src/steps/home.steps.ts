@@ -31,7 +31,7 @@ When(/^I load application$/,
   async () => {
 
     // await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
-    await browser.wait(() => app.getLoadingIndicator().isDisplayed());
+    await browser.wait(async () => await app.getLoadingIndicator().isDisplayed());
 
   });
 
