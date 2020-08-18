@@ -6,7 +6,8 @@
  * @type { import("protractor").Config }
  */
 exports.config = {
-    allScriptsTimeout: 11000,
+    getPageTimeout: 20000,
+    allScriptsTimeout: 20000,
     specs: ['./src/features/**/*.feature'],
     capabilities: {
         browserName: 'chrome',
