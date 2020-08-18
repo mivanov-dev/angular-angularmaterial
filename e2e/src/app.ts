@@ -1,10 +1,10 @@
-import { by, element, ElementFinder } from 'protractor';
+import { $, ElementFinder } from 'protractor';
 
 export class App {
 
     getLoadingIndicator(): ElementFinder {
 
-        return element(by.id('loading-box'));
+        return $('#loading-box');
 
     }
 

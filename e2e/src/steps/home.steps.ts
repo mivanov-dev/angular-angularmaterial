@@ -19,37 +19,35 @@ Before(() => {
 
 });
 
-Given(/^Start application$/,
+Given(/^web browser is on home page$/,
   async () => {
 
     await homePage.navigateTo();
 
   });
 
-Then(/^I should see the loading indicator$/,
-  async () => {
-
-    expect(await app.getLoadingIndicator().getCssValue('display'))
-      .to.be.not.equal('none');
-
-  });
-
-When(/^I see the loading indicator$/,
+When(/^I load application$/,
   async () => {
 
     await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
 
   });
 
-Then(/^I should see the title "([^"]*)?"$/,
-  async (title) => {
+Then(/^I should see the loading indicator$/,
+  async () => {
 
-    expect(await homePage.getTitleText())
-      .to.be.equal(title);
+    expect(await app.getLoadingIndicator().getCssValue('display')).to.be.not.equal('none');
 
   });
 
-When(/^I am done with the loading process$/,
+Then(/^I should see the title "([^"]*)?"$/,
+  async (title) => {
+
+    expect(await homePage.getTitleText()).to.be.equal(title);
+
+  });
+
+When(/^I finish with the loading process$/,
   async () => {
 
     await browser.wait(EC.invisibilityOf(app.getLoadingIndicator()));
@@ -59,7 +57,6 @@ When(/^I am done with the loading process$/,
 Then(/^I should't see more loading indicator$/,
   async () => {
 
-    expect(await app.getLoadingIndicator().getCssValue('display'))
-      .to.be.equal('none');
+    expect(await app.getLoadingIndicator().getCssValue('display')).to.be.equal('none');
 
   });
