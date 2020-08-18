@@ -15,7 +15,7 @@ exports.config = {
             args: [
                 // '--disable-translate',
                 // '--disable-extensions',
-                '--remote-debugging-port=9223',
+                // '--remote-debugging-port=9223',
                 '--no-sandbox',
                 '--headless',
                 // '--disable-gpu'

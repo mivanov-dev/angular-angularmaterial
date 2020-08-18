@@ -30,7 +30,8 @@ Given(/^web browser is on home page$/,
 When(/^I load application$/,
   async () => {
 
-    await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
+    // await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
+    await browser.wait(() => app.getLoadingIndicator().isDisplayed());
 
   });
 
