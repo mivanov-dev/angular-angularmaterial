@@ -31,7 +31,7 @@ Given(/^web browser is on home page$/,
 When(/^I load application$/,
   async () => {
 
-    return await browser.driver.wait(EC.visibilityOf(app.getLoadingIndicator()));
+    await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
 
   });
 
