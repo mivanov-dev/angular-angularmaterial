@@ -12,12 +12,12 @@ exports.config = {
         browserName: 'chrome',
         chromeOptions: {
             'args': [
-                '--disable-translate',
-                '--disable-extensions',
-                '--remote-debugging-port=9223',
+                // '--disable-translate',
+                // '--disable-extensions',
+                // '--remote-debugging-port=9223',
                 '--no-sandbox',
                 '--headless',
-                '--disable-gpu'
+                // '--disable-gpu'
             ]
         }
     },
