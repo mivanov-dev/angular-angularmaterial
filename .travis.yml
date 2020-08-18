@@ -1,6 +1,9 @@
 os: linux
 
-dist: trusty
+dist: xenial
+
+services:
+  - xvfb
 
 sudo: true
 
@@ -24,18 +27,26 @@ addons:
       - google-chrome-stable
 
 cache:
-  # npm: true
+  npm: true
   directories:
     - node_modules
 
 before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - export NG_CLI_ANALYTICS=ci
+  - sudo apt-get update
+  - sudo apt-get -y install libxml2-dev
 
 install:
   - npm set progress=false
   - npm install
+
+before_script:
+  - export CHROME_BIN=chromium-browser
+  - export DISPLAY=:99.0
+  - export NG_CLI_ANALYTICS=ci
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+  - rackup  # start a Web server
+  - sleep 3 # give Web server some time to bind to sockets, etc
 
 script:
   # - npm run test-headless
