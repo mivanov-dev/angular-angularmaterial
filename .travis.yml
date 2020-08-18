@@ -36,7 +36,7 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation libxml2-dev
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
-  - google-chrome-stable --headless --remote-debugging-port=9222 http://localhost:4200/
+  - google-chrome-stable --headless --no-sandbox --remote-debugging-port=9222 http://localhost:4200/ &
 
 install:
   - npm set progress=false
