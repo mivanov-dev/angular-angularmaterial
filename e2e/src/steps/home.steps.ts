@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { Given, When, Then, setDefaultTimeout, BeforeAll } from 'cucumber';
 import { browser, ExpectedConditions as EC } from 'protractor';
-const ms = require('ms');
 // custom
 import { App } from '../app';
 import { HomePage } from '../pages/home.po';
@@ -9,16 +8,14 @@ import { HomePage } from '../pages/home.po';
 let homePage: HomePage;
 let app: App;
 
-// setDefaultTimeout(ms('1m'));
+setDefaultTimeout(60 * 1000);
 
-BeforeAll({ timeout: ms('1m') }, async () => {
+BeforeAll(() => {
 
-  setDefaultTimeout(ms('1m'));
+  setDefaultTimeout(60 * 1000);
 
   app = new App();
   homePage = new HomePage();
-
-  return await browser.waitForAngularEnabled(false);
 
 });
 
@@ -30,16 +27,16 @@ Given(/^web browser is on home page$/,
   });
 
 When(/^I load application$/,
-  async () => {
+  () => {
 
-    // await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
-    let element: boolean = await (app.getLoadingIndicator().isDisplayed() as Promise<boolean>);
-    console.log('BEFORE', element);
-
-    await browser.wait(async () => await app.getLoadingIndicator().isDisplayed());
-
-    element = await (app.getLoadingIndicator().isDisplayed() as Promise<boolean>);
-    console.log('AFTER', element);
+    return browser
+      .wait(EC.visibilityOf(app.getLoadingIndicator()))
+      .then(res => {
+        console.log(1, res);
+      })
+      .catch(e => {
+        throw new Error('FAIL');
+      });
 
   });
 
