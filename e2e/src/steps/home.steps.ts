@@ -9,7 +9,7 @@ import { HomePage } from '../pages/home.po';
 let homePage: HomePage;
 let app: App;
 
-setDefaultTimeout(ms('20s'));
+// setDefaultTimeout(ms('20s'));
 
 Before(async () => {
 
