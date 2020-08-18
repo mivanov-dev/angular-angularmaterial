@@ -37,7 +37,8 @@ exports.config = {
         require('ts-node').register({
             project: require('path').join(__dirname, './tsconfig.json')
         }),
-        require('protractor').browser.driver.manage().timeouts().setScriptTimeout(60000);
+        // require('protractor').browser.driver.manage().timeouts().setScriptTimeout(60000);
+        require('protractor').browser.ignoreSynchronization = true;
     },
     onComplete() {
         var reporter = require('cucumber-html-reporter');
@@ -52,4 +53,5 @@ exports.config = {
         reporter.generate(options);
     },
     SELENIUM_PROMISE_MANAGER: false,
+    seleniumAddress: "http://127.0.0.1:4444/wd/hub",
 };

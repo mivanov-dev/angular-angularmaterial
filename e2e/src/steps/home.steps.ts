@@ -15,6 +15,8 @@ BeforeAll({ timeout: ms('1m') }, () => {
 
   setDefaultTimeout(ms('1m'));
 
+  browser.waitForAngularEnabled(false);
+
   app = new App();
   homePage = new HomePage();
 
