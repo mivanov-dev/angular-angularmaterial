@@ -11,10 +11,12 @@ let app: App;
 
 setDefaultTimeout(ms('1m'));
 
-Before(() => {
+Before(async () => {
 
   app = new App();
   homePage = new HomePage();
+
+  await browser.waitForAngularEnabled(false);
 
 });
 
