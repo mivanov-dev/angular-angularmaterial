@@ -1,6 +1,10 @@
-import { expect } from 'chai';
+import * as chai from 'chai';
+import * as chaiAsPromised from 'chai-as-promised';
 import { Given, When, Then, setDefaultTimeout, BeforeAll } from 'cucumber';
 import { browser, ExpectedConditions as EC } from 'protractor';
+
+chai.use(chaiAsPromised);
+const { expect, should, assert }  = chai;
 // custom
 import { App } from '../app';
 import { HomePage } from '../pages/home.po';
@@ -11,8 +15,6 @@ let app: App;
 setDefaultTimeout(60 * 1000);
 
 BeforeAll(() => {
-
-  setDefaultTimeout(60 * 1000);
 
   app = new App();
   homePage = new HomePage();

@@ -34,7 +34,8 @@ exports.config = {
     onPrepare() {
         require('ts-node').register({
             project: require('path').join(__dirname, './tsconfig.json')
-        })
+        });
+        require('protractor').browser.ignoreSynchronization = true;
     },
     onComplete() {
         var reporter = require('cucumber-html-reporter');

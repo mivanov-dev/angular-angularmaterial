@@ -6,7 +6,7 @@
  * @type { import("protractor").Config }
  */
 exports.config = {
-  allScriptsTimeout: 11000,
+  allScriptsTimeout: 60000,
   specs: ['./src/features/**/*.feature'],
   capabilities: {
     browserName: 'chrome'
@@ -24,7 +24,8 @@ exports.config = {
   onPrepare() {
     require('ts-node').register({
       project: require('path').join(__dirname, './tsconfig.json')
-    })
+    });
+    require('protractor').browser.ignoreSynchronization = true;
   },
   onComplete() {
     var reporter = require('cucumber-html-reporter');
@@ -38,5 +39,6 @@ exports.config = {
     };
     reporter.generate(options);
   },
-  SELENIUM_PROMISE_MANAGER: false
+  SELENIUM_PROMISE_MANAGER: false,
+  seleniumAddress: "http://127.0.0.1:4444/wd/hub",
 };
