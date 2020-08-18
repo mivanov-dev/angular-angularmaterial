@@ -31,7 +31,11 @@ When(/^I load application$/,
   async () => {
 
     // await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
+    let element: boolean = await (app.getLoadingIndicator().isDisplayed() as Promise<boolean>);
+    console.log('BEFORE', element);
     await browser.wait(async () => await app.getLoadingIndicator().isDisplayed());
+    element = await (app.getLoadingIndicator().isDisplayed() as Promise<boolean>);
+    console.log('AFTER', element);
 
   });
 
