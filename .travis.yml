@@ -1,8 +1,8 @@
-os: linux
+# os: linux
 
-dist: xenial
+dist: trusty
 
-sudo: true
+sudo: false
 
 language: node_js
 
@@ -16,17 +16,15 @@ branches:
 notifications:
   email: false
 
-# addons:
-#   apt:
-#     sources:
-#       - google-chrome
-#     packages:
-#       - google-chrome-stable
 addons:
-  chrome: stable
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 
 cache:
-  npm: true
+  # npm: true
   directories:
     - node_modules
 

@@ -15,7 +15,6 @@ Before(() => {
 
   app = new App();
   homePage = new HomePage();
-  browser.waitForAngularEnabled(false);
 
 });
 

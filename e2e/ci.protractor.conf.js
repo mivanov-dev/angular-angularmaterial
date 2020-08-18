@@ -11,7 +11,7 @@ exports.config = {
     capabilities: {
         browserName: 'chrome',
         chromeOptions: {
-            'args': [
+            args: [
                 // '--disable-translate',
                 // '--disable-extensions',
                 // '--remote-debugging-port=9223',
