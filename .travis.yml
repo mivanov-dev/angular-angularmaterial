@@ -47,7 +47,5 @@ before_script:
 
 script:
   - npm run test-headless
-  - ./node_modules/.bin/webdriver-manager update
-  - ./node_modules/.bin/webdriver-manager start
   - npm run e2e-headless
   # - npm run build:ssr

@@ -27,16 +27,9 @@ Given(/^web browser is on home page$/,
   });
 
 When(/^I load application$/,
-  () => {
+  async () => {
 
-    return browser
-      .wait(EC.visibilityOf(app.getLoadingIndicator()))
-      .then(res => {
-        console.log(1, res);
-      })
-      .catch(e => {
-        throw new Error('FAIL');
-      });
+    return await browser.driver.wait(EC.visibilityOf(app.getLoadingIndicator()));
 
   });
 
