@@ -6,8 +6,8 @@
  * @type { import("protractor").Config }
  */
 exports.config = {
-    getPageTimeout: 20000,
-    allScriptsTimeout: 20000,
+    getPageTimeout: 60000,
+    allScriptsTimeout: 60000,
     specs: ['./src/features/**/*.feature'],
     capabilities: {
         browserName: 'chrome',
@@ -35,7 +35,8 @@ exports.config = {
     onPrepare() {
         require('ts-node').register({
             project: require('path').join(__dirname, './tsconfig.json')
-        })
+        }),
+        require('protractor').browser.driver.manage().timeouts().setScriptTimeout(60000);
     },
     onComplete() {
         var reporter = require('cucumber-html-reporter');
