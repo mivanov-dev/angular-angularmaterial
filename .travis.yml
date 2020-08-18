@@ -1,0 +1,43 @@
+os: linux
+
+dist: xenial
+
+sudo: true
+
+language: node_js
+
+node_js:
+  - "10"
+
+branches:
+  only:
+    - travis
+
+notifications:
+  email: false
+
+# addons:
+#   apt:
+#     sources:
+#       - google-chrome
+#     packages:
+#       - google-chrome-stable
+addons:
+  chrome: stable
+
+cache:
+  npm: true
+  directories:
+    - node_modules
+
+before_install:
+  - export NG_CLI_ANALYTICS=ci
+
+install:
+  - npm set progress=false
+  - npm install
+
+script:
+  # - npm run test-headless
+  - npm run e2e-headless
+  # - npm run build:ssr
