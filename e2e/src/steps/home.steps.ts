@@ -11,14 +11,14 @@ let app: App;
 
 // setDefaultTimeout(ms('1m'));
 
-BeforeAll({ timeout: ms('1m') }, () => {
+BeforeAll({ timeout: ms('1m') }, async () => {
 
   setDefaultTimeout(ms('1m'));
 
-  browser.waitForAngularEnabled(false);
-
   app = new App();
   homePage = new HomePage();
+
+  return await browser.waitForAngularEnabled(false);
 
 });
 
@@ -35,7 +35,9 @@ When(/^I load application$/,
     // await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
     let element: boolean = await (app.getLoadingIndicator().isDisplayed() as Promise<boolean>);
     console.log('BEFORE', element);
+
     await browser.wait(async () => await app.getLoadingIndicator().isDisplayed());
+
     element = await (app.getLoadingIndicator().isDisplayed() as Promise<boolean>);
     console.log('AFTER', element);
 
