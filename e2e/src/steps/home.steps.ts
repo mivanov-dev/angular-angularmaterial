@@ -33,14 +33,12 @@ When(/^I load application$/,
   async () => {
 
     await browser.waitForAngularEnabled(false);
-
     await browser.driver
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
         5000,
         '#loading-box is not visible'
       );
-
   });
 
 Then(/^I should see the loading indicator$/,
