@@ -38,7 +38,7 @@ exports.config = {
         })
 
         const protractor = require('protractor');
-        protractor.browser.manage().timeouts().implicitlyWait(5000);
+        protractor.browser.manage().timeouts().implicitlyWait(20000);
     },
     onComplete() {
         var reporter = require('cucumber-html-reporter');
