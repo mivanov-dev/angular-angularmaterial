@@ -94,6 +94,8 @@ Then(/^I should't see more loading indicator$/,
 
 AfterAll(() => {
 
-  return browser.driver.quit();
+  setTimeout(() => {
+    browser.driver.quit();
+  }, 100);
 
 });
