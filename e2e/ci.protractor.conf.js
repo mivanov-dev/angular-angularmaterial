@@ -5,8 +5,6 @@
 /**
  * @type { import("protractor").Config }
  */
-import { browser } from 'protractor';
-
 exports.config = {
     getPageTimeout: 10000,
     allScriptsTimeout: 10000,
@@ -38,7 +36,9 @@ exports.config = {
         require('ts-node').register({
             project: require('path').join(__dirname, './tsconfig.json')
         })
-        browser.manage().timeouts().implicitlyWait(5000);
+        
+        const protractor = require('protractor');
+        protractor.browser.manage().timeouts().implicitlyWait(5000);
     },
     onComplete() {
         var reporter = require('cucumber-html-reporter');
