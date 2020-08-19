@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Before, Given, When, Then, setDefaultTimeout, AfterAll, BeforeAll } from 'cucumber';
+import { Before, Given, When, Then, setDefaultTimeout, AfterAll } from 'cucumber';
 import { browser, ExpectedConditions as EC, element, by } from 'protractor';
 const ms = require('ms');
 // custom
