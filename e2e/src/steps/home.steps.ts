@@ -88,14 +88,20 @@ When(/^I finish with the loading process$/,
 Then(/^I should't see more loading indicator$/,
   async () => {
 
-    expect(await app.getLoadingIndicator().getCssValue('display')).to.be.equal('none');
+    try {
+      expect(await app.getLoadingIndicator().getCssValue('display')).to.be.equal('none');
+    } catch (error) {
+      browser.takeScreenshot().then(res => writeScreenShot(res, 'cucumber.png'));
+    }
 
   });
 
 AfterAll(() => {
 
   setTimeout(() => {
+
     browser.driver.quit();
+
   }, 100);
 
 });
