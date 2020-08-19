@@ -46,6 +46,7 @@ When(/^I load application$/,
 Then(/^I should see the loading indicator$/,
   async () => {
 
+    await browser.waitForAngularEnabled(true);
     expect(await app.getLoadingIndicator().getCssValue('display')).to.be.not.equal('none');
 
   });
