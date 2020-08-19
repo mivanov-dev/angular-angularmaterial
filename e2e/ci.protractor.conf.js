@@ -5,9 +5,11 @@
 /**
  * @type { import("protractor").Config }
  */
+import { browser } from 'protractor';
+
 exports.config = {
-    getPageTimeout: 11000,
-    allScriptsTimeout: 11000,
+    getPageTimeout: 10000,
+    allScriptsTimeout: 10000,
     specs: ['./src/features/**/*.feature'],
     capabilities: {
         browserName: 'chrome',
@@ -36,6 +38,7 @@ exports.config = {
         require('ts-node').register({
             project: require('path').join(__dirname, './tsconfig.json')
         })
+        browser.manage().timeouts().implicitlyWait(5000);
     },
     onComplete() {
         var reporter = require('cucumber-html-reporter');
