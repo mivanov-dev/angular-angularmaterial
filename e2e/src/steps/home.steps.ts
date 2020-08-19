@@ -41,12 +41,13 @@ When(/^I load application$/,
         '#loading-box is not visible'
       );
 
+    return browser.waitForAngularEnabled(true);
+
   });
 
 Then(/^I should see the loading indicator$/,
   async () => {
 
-    browser.waitForAngularEnabled(true);
     expect(await app.getLoadingIndicator().getCssValue('display')).to.be.not.equal('none');
 
   });
