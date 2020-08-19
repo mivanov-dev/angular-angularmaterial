@@ -32,13 +32,15 @@ Given(/^web browser is on home page$/,
 When(/^I load application$/,
   async () => {
 
-    await browser.waitForAngularEnabled(false);
-    await browser.driver
+    // await browser.waitForAngularEnabled(false);
+    await browser.manage().timeouts().implicitlyWait(0);
+    await browser
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
         5000,
         '#loading-box is not visible'
       );
+    browser.manage().timeouts().implicitlyWait(5000);
   });
 
 Then(/^I should see the loading indicator$/,

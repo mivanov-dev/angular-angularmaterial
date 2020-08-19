@@ -22,7 +22,7 @@ exports.config = {
             ]
         }
     },
-    directConnect: false,
+    directConnect: true,
     baseUrl: 'http://localhost:4200/',
     framework: 'custom',
     frameworkPath: require.resolve('protractor-cucumber-framework'),
@@ -36,7 +36,7 @@ exports.config = {
         require('ts-node').register({
             project: require('path').join(__dirname, './tsconfig.json')
         })
-        
+
         const protractor = require('protractor');
         protractor.browser.manage().timeouts().implicitlyWait(5000);
     },
@@ -53,6 +53,5 @@ exports.config = {
         reporter.generate(options);
     },
     SELENIUM_PROMISE_MANAGER: false,
-    // seleniumAddress: 'http://localhost:4444/wd/hub',
-    seleniumServerJar: '../node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.141.59.jar'
+    seleniumAddress: 'http://localhost:4444/wd/hub',
 };
