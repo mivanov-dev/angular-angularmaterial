@@ -21,7 +21,7 @@ Before(async () => {
 Given(/^web browser is on home page$/,
   async () => {
 
-    await browser.waitForAngularEnabled(false);
+    browser.waitForAngularEnabled(false);
     await homePage.navigateTo();
 
   });
@@ -29,11 +29,11 @@ Given(/^web browser is on home page$/,
 When(/^I load application$/,
   async () => {
 
-    await browser.waitForAngularEnabled(false);
+    browser.waitForAngularEnabled(false);
     await browser
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
-        ms('1m'),
+        5000,
         '#loading-box is not visible'
       );
 
