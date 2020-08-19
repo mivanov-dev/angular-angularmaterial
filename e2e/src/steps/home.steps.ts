@@ -44,7 +44,6 @@ When(/^I load application$/,
 Then(/^I should see the loading indicator$/,
   async () => {
 
-    browser.waitForAngularEnabled(true);
     expect(await app.getLoadingIndicator().getCssValue('display')).to.be.not.equal('none');
 
   });
@@ -52,7 +51,6 @@ Then(/^I should see the loading indicator$/,
 Then(/^I should see the title "([^"]*)?"$/,
   async (title) => {
 
-    await browser.waitForAngularEnabled(true);
     expect(await homePage.getTitleText()).to.be.equal(title);
 
   });
@@ -60,8 +58,7 @@ Then(/^I should see the title "([^"]*)?"$/,
 When(/^I finish with the loading process$/,
   async () => {
 
-    await browser.waitForAngularEnabled(true);
-    browser
+    await browser
       .wait(
         EC.invisibilityOf(
           app.getLoadingIndicator()),
@@ -74,7 +71,6 @@ When(/^I finish with the loading process$/,
 Then(/^I should't see more loading indicator$/,
   async () => {
 
-    await browser.waitForAngularEnabled(true);
     expect(await app.getLoadingIndicator().getCssValue('display')).to.be.equal('none');
 
   });
