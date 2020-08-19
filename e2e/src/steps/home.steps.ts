@@ -11,13 +11,9 @@ let app: App;
 
 setDefaultTimeout(ms('1m'));
 
-BeforeAll(async () => {
+Before(async () => {
 
-  return await browser.waitForAngularEnabled(false);
-
-});
-
-Before(() => {
+  await browser.waitForAngularEnabled(false);
 
   app = new App();
   homePage = new HomePage();
@@ -27,7 +23,7 @@ Before(() => {
 Given(/^web browser is on home page$/,
   async () => {
 
-    await browser.waitForAngularEnabled(false);
+    // await browser.waitForAngularEnabled(false);
 
     await homePage.navigateTo();
 
@@ -44,6 +40,7 @@ When(/^I load application$/,
         5000,
         '#loading-box is not visible'
       );
+
   });
 
 Then(/^I should see the loading indicator$/,
