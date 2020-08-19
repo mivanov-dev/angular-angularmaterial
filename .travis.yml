@@ -46,7 +46,7 @@ before_script:
   - export NG_CLI_ANALYTICS=ci
 
 script:
-  # - npm run test-headless
+  - npm run test-headless
   - npm run wmu
   - npm run e2e-headless
-  # - npm run build:ssr
+  - npm run build:ssr
