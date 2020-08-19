@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Before, Given, When, Then, setDefaultTimeout, AfterAll } from 'cucumber';
+import { Before, Given, When, Then, setDefaultTimeout, AfterAll, BeforeAll } from 'cucumber';
 import { browser, ExpectedConditions as EC } from 'protractor';
 const ms = require('ms');
 // custom
@@ -11,9 +11,13 @@ let app: App;
 
 setDefaultTimeout(ms('1m'));
 
-Before(async () => {
+BeforeAll(async () => {
 
-  await browser.waitForAngularEnabled(false);
+  return await browser.waitForAngularEnabled(false);
+
+});
+
+Before(() => {
 
   app = new App();
   homePage = new HomePage();
@@ -33,13 +37,13 @@ When(/^I load application$/,
   async () => {
 
     browser.waitForAngularEnabled(false);
+
     await browser
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
         5000,
         '#loading-box is not visible'
       );
-    browser.waitForAngularEnabled(true);
   });
 
 Then(/^I should see the loading indicator$/,
