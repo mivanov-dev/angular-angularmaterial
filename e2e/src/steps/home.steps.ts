@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { Before, Given, When, Then, setDefaultTimeout, AfterAll, BeforeAll } from 'cucumber';
-import { browser, ExpectedConditions as EC } from 'protractor';
+import { browser, ExpectedConditions as EC, element, by } from 'protractor';
 const ms = require('ms');
 // custom
 import { App } from '../app';
@@ -23,8 +23,6 @@ Before(async () => {
 Given(/^web browser is on home page$/,
   async () => {
 
-    // await browser.waitForAngularEnabled(false);
-
     await homePage.navigateTo();
 
   });
@@ -46,8 +44,7 @@ When(/^I load application$/,
 Then(/^I should see the loading indicator$/,
   async () => {
 
-    browser.ignoreSynchronization = true;
-    expect(await app.getLoadingIndicator().getCssValue('display')).to.be.not.equal('none');
+    expect(await browser.driver.findElement(by.id('loading-box')).getCssValue('display')).to.be.not.equal('none');
 
   });
 
