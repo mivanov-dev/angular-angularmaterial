@@ -33,7 +33,7 @@ When(/^I load application$/,
   async () => {
 
     await browser.waitForAngularEnabled(true);
-    browser
+    await browser
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
         5000,
