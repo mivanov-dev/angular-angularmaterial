@@ -6,6 +6,7 @@
  * @type { import("protractor").Config }
  */
 exports.config = {
+  getPageTimeout: 11000,
   allScriptsTimeout: 11000,
   specs: ['./src/features/**/*.feature'],
   capabilities: {
@@ -38,5 +39,6 @@ exports.config = {
     };
     reporter.generate(options);
   },
-  SELENIUM_PROMISE_MANAGER: false
+  SELENIUM_PROMISE_MANAGER: false,
+  seleniumAddress: 'http://localhost:4444/wd/hub',
 };

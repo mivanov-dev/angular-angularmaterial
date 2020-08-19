@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Before, Given, When, Then, setDefaultTimeout } from 'cucumber';
+import { Before, Given, When, Then, setDefaultTimeout, AfterAll } from 'cucumber';
 import { browser, ExpectedConditions as EC } from 'protractor';
 const ms = require('ms');
 // custom
@@ -11,17 +11,17 @@ let app: App;
 
 setDefaultTimeout(ms('1m'));
 
-Before(() => {
+Before(async () => {
 
   app = new App();
   homePage = new HomePage();
-  browser.waitForAngularEnabled(false);
 
 });
 
 Given(/^web browser is on home page$/,
   async () => {
 
+    await browser.waitForAngularEnabled(false);
     await homePage.navigateTo();
 
   });
@@ -29,7 +29,12 @@ Given(/^web browser is on home page$/,
 When(/^I load application$/,
   async () => {
 
-    await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
+    await browser
+      .wait(
+        EC.visibilityOf(app.getLoadingIndicator()),
+        5000,
+        '#loading-box is not visible'
+      );
 
   });
 
@@ -50,7 +55,13 @@ Then(/^I should see the title "([^"]*)?"$/,
 When(/^I finish with the loading process$/,
   async () => {
 
-    await browser.wait(EC.invisibilityOf(app.getLoadingIndicator()));
+    await browser
+      .wait(
+        EC.invisibilityOf(
+          app.getLoadingIndicator()),
+        5000,
+        '#loading-box is visible'
+      );
 
   });
 
@@ -60,3 +71,9 @@ Then(/^I should't see more loading indicator$/,
     expect(await app.getLoadingIndicator().getCssValue('display')).to.be.equal('none');
 
   });
+
+AfterAll(() => {
+
+  return browser.driver.quit();
+
+});
