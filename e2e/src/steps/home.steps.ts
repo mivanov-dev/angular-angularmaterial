@@ -32,9 +32,9 @@ Given(/^web browser is on home page$/,
 When(/^I load application$/,
   async () => {
 
-    browser.waitForAngularEnabled(false);
+    await browser.waitForAngularEnabled(false);
 
-    await browser
+    browser
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
         5000,
