@@ -52,6 +52,6 @@ exports.config = {
         };
         reporter.generate(options);
     },
-    SELENIUM_PROMISE_MANAGER: false,
-    seleniumAddress: 'http://localhost:4444/wd/hub',
+    // SELENIUM_PROMISE_MANAGER: false,
+    // seleniumAddress: 'http://localhost:4444/wd/hub',
 };
