@@ -16,12 +16,14 @@ Before(async () => {
   app = new App();
   homePage = new HomePage();
 
+  return await browser.waitForAngularEnabled(false);
+
 });
 
 Given(/^web browser is on home page$/,
   async () => {
 
-    browser.waitForAngularEnabled(false);
+    await browser.waitForAngularEnabled(false);
     await homePage.navigateTo();
 
   });
@@ -29,7 +31,7 @@ Given(/^web browser is on home page$/,
 When(/^I load application$/,
   async () => {
 
-    browser.waitForAngularEnabled(false);
+    await browser.waitForAngularEnabled(false);
     await browser
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
