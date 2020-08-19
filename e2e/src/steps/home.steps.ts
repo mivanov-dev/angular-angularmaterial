@@ -9,11 +9,16 @@ import { HomePage } from '../pages/home.po';
 let homePage: HomePage;
 let app: App;
 
+function writeScreenShot(data: string, filename: string): void {
+  const stream = require('fs').createWriteStream(`./e2e/report/${filename}`);
+  // tslint:disable-next-line: deprecation
+  stream.write(new Buffer(data, 'base64'));
+  stream.end();
+}
+
 setDefaultTimeout(ms('1m'));
 
 Before(async () => {
-
-  await browser.waitForAngularEnabled(false);
 
   app = new App();
   homePage = new HomePage();
@@ -44,14 +49,26 @@ When(/^I load application$/,
 Then(/^I should see the loading indicator$/,
   async () => {
 
-    expect(await browser.driver.findElement(by.id('loading-box')).getCssValue('display')).to.be.not.equal('none');
+    browser.waitForAngularEnabled(false);
+
+    try {
+      expect(await (app.getLoadingIndicator().getCssValue('display') as Promise<string>)).to.be.not.equal('none');
+    } catch (error) {
+      browser.takeScreenshot().then(res => writeScreenShot(res, 'cucumber.png'));
+    }
 
   });
 
 Then(/^I should see the title "([^"]*)?"$/,
   async (title) => {
 
-    expect(await homePage.getTitleText()).to.be.equal(title);
+    browser.waitForAngularEnabled(false);
+
+    try {
+      expect(await homePage.getTitleText()).to.be.equal(title);
+    } catch (error) {
+      browser.takeScreenshot().then(res => writeScreenShot(res, 'cucumber.png'));
+    }
 
   });
 

@@ -49,6 +49,8 @@ exports.config = {
             reportSuiteAsScenarios: true,
             scenarioTimestamp: true,
             launchReport: true,
+            screenshotsDirectory: `${__dirname}\\report\\`,
+            storeScreenshots: true
         };
         reporter.generate(options);
     },
