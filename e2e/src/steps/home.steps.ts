@@ -13,10 +13,10 @@ setDefaultTimeout(ms('1m'));
 
 Before(async () => {
 
+  await browser.waitForAngularEnabled(false);
+
   app = new App();
   homePage = new HomePage();
-
-  return await browser.waitForAngularEnabled(false);
 
 });
 
@@ -24,6 +24,7 @@ Given(/^web browser is on home page$/,
   async () => {
 
     await browser.waitForAngularEnabled(false);
+
     await homePage.navigateTo();
 
   });
@@ -32,7 +33,8 @@ When(/^I load application$/,
   async () => {
 
     await browser.waitForAngularEnabled(false);
-    await browser
+
+    await browser.driver
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
         5000,
