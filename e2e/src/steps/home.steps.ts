@@ -33,7 +33,7 @@ When(/^I load application$/,
     await browser
       .wait(
         EC.visibilityOf(app.getLoadingIndicator()),
-        5000,
+        ms('1m'),
         '#loading-box is not visible'
       );
 
