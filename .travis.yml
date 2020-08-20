@@ -14,7 +14,7 @@ node_js:
 
 branches:
   only:
-    - travis
+    - master
 
 notifications:
   email: false
