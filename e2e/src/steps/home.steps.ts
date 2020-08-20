@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Before, Given, When, Then, setDefaultTimeout } from 'cucumber';
+import { Before, Given, When, Then, setDefaultTimeout, AfterAll } from 'cucumber';
 import { browser, ExpectedConditions as EC } from 'protractor';
 const ms = require('ms');
 // custom
@@ -9,13 +9,19 @@ import { HomePage } from '../pages/home.po';
 let homePage: HomePage;
 let app: App;
 
+function writeScreenShot(data: string, filename: string): void {
+  const stream = require('fs').createWriteStream(`./e2e/report/${filename}`);
+  // tslint:disable-next-line: deprecation
+  stream.write(new Buffer(data, 'base64'));
+  stream.end();
+}
+
 setDefaultTimeout(ms('1m'));
 
-Before(() => {
+Before(async () => {
 
   app = new App();
   homePage = new HomePage();
-  browser.waitForAngularEnabled(false);
 
 });
 
@@ -29,34 +35,73 @@ Given(/^web browser is on home page$/,
 When(/^I load application$/,
   async () => {
 
-    await browser.wait(EC.visibilityOf(app.getLoadingIndicator()));
+    await browser.waitForAngularEnabled(false);
+
+    browser
+      .wait(
+        EC.visibilityOf(app.getLoadingIndicator()),
+        5000,
+        '#loading-box is not visible'
+      );
 
   });
 
 Then(/^I should see the loading indicator$/,
   async () => {
 
-    expect(await app.getLoadingIndicator().getCssValue('display')).to.be.not.equal('none');
+    browser.waitForAngularEnabled(false);
+
+    try {
+      expect(await (app.getLoadingIndicator().getCssValue('display') as Promise<string>)).to.be.not.equal('none');
+    } catch (error) {
+      browser.takeScreenshot().then(res => writeScreenShot(res, 'cucumber.png'));
+    }
 
   });
 
 Then(/^I should see the title "([^"]*)?"$/,
   async (title) => {
 
-    expect(await homePage.getTitleText()).to.be.equal(title);
+    browser.waitForAngularEnabled(false);
+
+    try {
+      expect(await homePage.getTitleText()).to.be.equal(title);
+    } catch (error) {
+      browser.takeScreenshot().then(res => writeScreenShot(res, 'cucumber.png'));
+    }
 
   });
 
 When(/^I finish with the loading process$/,
   async () => {
 
-    await browser.wait(EC.invisibilityOf(app.getLoadingIndicator()));
+    await browser
+      .wait(
+        EC.invisibilityOf(
+          app.getLoadingIndicator()),
+        5000,
+        '#loading-box is visible'
+      );
 
   });
 
 Then(/^I should't see more loading indicator$/,
   async () => {
 
-    expect(await app.getLoadingIndicator().getCssValue('display')).to.be.equal('none');
+    try {
+      expect(await app.getLoadingIndicator().getCssValue('display')).to.be.equal('none');
+    } catch (error) {
+      browser.takeScreenshot().then(res => writeScreenShot(res, 'cucumber.png'));
+    }
 
   });
+
+AfterAll(() => {
+
+  setTimeout(() => {
+
+    browser.driver.quit();
+
+  }, 100);
+
+});

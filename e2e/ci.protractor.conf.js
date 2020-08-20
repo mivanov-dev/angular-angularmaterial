@@ -6,7 +6,8 @@
  * @type { import("protractor").Config }
  */
 exports.config = {
-    allScriptsTimeout: 11000,
+    getPageTimeout: 10000,
+    allScriptsTimeout: 10000,
     specs: ['./src/features/**/*.feature'],
     capabilities: {
         browserName: 'chrome',
@@ -35,6 +36,9 @@ exports.config = {
         require('ts-node').register({
             project: require('path').join(__dirname, './tsconfig.json')
         })
+
+        const protractor = require('protractor');
+        protractor.browser.manage().timeouts().implicitlyWait(20000);
     },
     onComplete() {
         var reporter = require('cucumber-html-reporter');
@@ -45,8 +49,11 @@ exports.config = {
             reportSuiteAsScenarios: true,
             scenarioTimestamp: true,
             launchReport: true,
+            screenshotsDirectory: `${__dirname}\\report\\`,
+            storeScreenshots: true
         };
         reporter.generate(options);
     },
     SELENIUM_PROMISE_MANAGER: false,
+    seleniumAddress: 'http://localhost:4444/wd/hub',
 };

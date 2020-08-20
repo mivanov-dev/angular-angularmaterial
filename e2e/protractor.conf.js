@@ -6,6 +6,7 @@
  * @type { import("protractor").Config }
  */
 exports.config = {
+  getPageTimeout: 11000,
   allScriptsTimeout: 11000,
   specs: ['./src/features/**/*.feature'],
   capabilities: {
@@ -25,6 +26,9 @@ exports.config = {
     require('ts-node').register({
       project: require('path').join(__dirname, './tsconfig.json')
     })
+
+    const protractor = require('protractor');
+    protractor.browser.manage().timeouts().implicitlyWait(20000);
   },
   onComplete() {
     var reporter = require('cucumber-html-reporter');
@@ -38,5 +42,6 @@ exports.config = {
     };
     reporter.generate(options);
   },
-  SELENIUM_PROMISE_MANAGER: false
+  SELENIUM_PROMISE_MANAGER: false,
+  seleniumAddress: 'http://localhost:4444/wd/hub',
 };

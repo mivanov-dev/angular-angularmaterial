@@ -6,7 +6,7 @@ Feature: Test Home page
         Given web browser is on home page
         When I load application
         Then I should see the loading indicator
-        Then I should see the title "AngularAngularMaterial"
+        And I should see the title "AngularAngularMaterial"
         When I finish with the loading process
         Then I should't see more loading indicator
-        Then I should see the title "Home | AngularAngularMaterial"
+        And I should see the title "Home | AngularAngularMaterial"
