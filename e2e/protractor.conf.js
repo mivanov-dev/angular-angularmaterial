@@ -19,12 +19,12 @@ exports.config = {
   cucumberOpts: {
     require: ['./src/steps/**/*.steps.ts'],
     format: [
-      `json:${__dirname}\\report\\cucumber.json`
+      `json:${require('path').join(__dirname, 'report', 'cucumber.json')}`
     ],
   },
   onPrepare() {
     require('ts-node').register({
-      project: require('path').join(__dirname, './tsconfig.json')
+      project: require('path').join(__dirname, 'tsconfig.json')
     })
 
     const protractor = require('protractor');
@@ -34,14 +34,15 @@ exports.config = {
     var reporter = require('cucumber-html-reporter');
     var options = {
       theme: 'bootstrap',
-      jsonFile: `${__dirname}\\report\\cucumber.json`,
-      output: `${__dirname}\\report\\cucumber.html`,
+      jsonFile: require('path').join(__dirname, 'report', 'cucumber.json'),
+      output: require('path').join(__dirname, 'report', 'cucumber.html'),
       reportSuiteAsScenarios: true,
       scenarioTimestamp: true,
       launchReport: true,
+      screenshotsDirectory: require('path').join(__dirname, 'report'),
+      storeScreenshots: true
     };
     reporter.generate(options);
   },
-  SELENIUM_PROMISE_MANAGER: false,
-  seleniumAddress: 'http://localhost:4444/wd/hub',
+  SELENIUM_PROMISE_MANAGER: false
 };
