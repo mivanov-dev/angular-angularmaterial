@@ -1,5 +1,38 @@
 version: "3.3"
 services:
+  selenium:
+    image: selenium/hub
+    container_name: selenium
+    privileged: true
+    expose:
+      - 4444
+    ports:
+      - "4444:4444"
+    environment:
+      - GRID_HUB_PORT=4444
+    networks:
+      - backend
+  chrome:
+    image: selenium/node-chrome
+    container_name: chrome
+    privileged: true
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium
+    expose:
+      - 5555
+      - 5900
+    ports:
+      - "5555:5555"
+      - "5900:5900"
+    environment:
+      - HUB_HOST=selenium
+      - HUB_PORT=4444
+      - HUB_PORT_4444_TCP_ADDR=selenium
+      - HUB_PORT_4444_TCP_PORT=4444
+    networks:
+      - backend
   angular:
     container_name: angular
     build:
@@ -12,6 +45,9 @@ services:
       - backend
     volumes:
       - './:/usr/src/app'
+    depends_on:
+      - chrome
+      - selenium
   nginx:
     container_name: nginx
     build:
