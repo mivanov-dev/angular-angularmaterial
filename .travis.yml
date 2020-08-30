@@ -47,5 +47,4 @@ before_script:
 
 script:
   - npm run test-headless
-  - npm run wmu
   - npm run e2e-headless

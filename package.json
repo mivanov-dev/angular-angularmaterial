@@ -18,9 +18,7 @@
     "ssr": "npm run build:ssr && npm run serve:ssr",
     "prerender": "ng run angular-angularmaterial:prerender",
     "preinstall": "npm i -g @angular/cli typescript tslint node-sass",
-    "docker:deploy": "docker-compose -f \"docker-compose.yml\" up -d --build",
-    "wmu": ".\\node_modules\\.bin\\webdriver-manager update",
-    "wmc": ".\\node_modules\\.bin\\webdriver-manager clean"
+    "docker:deploy": "docker-compose -f \"docker-compose.yml\" up -d --build"
   },
   "config": {
     "unsafe-perm": true
