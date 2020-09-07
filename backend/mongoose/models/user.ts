@@ -63,7 +63,7 @@ userSchema.statics.authenticate = async function(body: { email: string, password
     const user: any = this;
     const { email, password } = body;
     const result = await user.findOne({ email })
-        .select('email, password')
+        .select('email password')
         .populate({
             path: 'imageId',
             model: UserImage,
@@ -86,7 +86,11 @@ userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
 
     return user.findById(id)
         .select('email')
-        .populate({ path: 'imageId', model: UserImage, select: 'url' })
+        .populate({
+            path: 'imageId',
+            model: UserImage,
+            select: 'url'
+        })
         .exec();
 
 };
