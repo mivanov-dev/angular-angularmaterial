@@ -26,9 +26,8 @@ export class AuthInterceptor implements HttpInterceptor, OnDestroy {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        return this.store$
+        return this.store$.select(fromAuth.selectLogin)
             .pipe(
-                select(fromAuth.selectLogin),
                 takeUntil(this.onDestroy$),
                 take(1),
                 exhaustMap((res) => {

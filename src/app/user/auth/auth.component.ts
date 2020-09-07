@@ -239,10 +239,9 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   private getSuccessfulMessage(): void {
 
-    this.store$
+    this.store$.select(fromAuth.selectRegister)
       .pipe(
         takeUntil(this.onDestroy$),
-        select(fromAuth.selectRegister),
         filter((res): res is fromAuth.Register => res !== null)
       )
       .subscribe((res) => {
@@ -256,10 +255,9 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   private getUnsuccessfulMessage(): void {
 
-    this.store$
+    this.store$.select(fromAuth.selectError)
       .pipe(
         takeUntil(this.onDestroy$),
-        select(fromAuth.selectError),
         filter(res => res !== null)
       )
       .subscribe((res) => this.showAlertMessage(res, true));
@@ -279,10 +277,9 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   private onChangeAuthMode(): void {
 
-    this.store$
+    this.store$.select(fromAuth.selectAuthMode)
       .pipe(
-        takeUntil(this.onDestroy$),
-        select(fromAuth.selectAuthMode)
+        takeUntil(this.onDestroy$)
       )
       .subscribe(res => {
 

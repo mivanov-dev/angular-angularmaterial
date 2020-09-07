@@ -40,7 +40,6 @@ const routes: Routes = [
 const options: ExtraOptions = {
   useHash: true,
   preloadingStrategy: PreloadAllModules,
-  initialNavigation: 'enabled',
   onSameUrlNavigation: 'reload'
 };
 

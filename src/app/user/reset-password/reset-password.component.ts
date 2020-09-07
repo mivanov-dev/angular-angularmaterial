@@ -53,7 +53,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
               @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
-    this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromResetPassword.selectLoading));
+    this.isLoading$ = this.store$.select(fromResetPassword.selectLoading).pipe(takeUntil(this.onDestroy$));
     this.form = this.initForm();
 
   }
@@ -148,10 +148,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   private getUnsuccessfulMessage(): void {
 
-    this.store$
+    this.store$.select(fromResetPassword.selectError)
       .pipe(
         takeUntil(this.onDestroy$),
-        select(fromResetPassword.selectError),
         filter(res => res !== null)
       )
       .subscribe((res) => this.showAlertMessage(res, true));

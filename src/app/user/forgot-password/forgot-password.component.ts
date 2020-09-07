@@ -47,7 +47,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
               @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
-    this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromForgotPassword.selectLoading));
+    this.isLoading$ = this.store$.select(fromForgotPassword.selectLoading).pipe(takeUntil(this.onDestroy$));
     this.form = this.initForm();
 
   }
@@ -123,10 +123,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
 
   private getSuccessfulMessage(): void {
 
-    this.store$
+    this.store$.select(fromForgotPassword.selectForgotPassword)
       .pipe(
         takeUntil(this.onDestroy$),
-        select(fromForgotPassword.selectForgotPassword),
         filter((res): res is fromForgotPassword.ForgotPassword => res !== null)
       )
       .subscribe((res) => {
@@ -137,10 +136,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
 
   private getUnsuccessfulMessage(): void {
 
-    this.store$
+    this.store$.select(fromForgotPassword.selectError)
       .pipe(
         takeUntil(this.onDestroy$),
-        select(fromForgotPassword.selectError),
         filter(res => res !== null)
       )
       .subscribe((res) => this.showAlertMessage(res, true));

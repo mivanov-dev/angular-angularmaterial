@@ -33,11 +33,10 @@ export class AuthGuard implements CanActivate, OnDestroy {
         activatedRouteSnapshot: ActivatedRouteSnapshot,
         routerStateSnapshot: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
 
-        return this.store$
+        return this.store$.select(fromAuth.selectLogin)
             .pipe(
                 takeUntil(this.onDestroy$),
                 take(1),
-                select(fromAuth.selectLogin),
                 map((user) => {
 
                     const isAuth = user !== null;

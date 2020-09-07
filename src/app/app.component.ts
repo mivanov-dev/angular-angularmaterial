@@ -59,9 +59,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private onLoading(): void {
-    this.store$
+    this.store$.select(fromAuth.selectLoading)
       .pipe(
-        select(fromAuth.selectLoading),
         filter(res => !res)
       )
       .subscribe((res) => {

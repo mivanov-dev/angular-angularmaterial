@@ -37,6 +37,12 @@ const routes: Routes = [{
       resolve: {
         token: TokenResolver
       }
+    }, {
+      path: 'profile',
+      loadChildren: () => import('./profile').then(m => m.ProfileModule),
+      data: {
+        animation: 'reset-password'
+      }
     }
   ]
 }];
