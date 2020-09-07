@@ -1,15 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+// angular
+import { Component, OnInit, OnDestroy } from '@angular/core';
+// ngrx
+import { Store } from '@ngrx/store';
+// rxjs
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+// custom
+import * as fromApp from '../../store';
+import * as fromAuth from '../../user/auth/store';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
-  constructor() { }
 
-  ngOnInit(): void {
+  user$: Observable<fromAuth.Login | null>;
+  userImage = '../../assets/user.png';
+  private onDestroy$: Subject<void> = new Subject<void>();
+
+  constructor(private store$: Store<fromApp.AppState>) {
+
+    this.user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$));
+
+  }
+
+  ngOnInit(): void { }
+
+  ngOnDestroy(): void {
+
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+
   }
 
 }

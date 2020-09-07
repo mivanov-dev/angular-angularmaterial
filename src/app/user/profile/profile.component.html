@@ -6,8 +6,42 @@
          fxLayoutAlign="center center">
 
         <div>
-            <p>Profile information</p>
+            <mat-card fxFlex="350px"
+                      fxFlex.xs="300px">
+                <mat-card-content fxFlex
+                                  fxLayout="column"
+                                  fxLayoutAlign="center center">
+                    <div class="wallpaper"></div>
+                    <div class="menu"
+                         fxFlex
+                         fxFill
+                         fxLayout="row"
+                         fxLayoutAlign="end center">
+                        <button mat-icon-button>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div class="avatar">
+                        <img [src]="(user$ | async)?.image"
+                             [appImageFallback]="userImage"
+                             alt="UserImage">
+                    </div>
+                    <h3 class="username">username</h3>
+                    <p class="location mat-small">
+                        <i class="fas fa-map-marker-alt"></i> location</p>
+                    <p class="email">
+                        <i class="fas fa-envelope"></i> {{ (user$ | async)?.email }}
+                    </p>
+                    <div class="social"
+                         fxLayout="row"
+                         fxLayoutAlign="space-around center">
+                        <i class="fab fa-google"></i>
+                        <i class="fab fa-google"></i>
+                        <i class="fab fa-google"></i>
+                        <i class="fab fa-google"></i>
+                    </div>
+                </mat-card-content>
+            </mat-card>
         </div>
-
     </div>
 </div>
