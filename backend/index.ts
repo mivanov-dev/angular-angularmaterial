@@ -90,7 +90,7 @@ export class App {
 
         smtp.verify();
 
-        database();
+        database(config.mongodb.uri, config.mongodb.options);
 
     }
 

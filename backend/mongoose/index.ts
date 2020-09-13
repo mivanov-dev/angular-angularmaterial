@@ -1,32 +1,29 @@
 import * as mongoose from 'mongoose';
 import * as bluebird from 'bluebird';
-
+// custom
 import { User, UserImage } from './models';
 import { log } from '../logger';
-import { config } from '../config';
 
 (mongoose as any).Promise = bluebird.Promise;
 mongoose.set('debug', false);
 
-export function database(): void {
+export function database(uri: string, options: object): void {
 
     const connection = mongoose.connection;
     connection.on('open', async () => {
 
-        await connection.dropDatabase(err => console.log('mongoose:drop database'));
+        await connection
+            .dropDatabase((error) => console.log(`mongoose:drop database: ${JSON.stringify(error)}`));
 
         dropModels();
 
     });
     connection.on('connected', () => log.info('mongoose:connected'));
     connection.on('connecting', () => log.info('mongoose:connecting'));
-    connection.on('error', err => log.error('mongoose:error'));
+    connection.on('error', (error) => log.error(`mongoose:error: ${JSON.stringify(error)}`));
     connection.on('disconnected', () => log.warn('mongoose:disconnected'));
 
-    mongoose.connect(config.mongodb.uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
+    mongoose.connect(uri, options);
 
 }
 
