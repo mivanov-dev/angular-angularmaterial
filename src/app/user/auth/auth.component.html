@@ -55,9 +55,13 @@
                                 <a mat-icon-button
                                    matSuffix
                                    (click)="hidePassword = !hidePassword"
-                                   [attr.aria-label]="'hide'"
+                                   [attr.aria-label]="hidePassword ? 'hidden': 'visible'"
                                    [attr.aria-pressed]="hidePassword">
-                                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                                    <mat-icon>
+                                        <i class="fas fa-xs"
+                                           [ngClass]="{'fa-eye':!hidePassword,'fa-eye-slash':hidePassword}">
+                                        </i>
+                                    </mat-icon>
                                 </a>
                                 <mat-error *ngIf="hasPasswordControlErrorRequired(passwordControl)">
                                     Password is <strong>required</strong> !

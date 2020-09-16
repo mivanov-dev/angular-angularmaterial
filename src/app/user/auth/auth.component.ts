@@ -202,6 +202,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
       this.emailElement?.focus({ preventScroll: true });
     }
 
+    this.hidePassword = true;
     this.isSubmitted = false;
 
   }
