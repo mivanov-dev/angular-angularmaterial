@@ -11,7 +11,7 @@ export interface SeoModel {
     url: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class SeoService {
 
     htmlMetaElement: HTMLMetaElement[] = [];

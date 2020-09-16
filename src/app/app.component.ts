@@ -8,10 +8,11 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay, filter } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
 import * as fromApp from './store/reducer';
 import * as fromAuth from './user/auth/store';
+import { SwService } from './shared/services';
 
 @Component({
   selector: 'app-root',
@@ -28,11 +29,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private store$: Store<fromApp.AppState>,
     private router: Router,
     private renderer2: Renderer2,
+    private sw: SwService,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit(): void {
+
+    this.sw.update();
 
     this.drawParticle('particles-js', '../assets/particlesjs-config.json');
 

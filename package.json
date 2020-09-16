@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "serve": "npx http-server ./dist/browser -p 4200 --proxy http://localhost:8080",
+    "serve": "npx http-server ./dist/browser -p 4200",
     "build": "ng build",
     "test": "ng test",
     "test-headless": "ng test --watch=false --karmaConfig=karma-ci.conf.js",
