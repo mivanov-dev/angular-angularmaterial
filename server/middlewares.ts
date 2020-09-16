@@ -3,14 +3,14 @@ import { checkSchema } from 'express-validator';
 // custom
 import { log } from './logger';
 
-export function isAuthenticate(request: Request, response: Response, next: NextFunction): Response<any> | void {
+export function isAuthenticate(req: Request, res: Response, next: NextFunction): Response<any> | void {
 
-    log.info(`isAuthenticate: ${request.isAuthenticated()}`);
+    log.info(`isAuthenticate: ${req.isAuthenticated()}`);
 
-    if (request.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         next();
     } else {
-        return response.sendStatus(401);
+        return res.sendStatus(401);
     }
 
 }

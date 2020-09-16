@@ -100,12 +100,11 @@ class Controller {
             let expires: number;
             const user = await User.isLoggedIn(body.id);
 
-            if (!req?.session?.cookie.expires) {
-                expires = new Date(Date.now() + ms('1m')).getTime();
+            if (req?.session?.cookie.originalMaxAge) {
+                req.session.cookie.originalMaxAge = ms('1m');
             }
-            else {
-                expires = new Date(req?.session.cookie.expires as Date).getTime();
-            }
+
+            expires = new Date(Date.now() + ms('1m')).getTime();
 
             return res.status(200)
                 .send({
