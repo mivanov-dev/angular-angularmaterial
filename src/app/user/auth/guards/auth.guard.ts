@@ -9,7 +9,7 @@ import { map, take, takeUntil } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 // custom
 import * as fromApp from '../../../store';
-import * as fromAuth from '../store';
+import * as fromAuth from '../store/reducer';
 
 
 @Injectable({ providedIn: 'root' })

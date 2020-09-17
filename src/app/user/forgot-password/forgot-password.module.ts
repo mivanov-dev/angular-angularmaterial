@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 // custom
-import { ForgotPasswordComponent } from '../../user/forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from './forgot-password.component';
 import { SharedModule } from '../../shared/shared.module';
 import { DirtyCheckGuard } from '../../shared/guards';
 

@@ -1,8 +1,8 @@
 // ngrx
 import { createReducer, Action, on } from '@ngrx/store';
 // custom
-import * as ForgotPasswordActions from './actions';
-import * as ForgotPasswordModels from './models';
+import * as ForgotPasswordActions from '../actions';
+import * as ForgotPasswordModels from '../models';
 
 export interface State {
     forgotPassword: ForgotPasswordModels.ForgotPassword | null;

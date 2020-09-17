@@ -11,7 +11,7 @@ import { map, shareReplay, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 // custom
 import * as fromApp from './store/reducer';
-import * as fromAuth from './user/auth/store';
+import * as fromAuth from './user/auth/store/reducer';
 import { SwService } from './shared/services';
 
 @Component({

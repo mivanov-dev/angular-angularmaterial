@@ -7,7 +7,8 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '../../store';
-import * as fromAuth from '../../user/auth/store';
+import * as fromAuth from '../auth/store/reducer';
+import * as AuthModels from '../auth/store/models';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +18,7 @@ import * as fromAuth from '../../user/auth/store';
 export class ProfileComponent implements OnInit, OnDestroy {
 
 
-  user$: Observable<fromAuth.Login | null>;
+  user$: Observable<AuthModels.Login | null>;
   userImage = '../../assets/user.png';
   private onDestroy$: Subject<void> = new Subject<void>();
 

@@ -17,8 +17,9 @@ import { Store, select } from '@ngrx/store';
 // custom
 import { LoggerService, SeoService, AlertService } from '../../shared/services';
 import * as fromApp from '../../store';
-import * as fromResetPassword from './store';
+import * as fromResetPassword from './store/reducer/';
 import * as ResetPasswordActions from './store/actions';
+import * as ResetPasswordModels from './store/models';
 import { DirtyCheck } from '../../shared/guards';
 import { UserFormValidator, UserFormValidatorToken } from '../validators';
 
@@ -125,7 +126,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
   onSubmit(): void {
 
     this.isSubmitted = true;
-    const data: fromResetPassword.ResetPasswordStart = Object.assign({ token: this.token }, this.userGroup?.value);
+    const data: ResetPasswordModels.ResetPasswordStart = Object.assign({ token: this.token }, this.userGroup?.value);
 
     if (!this.form.valid) {
       return;

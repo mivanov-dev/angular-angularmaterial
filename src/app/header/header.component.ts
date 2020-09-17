@@ -9,8 +9,9 @@ import { takeUntil } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 // custom
 import * as fromApp from '../store';
-import * as fromAuth from '../user/auth/store';
+import * as fromAuth from '../user/auth/store/reducer';
 import * as AuthActions from '../user/auth/store/actions';
+import * as AuthModels from '../user/auth/store/models';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +22,7 @@ import * as AuthActions from '../user/auth/store/actions';
 export class HeaderComponent implements OnDestroy {
 
 
-  user$: Observable<fromAuth.Login | null>;
+  user$: Observable<AuthModels.Login | null>;
   userImage = '../../assets/user.png';
   @Input() sidenav?: MatSidenav;
   private onDestroy$: Subject<void> = new Subject<void>();

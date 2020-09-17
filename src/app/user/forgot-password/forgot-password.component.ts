@@ -17,8 +17,9 @@ import { Store, select } from '@ngrx/store';
 import { DirtyCheck } from '../../shared/guards';
 import { SeoService, AlertService } from '../../shared/services';
 import * as fromApp from '../../store';
-import * as fromForgotPassword from './store';
+import * as fromForgotPassword from './store/reducer';
 import * as ForgotPasswordActions from './store/actions';
+import * as ForgotPasswordModels from './store/models';
 import { UserFormValidatorToken, UserFormValidator } from '../validators';
 
 @Component({
@@ -126,7 +127,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
     this.store$.select(fromForgotPassword.selectForgotPassword)
       .pipe(
         takeUntil(this.onDestroy$),
-        filter((res): res is fromForgotPassword.ForgotPassword => res !== null)
+        filter((res): res is ForgotPasswordModels.ForgotPassword => res !== null)
       )
       .subscribe((res) => {
         this.showAlertMessage(res.message, false);

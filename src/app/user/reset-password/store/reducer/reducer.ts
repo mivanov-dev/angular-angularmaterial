@@ -1,7 +1,7 @@
 // ngrx
 import { createReducer, Action, on } from '@ngrx/store';
 // custom
-import * as ResetPasswordActions from '../../../user/reset-password/store/actions';
+import * as ResetPasswordActions from '../actions';
 
 export interface State {
     error: any;

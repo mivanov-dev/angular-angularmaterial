@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 // custom
 import * as fromApp from '../../../store';
-import * as fromAuth from '../store';
 import * as AuthActions from '../store/actions';
+import * as AuthModels from '../store/models';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -28,21 +28,21 @@ export class AuthService {
     private zone: NgZone,
     @Inject(PLATFORM_ID) private platformId: any) { }
 
-  login$(data: fromAuth.LoginStart): Observable<fromAuth.Login> {
+  login$(data: AuthModels.LoginStart): Observable<AuthModels.Login> {
 
-    return this.http.post<fromAuth.Login>(this.loginUrl, data);
-
-  }
-
-  register$(data: fromAuth.RegisterStart): Observable<fromAuth.Register> {
-
-    return this.http.post<fromAuth.Register>(this.registerUrl, data);
+    return this.http.post<AuthModels.Login>(this.loginUrl, data);
 
   }
 
-  autoLogin$(): Observable<fromAuth.Login> {
+  register$(data: AuthModels.RegisterStart): Observable<AuthModels.Register> {
 
-    return this.http.get<fromAuth.Login>(this.isLoggedInUrl);
+    return this.http.post<AuthModels.Register>(this.registerUrl, data);
+
+  }
+
+  autoLogin$(): Observable<AuthModels.Login> {
+
+    return this.http.get<AuthModels.Login>(this.isLoggedInUrl);
 
   }
 

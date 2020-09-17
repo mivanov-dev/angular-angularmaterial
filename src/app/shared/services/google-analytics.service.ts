@@ -4,7 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 // rxjs
 import { filter } from 'rxjs/operators';
 // custom
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 declare var gtag: any;
 

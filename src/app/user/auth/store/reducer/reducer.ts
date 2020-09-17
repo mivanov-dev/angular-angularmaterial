@@ -1,8 +1,8 @@
 // ngrx
 import { createReducer, Action, on } from '@ngrx/store';
 // custom
-import * as AuthModels from './models';
-import * as AuthActions from './actions';
+import * as AuthModels from '../models';
+import * as AuthActions from '../actions';
 
 export interface State {
     login: AuthModels.Login | null;

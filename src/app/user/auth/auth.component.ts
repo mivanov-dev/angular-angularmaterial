@@ -20,7 +20,8 @@ import { Store, select } from '@ngrx/store';
 import { LoggerService, SeoService, AlertService } from '../../shared/services';
 import * as fromApp from '../../store';
 import * as AuthActions from './store/actions';
-import * as fromAuth from './store';
+import * as AuthModels from './store/models';
+import * as fromAuth from './store/reducer';
 import { environment } from '../../../environments/environment';
 import { DirtyCheck } from '../../shared/guards';
 import { UserFormValidatorToken, UserFormValidator } from '../validators';
@@ -243,7 +244,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     this.store$.select(fromAuth.selectRegister)
       .pipe(
         takeUntil(this.onDestroy$),
-        filter((res): res is fromAuth.Register => res !== null)
+        filter((res): res is AuthModels.Register => res !== null)
       )
       .subscribe((res) => {
 
