@@ -1,0 +1,9 @@
+<div *ngFor="let item of comments$ | async;">
+
+    <mat-card class="animate__animated animate__fadeInRight"
+              style="padding: 10px; margin: 10px;">
+        <h2>{{ item.emoji }} {{ item.author }}</h2>
+        <p>{{ item.description }}</p>
+    </mat-card>
+
+</div>

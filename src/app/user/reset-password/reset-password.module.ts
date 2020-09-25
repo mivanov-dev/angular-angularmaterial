@@ -19,7 +19,6 @@ import { DirtyCheckGuard } from '../../shared/guards';
             }
         ]),
         SharedModule,
-    ],
-    exports: [RouterModule],
+    ]
 })
 export class ResetPasswordModule { }

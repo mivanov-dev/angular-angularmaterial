@@ -20,7 +20,6 @@ import { AuthGuard } from '../auth/guards/auth.guard';
       }
     ]),
     SharedModule,
-  ],
-  exports: [RouterModule],
+  ]
 })
 export class ProfileModule { }

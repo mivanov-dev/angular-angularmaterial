@@ -22,6 +22,7 @@ import { HeaderComponent } from './header';
 import { AuthEffects } from './user/auth/store/effects';
 import { ForgotPasswordEffects } from './user/forgot-password/store/effects';
 import { ResetPasswordEffects } from './user/reset-password/store/effects';
+import { CommentEffects } from './scroll/store/effects';
 import { LoggerService } from './shared/services';
 
 @NgModule({
@@ -53,6 +54,7 @@ import { LoggerService } from './shared/services';
       AuthEffects,
       ForgotPasswordEffects,
       ResetPasswordEffects,
+      CommentEffects,
     ]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     SharedModule,

@@ -6,7 +6,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilepondModule, LayoutModule, MaterialModule } from './modules';
 import { CapsLockComponent } from './components';
 import {
-  TemplateRendererDirective, ConfirmEqualValidatorDirective, ImageFallbackDirective
+  TemplateRendererDirective,
+  ConfirmEqualValidatorDirective,
+  ImageFallbackDirective
 } from './directives';
 
 // Without services

@@ -106,7 +106,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Auth', url: 'user/auth' });
-    this.isLoading$ = this.store$.pipe(takeUntil(this.onDestroy$), select(fromAuth.selectLoading));
+    this.isLoading$ = this.store$.select(fromAuth.selectLoading).pipe(takeUntil(this.onDestroy$));
     this.form = this.initForm();
 
   }

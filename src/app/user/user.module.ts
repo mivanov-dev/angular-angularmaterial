@@ -20,7 +20,6 @@ import { userFormValidator, UserFormValidatorToken } from './validators';
       provide: UserFormValidatorToken,
       useValue: userFormValidator
     }
-  ],
-  exports: [RouterModule, UserRoutingModule],
+  ]
 })
 export class UserModule { }

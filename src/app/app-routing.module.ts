@@ -7,33 +7,26 @@ const routes: Routes = [
     path: '',
     redirectTo: '/home',
     pathMatch: 'full',
-    data: {
-      animation: 'home'
-    }
-  }, {
+  },
+  {
     path: 'home',
     loadChildren: () => import('./home').then(m => m.HomeModule),
-    data: {
-      animation: 'home'
-    }
-  }, {
+  },
+  {
     path: 'user',
     loadChildren: () => import('./user').then(m => m.UserModule),
-    data: {
-      animation: 'user'
-    }
-  }, {
+  },
+  {
     path: 'page-not-found',
     loadChildren: () => import('./page-not-found').then(m => m.PageNotFoundModule),
-    data: {
-      animation: 'page-not-found'
-    }
-  }, {
+  },
+  {
+    path: 'scroll',
+    loadChildren: () => import('./scroll').then(m => m.ScrollModule)
+  },
+  {
     path: '**',
     redirectTo: '/page-not-found',
-    data: {
-      animation: 'page-not-found'
-    }
   }
 ];
 

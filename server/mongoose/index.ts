@@ -1,8 +1,10 @@
 import * as mongoose from 'mongoose';
 import * as bluebird from 'bluebird';
+import * as faker from 'faker';
 // custom
-import { User, UserImage } from './models';
+import { User, UserImage, Comment, Counter } from './models';
 import { log } from '../logger';
+import { emojiRandom } from '../emojis';
 
 (mongoose as any).Promise = bluebird.Promise;
 mongoose.set('debug', false);
@@ -15,7 +17,11 @@ export function database(uri: string, options: object): void {
         await connection
             .dropDatabase((error) => console.log(`mongoose:drop database: ${JSON.stringify(error)}`));
 
-        dropModels();
+        await dropModels();
+
+        await initData();
+
+        await insertComments(100);
 
     });
     connection.on('connected', () => log.info('mongoose:connected'));
@@ -29,7 +35,7 @@ export function database(uri: string, options: object): void {
 
 async function dropModels(): Promise<void> {
 
-    const dbModels = [User, UserImage];
+    const dbModels = [User, UserImage, Comment, Counter];
 
     try {
 
@@ -51,4 +57,29 @@ async function dropModels(): Promise<void> {
         log.error(`mongoose:dropModels: ${JSON.stringify(error)}`);
     }
 
+}
+
+async function initData(): Promise<void> {
+    try {
+        await new Counter({ _id: 'commentId', seq: 0 }).save();
+    } catch (error) {
+        log.error(`initData: ${JSON.stringify(error)}`);
+    }
+}
+
+async function insertComments(count: number): Promise<void> {
+
+    try {
+
+        for (let i = 0; i < count; i++) {
+            await new Comment({
+                emoji: emojiRandom(),
+                author: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                description: `${faker.hacker.phrase()}`
+            }).save();
+        }
+
+    } catch (error) {
+        log.error(`insertComments: ${JSON.stringify(error)}`);
+    }
 }
