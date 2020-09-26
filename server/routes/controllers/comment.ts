@@ -7,6 +7,8 @@ class Controller {
 
     static all = async (req: Request, res: Response): Promise<void> => {
 
+        const { offset, batch } = req.body;
+
         try {
             const comments = await Comment.find({},
                 {
@@ -17,6 +19,8 @@ class Controller {
                     seq: 1
                 })
                 .sort({ seq: 1 })
+                .skip(offset)
+                .limit(batch)
                 .exec();
 
             res.send({ comments });

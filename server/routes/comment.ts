@@ -3,6 +3,6 @@ import { CommentController } from './controllers';
 
 const router = Router();
 
-router.get('/api/comments/all', CommentController.all);
+router.post('/api/comments/all', CommentController.all);
 
 export { router as commentRouter };

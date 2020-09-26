@@ -1,9 +1,19 @@
-<div *ngFor="let item of comments$ | async;">
+<ng-container *ngIf="comments$ | async as comments">
 
-    <mat-card class="animate__animated animate__fadeInRight"
-              style="padding: 10px; margin: 10px;">
-        <h2>{{ item.emoji }} {{ item.author }}</h2>
-        <p>{{ item.description }}</p>
-    </mat-card>
+    <cdk-virtual-scroll-viewport [itemSize]="100"
+                                 (scrolledIndexChange)="onScroll($event)"
+                                 style="height: 100vh; overflow-x: hidden;">
 
-</div>
+        <div *cdkVirtualFor="let item of comments; let i = index; trackBy: trackByIdx">
+
+            <mat-card class="animate__animated animate__fadeInRight"
+                      style="padding: 10px; margin: 10px; height: 100px;">
+                <h2>{{item.seq}}.{{ item.emoji }} {{ item.author }}</h2>
+                <p>{{ item.description }}</p>
+            </mat-card>
+
+        </div>
+
+    </cdk-virtual-scroll-viewport>
+
+</ng-container>

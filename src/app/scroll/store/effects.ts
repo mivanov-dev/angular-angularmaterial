@@ -17,10 +17,10 @@ export class CommentEffects {
     addCommentsStart$ = createEffect(() => this.actions$
         .pipe(
             ofType(CommentActions.addCommentsStart),
-            exhaustMap(() => this.commentService.getAll()
+            exhaustMap(({ offset, batch }) => this.commentService.getAll(offset, batch)
                 .pipe(
                     map(({ comments }) => CommentActions.addComments({ comments })),
-                    catchError((error) => of(CommentActions.addCommentsError({error: ''})))
+                    catchError((error) => of(CommentActions.addCommentsError({ error: '' })))
                 )
             )
         )

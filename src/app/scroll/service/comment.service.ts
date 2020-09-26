@@ -4,14 +4,14 @@ import { Observable } from 'rxjs';
 
 import { Comment } from '../store/model';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class CommentService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<{ comments: Comment[]; }> {
+  getAll(offset: number, batch: number): Observable<{ comments: Comment[]; }> {
 
-    return this.http.get<{ comments: Comment[] }>('/api/comments/all');
+    return this.http.post<{ comments: Comment[] }>('/api/comments/all', { offset, batch });
 
   }
 

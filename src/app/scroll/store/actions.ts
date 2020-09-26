@@ -21,7 +21,8 @@ export const upsertComment = createAction(
 
 // Add Comments
 export const addCommentsStart = createAction(
-  '[Comment] Add Comments Start'
+  '[Comment] Add Comments Start',
+  props<{ offset: number, batch: number }>()
 );
 export const addComments = createAction(
   '[Comment] Add Comments',
