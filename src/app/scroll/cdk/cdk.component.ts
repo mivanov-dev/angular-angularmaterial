@@ -1,12 +1,12 @@
 // angular
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 // cdk
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '../../store';
 import * as fromComment from '../store/reducer';
@@ -18,13 +18,13 @@ import { Comment } from '../store/model';
   templateUrl: './cdk.component.html',
   styleUrls: ['./cdk.component.scss']
 })
-export class CdkComponent implements OnInit, OnDestroy {
+export class CdkComponent implements OnDestroy, AfterViewInit {
 
   offset = 1;
   batch = 10;
   comments$: Observable<Comment[]>;
   isLoading = false;
-  isEnd = false;
+  hasMore = false;
   @ViewChild(CdkVirtualScrollViewport)
   viewport: CdkVirtualScrollViewport | undefined;
   private onDestroy$: Subject<void> = new Subject<void>();
@@ -32,18 +32,11 @@ export class CdkComponent implements OnInit, OnDestroy {
   constructor(private store$: Store<fromApp.AppState>) {
 
     this.comments$ = this.store$.select(fromComment.selectAllComments)
-      .pipe(
-        takeUntil(this.onDestroy$),
-        tap((arr) => {
+      .pipe(takeUntil(this.onDestroy$));
 
-          if (arr.length === 0) {
-            this.isEnd = true;
-          }
-
-          this.isEnd = false;
-
-        })
-      );
+    this.store$.select(fromComment.selectHasMore)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => this.hasMore = res);
 
 
     this.store$.select(fromComment.selectLoading)
@@ -51,9 +44,8 @@ export class CdkComponent implements OnInit, OnDestroy {
       .subscribe(res => this.isLoading = res);
 
   }
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
 
-    this.isEnd = false;
     this.store$.dispatch(CommentActions.addCommentsStart({
       offset: (this.offset - 1) * this.batch,
       batch: this.batch
@@ -71,7 +63,7 @@ export class CdkComponent implements OnInit, OnDestroy {
 
   onScroll(event: any): void {
 
-    if (this.isEnd) {
+    if (!this.hasMore) {
       return;
     }
 

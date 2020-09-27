@@ -9,6 +9,7 @@ export const key = 'comments';
 export interface State extends EntityState<Comment> {
   loading: boolean;
   error: any;
+  hasMore: boolean;
 }
 
 export const adapter: EntityAdapter<Comment> = createEntityAdapter<Comment>({
@@ -18,7 +19,8 @@ export const adapter: EntityAdapter<Comment> = createEntityAdapter<Comment>({
 
 export const initialState: State = adapter.getInitialState({
   loading: false,
-  error: null
+  error: null,
+  hasMore: false
 });
 
 export const commentReducer = createReducer(
@@ -38,6 +40,7 @@ export const commentReducer = createReducer(
   on(CommentActions.addComments,
     (state, { comments }) => adapter.addMany(comments, {
       ...state,
+      hasMore: comments.length === 0 ? false : true,
       error: null,
       loading: false
     })
