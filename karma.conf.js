@@ -3,7 +3,6 @@
 
 module.exports = function (config) {
   config.set({
-    browsers: ['Chrome'],
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
@@ -27,6 +26,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
+    browsers: ['Chrome'],
     singleRun: false,
     restartOnFileChange: true
   });
