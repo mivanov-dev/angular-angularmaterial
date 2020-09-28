@@ -58,9 +58,7 @@
                                    [attr.aria-label]="hidePassword ? 'hidden': 'visible'"
                                    [attr.aria-pressed]="hidePassword">
                                     <mat-icon>
-                                        <i class="fas fa-xs"
-                                           [ngClass]="{'fa-eye':!hidePassword,'fa-eye-slash':hidePassword}">
-                                        </i>
+                                        {{hidePassword ? 'visibility_off' : 'visibility'}}
                                     </mat-icon>
                                 </a>
                                 <mat-error *ngIf="hasPasswordControlErrorRequired(passwordControl)">
