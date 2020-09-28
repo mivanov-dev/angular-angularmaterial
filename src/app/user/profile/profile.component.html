@@ -18,7 +18,7 @@
                          fxLayout="row"
                          fxLayoutAlign="end center">
                         <button mat-icon-button>
-                            <i class="fas fa-ellipsis-v"></i>
+                            <mat-icon aria-label="menu">more_vert</mat-icon>
                         </button>
                     </div>
                     <div class="avatar">
@@ -27,18 +27,25 @@
                              alt="UserImage">
                     </div>
                     <h3 class="username">username</h3>
-                    <p class="location mat-small">
-                        <i class="fas fa-map-marker-alt"></i> location</p>
-                    <p class="email">
-                        <i class="fas fa-envelope"></i> {{ (user$ | async)?.email }}
+                    <p class="location mat-small"
+                       fxLayout="row"
+                       fxLayoutAlign="center center">
+                        <mat-icon aria-label="location">location_on</mat-icon>
+                        location
+                    </p>
+                    <p class="email"
+                       fxLayout="row"
+                       fxLayoutAlign="center center">
+                        <mat-icon aria-label="email">email</mat-icon>
+                        {{ (user$ | async)?.email }}
                     </p>
                     <div class="social"
                          fxLayout="row"
                          fxLayoutAlign="space-around center">
-                        <i class="fab fa-google"></i>
-                        <i class="fab fa-google"></i>
-                        <i class="fab fa-google"></i>
-                        <i class="fab fa-google"></i>
+                        <i>G</i>
+                        <i>G</i>
+                        <i>G</i>
+                        <i>G</i>
                     </div>
                 </mat-card-content>
             </mat-card>

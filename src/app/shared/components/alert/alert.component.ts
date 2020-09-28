@@ -4,9 +4,8 @@ import {
   Output, EventEmitter, NgModule
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// material
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+// custom
+import { SharedModule } from '../../shared.module';
 
 @Component({
   selector: 'app-alert',
@@ -29,7 +28,7 @@ export class AlertComponent {
 }
 
 @NgModule({
-  imports: [CommonModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, SharedModule],
   declarations: [AlertComponent]
 })
 class AlertModule { }

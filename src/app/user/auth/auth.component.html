@@ -113,7 +113,8 @@
                             fxLayoutAlign="center stretch"
                             [disabled]="(isLoading$ | async)">
                         {{ authMode === 'login' ? 'Login' : 'Register' }}&nbsp;
-                        <mat-icon *ngIf="(isLoading$ | async)">hourglass_empty</mat-icon>
+                        <mat-icon aria-label="loading"
+                                  *ngIf="(isLoading$ | async)">hourglass_empty</mat-icon>
                     </button>
 
                     <button mat-button
