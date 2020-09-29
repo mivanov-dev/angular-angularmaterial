@@ -5,7 +5,8 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // custom
-import { SharedModule } from '../../shared.module';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-alert',
@@ -28,7 +29,7 @@ export class AlertComponent {
 }
 
 @NgModule({
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, MatCardModule, MatIconModule],
   declarations: [AlertComponent]
 })
 class AlertModule { }

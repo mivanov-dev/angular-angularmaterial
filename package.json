@@ -18,7 +18,7 @@
     "build:ssr": "ng build --prod && ng run angular-angularmaterial:server:production",
     "ssr": "npm run build:ssr && npm run serve:ssr",
     "prerender": "ng run angular-angularmaterial:prerender",
-    "preinstall": "npm i -g @angular/cli typescript tslint node-sass",
+    "preinstall": "npm i -g @angular/cli typescript tslint node-sass rxjs-tslint",
     "docker:deploy": "docker-compose -f \"docker-compose.yml\" up -d --build",
     "wmu": ".\\node_modules\\.bin\\webdriver-manager update"
   },
@@ -79,6 +79,7 @@
     "passport-local": "^1.0.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.3",
+    "rxjs-compat": "^6.6.3",
     "sitemap": "^6.3.2",
     "tslib": "^2.0.1",
     "tsparticles": "^1.17.12",
