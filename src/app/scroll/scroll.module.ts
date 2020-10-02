@@ -1,7 +1,6 @@
 // angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 // custom
 import { ScrollRoutingModule } from './scroll-routing.module';
 import { ScrollComponent } from './scroll.component';
