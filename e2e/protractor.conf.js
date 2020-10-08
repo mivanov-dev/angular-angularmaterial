@@ -9,8 +9,6 @@ exports.config = {
   getPageTimeout: 11000,
   allScriptsTimeout: 11000,
   specs: ['./src/features/**/*.feature'],
-  chromeDriver: '../node_modules/chromedriver/lib/chromedriver/chromedriver'
-    .concat(process.platform === 'win32' ? '.exe' : ''),
   capabilities: {
     browserName: 'chrome',
   },
