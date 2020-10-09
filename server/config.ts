@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import { SessionOptions } from 'express-session';
 import * as SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { ClientOpts } from 'redis';
 const ms = require('ms');
 
 dotenv.config({ path: './.env', encoding: 'utf-8' });
@@ -86,5 +87,9 @@ export const config = {
         },
         logger: true,
         debug: true,
-    } as SMTPTransport.Options
+    } as SMTPTransport.Options,
+    redis: {
+        host: process.env.REDIS_HOST as string,
+        port: process.env.REDIS_PORT
+    } as ClientOpts
 };
