@@ -32,6 +32,6 @@ client.on('end', () => {
 });
 
 export const redisClient = {
-    setex: promisify(client.setex).bind(client),
+    set: promisify(client.set).bind(client),
     get: promisify(client.get).bind(client),
 };

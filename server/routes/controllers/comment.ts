@@ -3,14 +3,12 @@ const ms = require('ms');
 // custom
 import { Comment } from '../../mongoose/models';
 import { handleErrors } from '../../middlewares';
-import { redisClient } from '../../redis';
 
 class Controller {
 
     static all = async (req: Request, res: Response): Promise<void> => {
 
         const { offset, batch } = req.body;
-        const key = `${req.url}:${offset}:${batch}`;
 
         try {
             const comments = await Comment.find({},
@@ -25,8 +23,6 @@ class Controller {
                 .skip(offset)
                 .limit(batch)
                 .exec();
-
-            await redisClient.setex(key, 60, JSON.stringify(comments));
 
             res.send({ comments });
 
