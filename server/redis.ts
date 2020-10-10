@@ -1,9 +1,11 @@
-import * as redis from 'redis';
-import { promisify } from 'util';
+import * as Redis from 'ioredis';
+import * as bluebird from 'bluebird';
+
 import { log } from './logger';
 import { config } from './config';
 
-const client = redis.createClient(config.redis);
+const client = new Redis(config.redis);
+(client as any).Promise = bluebird.Promise;
 
 client.on('message', (channel, message) => {
     log.info('redis:message:', channel, message);
@@ -14,7 +16,7 @@ client.on('subscribe', (channel, message) => {
 client.on('unsubscribe', (channel, message) => {
     log.info('redis:unsubscribe:', channel, message);
 });
-// !!!
+
 client.on('error', (error) => {
     log.error('redis:error:', JSON.stringify(error));
 });
@@ -32,6 +34,6 @@ client.on('end', () => {
 });
 
 export const redisClient = {
-    set: promisify(client.set).bind(client),
-    get: promisify(client.get).bind(client),
+    set: client.set,
+    get: client.get,
 };
