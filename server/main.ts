@@ -12,6 +12,7 @@ import * as cors from 'cors';
 import * as http from 'http';
 import 'express-validator';
 import * as _ from 'lodash';
+import * as connectRedis from 'connect-redis';
 const ms = require('ms');
 // custom
 import { config } from './config';
@@ -20,6 +21,9 @@ import { database } from './mongoose';
 import { userRouter, sitemapRouter, robotsRouter, commentRouter } from './routes';
 import { log } from './logger';
 import { AppServerModule, ngExpressEngine, APP_BASE_HREF } from '../src/main.server';
+import { redisClient } from './redis';
+
+const RedisStore = connectRedis(expressSession);
 
 const distFolder = path.join(process.cwd(), 'dist/browser');
 const indexHtml = fs.existsSync(path.join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
@@ -58,7 +62,13 @@ class App {
         this.app.use(express.json());
         this.app.use(urlencoded({ extended: false }));
         this.app.use(cookieParser());
-        this.app.use(expressSession(config.expressSessionOptions));
+        this.app.use(expressSession({
+            ...config.expressSessionOptions,
+            store: new RedisStore({
+                client: redisClient,
+                disableTouch: true
+            })
+        }));
         this.app.use(cors(config.corsOptions));
         this.app.use(passport.initialize());
         this.app.use(passport.session());

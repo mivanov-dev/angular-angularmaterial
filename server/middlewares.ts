@@ -31,6 +31,16 @@ export function handleErrors(error: any, res: Response): void {
 
 }
 
+export function isGuest(req: Request, res: Response, next: NextFunction): void {
+
+    if (req.isAuthenticated()) {
+        res.status(400).send({ message: 'You are already logged in!' });
+    } else {
+        next();
+    }
+
+}
+
 export const reqSchema = {
     user: {
         regiser: checkSchema({

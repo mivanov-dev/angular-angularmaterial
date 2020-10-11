@@ -1,6 +1,6 @@
 import * as Redis from 'ioredis';
 import * as bluebird from 'bluebird';
-
+// custom
 import { log } from './logger';
 import { config } from './config';
 
@@ -33,7 +33,4 @@ client.on('end', () => {
     log.warn('redis:end:');
 });
 
-export const redisClient = {
-    set: client.set,
-    get: client.get,
-};
+export { client as redisClient };

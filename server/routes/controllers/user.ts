@@ -51,7 +51,6 @@ class Controller {
 
     static login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-        const expires = ms('1m');
         const errors: any = validationResult(req);
 
         if (!errors.isEmpty()) {
@@ -66,7 +65,7 @@ class Controller {
             const json = {
                 email: user.email,
                 image: user.imageId.url,
-                expires,
+                expires: ms('1m'),
                 redirect: true
             };
 
@@ -78,7 +77,7 @@ class Controller {
                     return handleErrors(error, res);
                 }
                 else if (req.body.remember) {
-                    req.session.cookie.originalMaxAge = expires;
+                    req.session.cookie.originalMaxAge = ms('1m');
                     return res.status(200).send(json);
                 }
                 else {
@@ -97,14 +96,14 @@ class Controller {
         try {
 
             const body = req.user as { id: any };
-            let expires: number;
+            let expires: number = ms('1m');
             const user = await User.isLoggedIn(body.id);
 
             if (req?.session?.cookie.originalMaxAge) {
                 req.session.cookie.originalMaxAge = ms('1m');
-            }
 
-            expires = new Date(Date.now() + ms('1m')).getTime();
+                expires = (req.session.cookie.expires as Date).getTime() - Date.now();
+            }
 
             return res.status(200)
                 .send({

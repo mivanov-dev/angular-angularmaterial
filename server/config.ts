@@ -55,9 +55,9 @@ export const config = {
         },
         name: 'uid',
         secret: 'secretKey',
-        // rolling: true,
+        rolling: false,
         resave: false,
-        saveUninitialized: true
+        saveUninitialized: false
     } as SessionOptions,
 
     corsOptions: {

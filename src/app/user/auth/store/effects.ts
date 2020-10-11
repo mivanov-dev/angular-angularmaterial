@@ -74,14 +74,9 @@ export class AuthEffects {
             exhaustMap(
                 () => this.authService.autoLogin$()
                     .pipe(
-                        tap((data) => {
-
-                            const duration = (+data.expires) - Date.now();
-                            this.authService.setLogoutTimer(duration);
-
-                        }),
+                        tap((data) => this.authService.setLogoutTimer(+data.expires)),
                         map((data) => AuthActions.login({ data })),
-                        catchError((error) => of(AuthActions.loginError({error: ''})))
+                        catchError((error) => of(AuthActions.loginError({ error: '' })))
                     )
             )
         ));
@@ -96,7 +91,7 @@ export class AuthEffects {
                 () => this.authService.logout$()
                     .pipe(
                         map(() => AuthActions.logout()),
-                        catchError((error) => of(AuthActions.logoutError({error: ''})))
+                        catchError((error) => of(AuthActions.logoutError({ error: '' })))
                     )
             )
         ));

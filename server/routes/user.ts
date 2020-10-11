@@ -1,6 +1,6 @@
 import { Router } from 'express';
 // custom
-import { isAuthenticate, reqSchema } from '../middlewares';
+import { isAuthenticate, isGuest, reqSchema } from '../middlewares';
 import { UserController } from './controllers';
 
 const router = Router();
@@ -12,6 +12,7 @@ router.post(
 
 router.post(
     '/api/user/login',
+    isGuest,
     reqSchema.user.login,
     UserController.login);
 
