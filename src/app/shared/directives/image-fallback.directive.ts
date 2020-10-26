@@ -1,6 +1,11 @@
 // angular
-import { Directive, Input, HostListener, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Directive, Input, ElementRef,
+  Inject, PLATFORM_ID, AfterViewInit, OnDestroy
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * We can use the directive like that.
@@ -12,20 +17,38 @@ import { isPlatformBrowser } from '@angular/common';
 @Directive({
   selector: 'img[appImageFallback]'
 })
-export class ImageFallbackDirective {
+export class ImageFallbackDirective implements AfterViewInit, OnDestroy {
 
   @Input() appImageFallback?: string;
+  private onDestroy$: Subject<void> = new Subject<void>();
 
   constructor(private elementRef: ElementRef,
               @Inject(PLATFORM_ID) private platformId: any) { }
 
-  @HostListener('error')
-  loadFallbackOnError(): void {
+  ngAfterViewInit(): void {
 
-    if (isPlatformBrowser(this.platformId) && this.appImageFallback) {
-      const element: HTMLImageElement = this.elementRef.nativeElement as HTMLImageElement;
-      element.src = this.appImageFallback;
+    if (isPlatformBrowser(this.platformId)) {
+      const img: HTMLImageElement = this.elementRef.nativeElement as HTMLImageElement;
+      fromEvent(img, 'error')
+        .pipe(
+          takeUntil(this.onDestroy$)
+        )
+        .subscribe(res => {
+
+          if (this.appImageFallback) {
+            img.src = this.appImageFallback;
+          }
+
+        });
     }
 
   }
+
+  ngOnDestroy(): void {
+
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+
+  }
+
 }
