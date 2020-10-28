@@ -1,11 +1,14 @@
 // angular
 import {
   Component, Input,
-  EventEmitter, Renderer2, Output,
+  EventEmitter, Output,
   AfterViewInit, ChangeDetectionStrategy,
-  Inject, PLATFORM_ID, NgZone
+  Inject, PLATFORM_ID, NgZone, OnDestroy
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+// rxjs
+import { fromEvent, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 // custom
 import { LoggerService } from '../../../shared/services';
 
@@ -15,15 +18,15 @@ import { LoggerService } from '../../../shared/services';
   styleUrls: ['./caps-lock.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CapsLockComponent implements AfterViewInit {
+export class CapsLockComponent implements AfterViewInit, OnDestroy {
 
   isShiftOn?: boolean;
   isActive?: boolean;
   @Input() field?: HTMLElement;
   @Output() isActiveCapsLock: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  private onDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private renderer2: Renderer2,
-              private logger: LoggerService,
+  constructor(private logger: LoggerService,
               private zone: NgZone,
               @Inject(PLATFORM_ID) private platformId: any) { }
 
@@ -32,22 +35,34 @@ export class CapsLockComponent implements AfterViewInit {
     if (isPlatformBrowser(this.platformId)) {
       this.zone.runOutsideAngular(() => {
 
-        this.renderer2.listen(this.field, 'keydown', (event) => {
-
-          if (this.isMobile()) {
-            // TODO: detect  mobile caps lock
-            // Shift: , , 16, 16
-            this.zone.run(() => this.logger.log(`${event.key}, ${event.code}, ${event.keyCode}, ${event.which}`));
-          }
-          else {
-            this.isActive = event.getModifierState('CapsLock');
-            this.zone.run(() => this.isActiveCapsLock.emit(this.isActive));
-          }
-
-        });
+        if (this.field) {
+          fromEvent(this.field, 'keydown')
+            .pipe(
+              takeUntil(this.onDestroy$),
+              filter((event): event is KeyboardEvent => event instanceof KeyboardEvent)
+            )
+            .subscribe(event => {
+              if (this.isMobile()) {
+                // TODO: detect  mobile caps lock
+                // Shift: , , 16, 16
+                this.zone.run(() => this.logger.log(`${event.key}, ${event.code}, ${event.keyCode}, ${event.which}`));
+              }
+              else {
+                this.isActive = event.getModifierState('CapsLock');
+                this.zone.run(() => this.isActiveCapsLock.emit(this.isActive));
+              }
+            });
+        }
 
       });
     }
+
+  }
+
+  ngOnDestroy(): void {
+
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
 
   }
 
