@@ -7,12 +7,12 @@ import { provideMockActions } from '@ngrx/effects/testing';
 // jasmine
 import { cold, hot } from 'jasmine-marbles';
 // custom
-import { AuthService } from '../../../user/auth/services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { AuthEffects } from './effects';
 import * as AuthModels from './models';
 import * as AuthActions from './actions';
 
-describe('loginStart$', () => {
+describe('user-auth-effects', () => {
 
     let authEffects: AuthEffects;
     let actions$: any;
@@ -43,7 +43,7 @@ describe('loginStart$', () => {
 
     });
 
-    describe('login', () => {
+    describe('loginStart$', () => {
 
         it('successful', () => {
 

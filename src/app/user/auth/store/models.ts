@@ -25,6 +25,9 @@ export interface Error {
     error: any;
 }
 
+
+export type AuthModeType = 'login' | 'register';
+
 export interface AuthMode {
-    mode: string;
+    mode: AuthModeType;
 }
