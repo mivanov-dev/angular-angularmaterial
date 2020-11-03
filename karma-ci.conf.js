@@ -22,8 +22,6 @@ module.exports = function (config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
       require('karma-spec-reporter'),
       // @ts-ignore
       require('@angular-devkit/build-angular/plugins/karma')
@@ -31,16 +29,7 @@ module.exports = function (config) {
     client: {
       clearContext: false
     },
-    coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, './coverage/angular-angularmaterial'),
-      reports: ['html', 'lcovonly', 'text-summary'],
-      fixWebpackSourcePaths: true
-    },
-    jasmineHtmlReporter: {
-      suppressAll: true,
-      suppressFailed: true
-    },
-    reporters: ['kjhtml', 'coverage-istanbul', 'spec'],
+    reporters: ['spec'],
     specReporter: {
       maxLogLines: 10,
       suppressErrorSummary: false,
@@ -53,6 +42,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: false,
-    singleRun: false
+    singleRun: false,
+    restartOnFileChange: true
   });
 };
