@@ -46,7 +46,7 @@ export class HeaderComponent implements OnDestroy {
 
   }
 
-  switchAuthModeTo(mode: string): void {
+  switchAuthModeTo(mode: AuthModels.AuthModeType): void {
 
     this.store$.dispatch(AuthActions.switchModeTo({ authMode: { mode } }));
 

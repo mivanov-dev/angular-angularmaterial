@@ -315,7 +315,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   }
 
-  switchAuthModeTo(mode: string): void {
+  switchAuthModeTo(mode: AuthModels.AuthModeType): void {
 
     if (this.canDeactivate()) {
       this.isSwitchedAuthModeFromHere = true;
