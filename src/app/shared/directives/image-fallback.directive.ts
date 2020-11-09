@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { fromEvent, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 /**
  * We can use the directive like that.
@@ -26,13 +26,12 @@ export class ImageFallbackDirective implements AfterViewInit, OnDestroy {
               @Inject(PLATFORM_ID) private platformId: any) { }
 
   ngAfterViewInit(): void {
-
     if (isPlatformBrowser(this.platformId)) {
       const img: HTMLImageElement = this.elementRef.nativeElement as HTMLImageElement;
       fromEvent(img, 'error')
         .pipe(
           takeUntil(this.onDestroy$),
-          filter((res): res is ErrorEvent => res instanceof ErrorEvent)
+          distinctUntilChanged()
         )
         .subscribe((res) => {
           if (this.appImageFallback) {
