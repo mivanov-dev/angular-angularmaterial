@@ -65,6 +65,7 @@ class Controller {
             const json = {
                 email: user.email,
                 image: user.imageId.url,
+                role: user.role,
                 expires: ms('1m'),
                 redirect: true
             };
@@ -109,6 +110,7 @@ class Controller {
                 .send({
                     email: user.email,
                     image: user.imageId.url,
+                    role: user.role,
                     expires,
                     redirect: false
                 });

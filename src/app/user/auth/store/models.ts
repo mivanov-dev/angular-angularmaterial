@@ -19,6 +19,7 @@ export interface Login {
     image: string;
     redirect: boolean;
     expires: number;
+    role: string;
 }
 
 export interface Error {

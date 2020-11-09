@@ -11,6 +11,7 @@ export interface UserDocument extends Document {
     password: string;
     resetPasswordToken?: string;
     resetPasswordExpires?: number;
+    role: string;
     imageId?: any;
 }
 
@@ -39,6 +40,11 @@ export const userSchema = new Schema({
     resetPasswordExpires: {
         type: Types.Number,
     },
+    role : {
+        type: Types.String,
+        default: 'user',
+        required:  true
+    },
     imageId: {
         type: Types.ObjectId,
         ref: 'UserImage'
@@ -63,7 +69,7 @@ userSchema.statics.authenticate = async function(body: { email: string, password
     const user: any = this;
     const { email, password } = body;
     const result = await user.findOne({ email })
-        .select('email password')
+        .select('email password role')
         .populate({
             path: 'imageId',
             model: UserImage,
@@ -85,7 +91,7 @@ userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
     const user: any = this;
 
     return user.findById(id)
-        .select('email')
+        .select('email role')
         .populate({
             path: 'imageId',
             model: UserImage,
