@@ -21,7 +21,9 @@ export function database(uri: string, options: object): void {
 
         await initData();
 
-        await insertComments(100);
+        await insertComments(30);
+
+        await createAdmin();
 
     });
     connection.on('connected', () => log.info('mongoose:connected'));
@@ -60,11 +62,13 @@ async function dropModels(): Promise<void> {
 }
 
 async function initData(): Promise<void> {
+
     try {
         await new Counter({ _id: 'commentId', seq: 0 }).save();
     } catch (error) {
         log.error(`initData: ${JSON.stringify(error)}`);
     }
+
 }
 
 async function insertComments(count: number): Promise<void> {
@@ -81,5 +85,23 @@ async function insertComments(count: number): Promise<void> {
 
     } catch (error) {
         log.error(`insertComments: ${JSON.stringify(error)}`);
+    }
+}
+
+async function createAdmin(): Promise<void> {
+
+    try {
+
+        const userImage = await new UserImage().save();
+
+        await new User({
+            email: 'admin@admin.com',
+            password: 'password00',
+            role: 'admin',
+            imageId: userImage._id
+        }).save();
+
+    } catch (error) {
+        log.error(`createAdmin: ${JSON.stringify(error)}`);
     }
 }
