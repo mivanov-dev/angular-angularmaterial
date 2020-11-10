@@ -94,12 +94,13 @@ async function createAdmin(): Promise<void> {
 
         const userImage = await new UserImage().save();
 
-        await new User({
+        await User.create({
             email: 'admin@admin.com',
-            password: 'password00',
+            // 'password00'
+            password: '$2a$10$eHN.g9xaAhAMhvRTx/doreHr7SdbOJfxhyE7Tg.SGHQHym4kaKQve',
             role: 'admin',
             imageId: userImage._id
-        }).save();
+        });
 
     } catch (error) {
         log.error(`createAdmin: ${JSON.stringify(error)}`);

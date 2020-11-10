@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   user$: Observable<AuthModels.Login | null>;
   userImage = '../../assets/user.png';
+  adminImage = '../../assets/admin.png';
   private onDestroy$: Subject<void> = new Subject<void>();
 
   constructor(private store$: Store<fromApp.AppState>) {

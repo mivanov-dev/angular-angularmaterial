@@ -24,6 +24,7 @@ export class HeaderComponent implements OnDestroy {
 
   user$: Observable<AuthModels.Login | null>;
   userImage = '../../assets/user.png';
+  adminImage = '../../assets/admin.png';
   @Input() sidenav?: MatSidenav;
   private onDestroy$: Subject<void> = new Subject<void>();
 

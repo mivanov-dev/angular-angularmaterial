@@ -23,7 +23,7 @@
                     </div>
                     <div class="avatar">
                         <img [src]="(user$ | async)?.image"
-                             [appImageFallback]="userImage"
+                        [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
                              alt="UserImage">
                     </div>
                     <h3 class="username">username</h3>

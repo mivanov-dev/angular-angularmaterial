@@ -82,7 +82,6 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
   isLoading$: Observable<boolean>;
   hidePassword = true;
   emailElement?: HTMLElement;
-  fileElement?: HTMLElement;
   submitButtonElement?: HTMLElement;
   @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
   @ViewChild('email', { static: true }) email?: ElementRef;
@@ -141,7 +140,6 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
     if (isPlatformBrowser(this.platformId)) {
       this.emailElement = this.email?.nativeElement as HTMLElement;
-      this.fileElement = this.document.getElementsByName('filepond')[1];
       this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
       // https://stackoverflow.com/a/54794081
       this.emailElement?.focus({ preventScroll: true });
@@ -217,7 +215,8 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     }
     if (this.authMode === 'register') {
 
-      let file: any = this.fileElement?.getAttribute('value');
+      const fileElement = this.document.getElementsByName('filepond')[1] as HTMLInputElement;
+      let file: any = fileElement.value;
       file = JSON.parse(file ? file : '{}');
       let data = this.userGroup?.value;
 
