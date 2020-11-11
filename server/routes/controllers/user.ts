@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request, Express } from 'express';
+import { NextFunction, Response, Request } from 'express';
 import * as crypto from 'crypto';
 import { validationResult } from 'express-validator';
 import * as bcrypt from 'bcryptjs';
@@ -72,8 +72,6 @@ class Controller {
 
             req.login(user, (err): Response<any> | void => {
 
-                req.session = (req.session as Express.Session);
-
                 if (error) {
                     return handleErrors(error, res);
                 }
@@ -82,7 +80,7 @@ class Controller {
                     return res.status(200).send(json);
                 }
                 else {
-                    req.session.cookie.expires = false;
+                    req.session.cookie.expires = undefined;
                     return res.status(200).send(json);
                 }
 
