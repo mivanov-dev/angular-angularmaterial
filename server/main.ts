@@ -73,7 +73,18 @@ class App {
         this.app.use(passport.initialize());
         this.app.use(passport.session());
         this.app.use(express.static(distFolder, {
-            maxAge: ms('1d')
+            etag: true,
+            maxAge: ms('1d'),
+            redirect: true,
+            // tslint:disable-next-line: no-shadowed-variable
+            setHeaders: (res, path, stat) => {
+                if (path.includes('index.html')) {
+                    res.setHeader('Cache-Control', 'no-cache');
+                }
+                else {
+                    res.setHeader('Cache-Control', `public, max-age=${ms('1d')}`);
+                }
+            }
         }));
         this.app.use((error: any, req: Request, res: Response, next: NextFunction): void => {
 
