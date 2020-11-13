@@ -96,6 +96,22 @@ class App {
 
         });
 
+        this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+            const isJs = req.url.match(/\.js$/i) !== null;
+
+            if (err !== undefined || err !== null || err !== '') {
+                console.error(err);
+            }
+
+            if (isJs) {
+                req.url = req.url + '.gz';
+                res.set('Content-Encoding', 'gzip');
+                res.set('Content-Type', 'application/javascript');
+            } else {
+                next();
+            }
+        });
+
         this.app.get('/', (req: Request, res: Response) => {
 
             res.render(indexHtml, {
