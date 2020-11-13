@@ -6,7 +6,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromRouter from '@ngrx/router-store';
 // custom
 import * as fromAuth from '../user/auth/store/reducer';
-import { environment } from '../../environments/environment';
+import { environment } from 'src/environments/environment';
 import * as fromForgotPassword from '../user/forgot-password/store/reducer';
 import * as fromResetPassword from '../user/reset-password/store/reducer';
 import * as fromComment from '../scroll/store/reducer/reducer';

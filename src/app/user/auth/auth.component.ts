@@ -22,7 +22,7 @@ import * as fromApp from '../../store';
 import * as AuthActions from './store/actions';
 import * as AuthModels from './store/models';
 import * as fromAuth from './store/reducer';
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 import { DirtyCheck } from '../../shared/guards';
 import { UserFormValidatorToken, UserFormValidator } from '../validators';
 

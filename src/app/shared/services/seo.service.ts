@@ -4,7 +4,7 @@ import { Title, Meta } from '@angular/platform-browser';
 // rxjs
 import { } from 'rxjs/operators';
 // custom
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 export interface SeoModel {
     title: string;

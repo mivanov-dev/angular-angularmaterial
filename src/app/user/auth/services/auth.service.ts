@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store';
 import * as AuthActions from '../store/actions';
 import * as AuthModels from '../store/models';
-import { environment } from '../../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
