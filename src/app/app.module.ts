@@ -14,7 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import * as fromApp from './store/reducer';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 import { ProviderModule } from './provider.module';
 import { SharedModule } from './shared/shared.module';
 import { FooterComponent } from './footer/footer.component';

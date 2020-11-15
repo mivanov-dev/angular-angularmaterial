@@ -9,16 +9,12 @@ if (environment.production) {
   enableProdMode();
 }
 
-// function loadServiceWorker(): void {
-//   if ('serviceWorker' in navigator && environment.production) {
-//     navigator.serviceWorker.register('/ngsw-worker.js')
-//       .catch((error) => console.error('Service worker registration failed with:', error));
-//   }
-// }
+// document.addEventListener('DOMContentLoaded', () => {
+//   platformBrowserDynamic()
+//     .bootstrapModule(AppModule)
+//     .catch((error) => console.error(error));
+// });
 
-document.addEventListener('DOMContentLoaded', () => {
-  platformBrowserDynamic()
+platformBrowserDynamic()
     .bootstrapModule(AppModule)
-    // .then(() => loadServiceWorker())
     .catch((error) => console.error(error));
-});

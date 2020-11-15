@@ -5,13 +5,13 @@ import { SwUpdate } from '@angular/service-worker';
 @Injectable()
 export class SwService {
 
-  constructor(private sw: SwUpdate) { }
+  constructor(private swu: SwUpdate) { }
 
   update(): void {
 
-    if (this.sw.isEnabled) {
-      this.sw.available
-        .subscribe((res) => this.sw.activateUpdate());
+    if (this.swu.isEnabled) {
+      this.swu.available
+        .subscribe((res) => this.swu.activateUpdate());
     }
 
   }
