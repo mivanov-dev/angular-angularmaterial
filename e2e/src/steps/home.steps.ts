@@ -98,10 +98,8 @@ Then(/^I should't see more loading indicator$/,
 
 AfterAll(() => {
 
-  setTimeout(() => {
-
-    browser.driver.quit();
-
-  }, 100);
+  browser.driver
+    .wait(() => { }, 1000)
+    .then(_ => (browser.driver.quit()));
 
 });
