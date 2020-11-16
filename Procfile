@@ -1,1 +1,1 @@
-web: npm run ssr
+web: npm install & npm run ssr & wait -n
