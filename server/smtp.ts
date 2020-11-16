@@ -7,71 +7,71 @@ import { config } from './config';
 
 class Smtp {
 
-    private static instance: Smtp;
-    private smtpTransport: Transporter;
+  private static instance: Smtp;
+  private smtpTransport: Transporter;
 
-    private constructor() {
+  private constructor() {
 
-        log.info('smtp:init');
+    log.info('smtp:init');
 
-        // https://ethereal.email/create
-        this.smtpTransport = nodemailer.createTransport(config.smtp);
-        this.smtpTransport.on('error', (error) => log.error(`smtp:error: ${JSON.stringify(error)}`));
+    // https://ethereal.email/create
+    this.smtpTransport = nodemailer.createTransport(config.smtp);
+    this.smtpTransport.on('error', (error) => log.error(`smtp:error: ${JSON.stringify(error)}`));
+
+  }
+
+  public static getInstance(): Smtp {
+
+    if (!Smtp.instance) {
+      Smtp.instance = new Smtp();
+    }
+
+    return Smtp.instance;
+
+  }
+
+  async verify(): Promise<void> {
+
+    try {
+
+      log.info('smtp:verify');
+
+      if (!await this.smtpTransport.verify()) {
+        this.close();
+      }
+
+    }
+    catch (error) {
+
+      log.error(`smtp:verify: ${JSON.stringify(error)}`);
+      this.close();
 
     }
 
-    public static getInstance(): Smtp {
+  }
 
-        if (!Smtp.instance) {
-            Smtp.instance = new Smtp();
-        }
+  sendMail(to: any, subject: any, html: any): Promise<any> {
 
-        return Smtp.instance;
-
+    if (config.smtp.auth) {
+      return this.smtpTransport
+        .sendMail({
+          from: config.smtp.auth.user,
+          to,
+          subject,
+          html
+        });
     }
 
-    async verify(): Promise<void> {
+    return Promise.reject(new Error('Missing mail options'));
 
-        try {
+  }
 
-            log.info('smtp:verify');
+  close(): void {
 
-            if (!await this.smtpTransport.verify()) {
-                this.close();
-            }
+    log.info(`smtp:close`);
+    this.smtpTransport.close();
 
-        }
-        catch (error) {
-
-            log.error(`smtp:verify: ${JSON.stringify(error)}`);
-            this.close();
-
-        }
-
-    }
-
-    sendMail(to: any, subject: any, html: any): Promise<any> {
-
-        if (config.smtp.auth) {
-            return this.smtpTransport
-                .sendMail({
-                    from: config.smtp.auth.user,
-                    to,
-                    subject,
-                    html
-                });
-        }
-
-        return Promise.reject(new Error('Missing mail options'));
-
-    }
-
-    close(): void {
-
-        log.info(`smtp:close`);
-        this.smtpTransport.close();
-
-    }
+  }
 
 }
 

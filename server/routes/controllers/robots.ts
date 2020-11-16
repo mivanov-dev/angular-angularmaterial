@@ -9,40 +9,40 @@ let robotsTxt: any;
 
 class Controller {
 
-    static robots = async (req: Request | any, res: Response, next: NextFunction): Promise<void> => {
+  static robots = async (req: Request | any, res: Response, next: NextFunction): Promise<void> => {
 
-        const { seoProtocol, seoHost, seoPort } = config;
+    const { seoProtocol, seoHost, seoPort } = config;
 
-        res.header('content-type', 'text/plain');
+    res.header('content-type', 'text/plain');
 
-        if (robotsTxt) {
-            res.write(robotsTxt);
-            return res.end();
-        }
-
-        try {
-
-            const content = await robotstxt({
-                policy: [
-                    {
-                        userAgent: '*',
-                        disallow: '',
-                    },
-                ],
-                sitemap: `${seoProtocol}://${seoHost}:${seoPort}/sitemap.xml`,
-                host: `${seoProtocol}://${seoHost}:${seoPort}`,
-            });
-
-            robotsTxt = content;
-
-            res.write(content);
-            res.end();
-
-
-        } catch (error) {
-            handleErrors(error, res);
-        }
+    if (robotsTxt) {
+      res.write(robotsTxt);
+      return res.end();
     }
+
+    try {
+
+      const content = await robotstxt({
+        policy: [
+          {
+            userAgent: '*',
+            disallow: '',
+          },
+        ],
+        sitemap: `${seoProtocol}://${seoHost}:${seoPort}/sitemap.xml`,
+        host: `${seoProtocol}://${seoHost}:${seoPort}`,
+      });
+
+      robotsTxt = content;
+
+      res.write(content);
+      res.end();
+
+
+    } catch (error) {
+      handleErrors(error, res);
+    }
+  }
 
 }
 

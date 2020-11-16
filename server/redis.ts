@@ -8,29 +8,29 @@ const client = new Redis(config.redis);
 (client as any).Promise = bluebird.Promise;
 
 client.on('message', (channel, message) => {
-    log.info('redis:message:', channel, message);
+  log.info('redis:message:', channel, message);
 });
 client.on('subscribe', (channel, message) => {
-    log.info('redis:subscribe:', channel, message);
+  log.info('redis:subscribe:', channel, message);
 });
 client.on('unsubscribe', (channel, message) => {
-    log.info('redis:unsubscribe:', channel, message);
+  log.info('redis:unsubscribe:', channel, message);
 });
 
 client.on('error', (error) => {
-    log.error('redis:error:', JSON.stringify(error));
+  log.error('redis:error:', JSON.stringify(error));
 });
 client.on('ready', () => {
-    log.info('redis:ready:');
+  log.info('redis:ready:');
 });
 client.on('connect', () => {
-    log.info('redis:connect:');
+  log.info('redis:connect:');
 });
 client.on('reconnecting', () => {
-    log.warn('redis:reconnecting:');
+  log.warn('redis:reconnecting:');
 });
 client.on('end', () => {
-    log.warn('redis:end:');
+  log.warn('redis:end:');
 });
 
 export { client as redisClient };

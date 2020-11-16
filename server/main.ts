@@ -41,107 +41,107 @@ global.Image = window.Image;
 
 class App {
 
-    private static instance: App;
+  private static instance: App;
 
-    public app: Application = express();
+  public app: Application = express();
 
-    private constructor() {
+  private constructor() {
 
-        this.app.engine('html', ngExpressEngine({ bootstrap: AppServerModule }));
+    this.app.engine('html', ngExpressEngine({ bootstrap: AppServerModule }));
 
-        this.app.set('view engine', 'html');
-        this.app.set('views', distFolder);
-        this.app.set('httpPort', +config.port);
-        this.app.set('host', config.host);
-        this.app.set('view cache', true);
-        this.app.use(compression({
-            memLevel: 9,
-            level: 9
-        }));
-        this.app.use(methodOverride());
-        this.app.use(express.json());
-        this.app.use(urlencoded({ extended: false }));
-        this.app.use(cookieParser());
-        this.app.use(expressSession({
-            ...config.expressSessionOptions,
-            store: new RedisStore({
-                client: redisClient,
-                disableTouch: true
-            })
-        }));
-        this.app.use(cors(config.corsOptions));
-        this.app.use(passport.initialize());
-        this.app.use(passport.session());
-        this.app.use(express.static(distFolder, {
-            etag: true,
-            maxAge: ms('1d'),
-            redirect: true,
-            // tslint:disable-next-line: no-shadowed-variable
-            setHeaders: (res, path, stat) => {
-                if (path.includes('index.html')) {
-                    res.setHeader('Cache-Control', 'no-cache');
-                }
-                else {
-                    res.setHeader('Cache-Control', `public, max-age=${ms('1d')}`);
-                }
-            }
-        }));
-        this.app.use((error: any, req: Request, res: Response, next: NextFunction): void => {
-
-            if (!error.status) {
-                log.error(error.stack);
-            }
-
-            res.status(error.status || 500).send({ message: error.message || 'Something broken!' });
-
-        });
-
-        this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-            const isJs = req.url.match(/\.js$/i) !== null;
-
-            if (err !== undefined || err !== null || err !== '') {
-                console.error(err);
-            }
-
-            if (isJs) {
-                req.url = req.url + '.gz';
-                res.set('Content-Encoding', 'gzip');
-                res.set('Content-Type', 'application/javascript');
-            } else {
-                next();
-            }
-        });
-
-        this.app.get('/', (req: Request, res: Response) => {
-
-            res.render(indexHtml, {
-                req, providers: [{
-                    provide: APP_BASE_HREF,
-                    useValue: req.baseUrl
-                }]
-            });
-
-        });
-        this.app.use(userRouter);
-        this.app.use(sitemapRouter);
-        this.app.use(robotsRouter);
-        this.app.use(commentRouter);
-
-        smtp.verify();
-
-        database(config.mongodb.uri, config.mongodb.options);
-
-    }
-
-    public static getInstance(): App {
-
-        if (!App.instance) {
-            App.instance = new App();
+    this.app.set('view engine', 'html');
+    this.app.set('views', distFolder);
+    this.app.set('httpPort', +config.port);
+    this.app.set('host', config.host);
+    this.app.set('view cache', true);
+    this.app.use(compression({
+      memLevel: 9,
+      level: 9
+    }));
+    this.app.use(methodOverride());
+    this.app.use(express.json());
+    this.app.use(urlencoded({ extended: false }));
+    this.app.use(cookieParser());
+    this.app.use(expressSession({
+      ...config.expressSessionOptions,
+      store: new RedisStore({
+        client: redisClient,
+        disableTouch: true
+      })
+    }));
+    this.app.use(cors(config.corsOptions));
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
+    this.app.use(express.static(distFolder, {
+      etag: true,
+      maxAge: ms('1d'),
+      redirect: true,
+      // tslint:disable-next-line: no-shadowed-variable
+      setHeaders: (res, path, stat) => {
+        if (path.includes('index.html')) {
+          res.setHeader('Cache-Control', 'no-cache');
         }
+        else {
+          res.setHeader('Cache-Control', `public, max-age=${ms('1d')}`);
+        }
+      }
+    }));
+    this.app.use((error: any, req: Request, res: Response, next: NextFunction): void => {
 
-        return App.instance;
+      if (!error.status) {
+        log.error(error.stack);
+      }
 
+      res.status(error.status || 500).send({ message: error.message || 'Something broken!' });
+
+    });
+
+    this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+      const isJs = req.url.match(/\.js$/i) !== null;
+
+      if (err !== undefined || err !== null || err !== '') {
+        console.error(err);
+      }
+
+      if (isJs) {
+        req.url = req.url + '.gz';
+        res.set('Content-Encoding', 'gzip');
+        res.set('Content-Type', 'application/javascript');
+      } else {
+        next();
+      }
+    });
+
+    this.app.get('/', (req: Request, res: Response) => {
+
+      res.render(indexHtml, {
+        req, providers: [{
+          provide: APP_BASE_HREF,
+          useValue: req.baseUrl
+        }]
+      });
+
+    });
+    this.app.use(userRouter);
+    this.app.use(sitemapRouter);
+    this.app.use(robotsRouter);
+    this.app.use(commentRouter);
+
+    smtp.verify();
+
+    database(config.mongodb.uri, config.mongodb.options);
+
+  }
+
+  public static getInstance(): App {
+
+    if (!App.instance) {
+      App.instance = new App();
     }
+
+    return App.instance;
+
+  }
 
 }
 
@@ -149,19 +149,19 @@ export const { app } = App.getInstance();
 
 function run(): void {
 
-    function onError(error: any): void {
-        log.error(`server:error ${JSON.stringify(error)}`);
-    }
+  function onError(error: any): void {
+    log.error(`server:error ${JSON.stringify(error)}`);
+  }
 
-    function onListening(protocol: string, host: string, port: string): void {
-        log.info(`Node Express server listening on ${protocol}://${host}:${port}`);
-    }
+  function onListening(protocol: string, host: string, port: string): void {
+    log.info(`Node Express server listening on ${protocol}://${host}:${port}`);
+  }
 
-    // Start up the Node server
-    const httpServer = http.createServer(app);
-    httpServer.listen(process.env.PORT || app.get('httpPort'));
-    httpServer.on('listening', () => onListening('http', app.get('host'), app.get('httpPort')));
-    httpServer.on('error', err => onError);
+  // Start up the Node server
+  const httpServer = http.createServer(app);
+  httpServer.listen(process.env.PORT || app.get('httpPort'));
+  httpServer.on('listening', () => onListening('http', app.get('host'), app.get('httpPort')));
+  httpServer.on('error', err => onError);
 
 }
 
@@ -172,5 +172,5 @@ declare const __non_webpack_require__: NodeRequire;
 const mainModule = __non_webpack_require__.main;
 const moduleFilename = (mainModule && mainModule.filename) || '';
 if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
-    run();
+  run();
 }
