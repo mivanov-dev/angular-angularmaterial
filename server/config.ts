@@ -80,7 +80,8 @@ export const config = {
         debug: true,
     } as SMTPTransport.Options,
     redis: {
-        host: process.env.REDIS_HOST as string,
-        port: process.env.REDIS_PORT
+        host: process.env.REDIS_HOST as string | 'localhost',
+        port: process.env.REDIS_PORT as string | 6379,
+        password: process.env.REDIS_PASS as string
     } as RedisOptions
 };
