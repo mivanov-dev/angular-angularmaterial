@@ -24,15 +24,6 @@ export const config = {
             useUnifiedTopology: true
         }
     },
-    cloudinary: {
-        name: process.env.CLOUDINARY_NAME as string,
-        api_key: process.env.CLOUDINARY_API_KEY as string,
-        api_secret: process.env.CLOUDINARY_API_SECRET as string,
-        env_var: process.env.CLOUDINARY_ENV_VAR as string,
-        base_delivery_url: process.env.CLOUDINARY_BASE_DELIVERY_URL as string,
-        secret_delivery_url: process.env.CLOUDINARY_SECRET_DELIVERY_URL as string,
-        api_base_url: process.env.CLOUDINARY_API_BASE_URL as string
-    },
     google: {
         client_id: process.env.GOOGLE_CLIENT_ID as string,
         project_id: process.env.GOOGLE_PROJECT_ID as string,
