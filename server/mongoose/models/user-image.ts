@@ -4,16 +4,16 @@ import { Schema } from 'mongoose';
 const Types = Schema.Types;
 
 export interface UserImageDocument extends mongoose.Document {
-    url: string;
+  url: string;
 }
 
 export const userImageSchema = new Schema({
-    url: {
-        type: Types.String,
-    }
+  url: {
+    type: Types.String,
+  }
 }, {
-    collection: 'userImage',
-    timestamps: { createdAt: 'createdAt' },
+  collection: 'userImage',
+  timestamps: { createdAt: 'createdAt' },
 });
 
 export const UserImage = mongoose.model<UserImageDocument>('UserImage', userImageSchema);

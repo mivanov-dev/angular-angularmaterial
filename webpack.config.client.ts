@@ -15,33 +15,33 @@ const seoProtocol = process.env.SEO_PROTOCOL || protocol;
 const isDev = process.env.NODE_ENV === 'development';
 
 const plugins = [
-    new webpack.DefinePlugin({
-        'process.env': {
-            // Base
-            HOST: JSON.stringify(host),
-            PORT: JSON.stringify(port),
-            SEO_HOST: JSON.stringify(seoHost),
-            SEO_PORT: JSON.stringify(seoPort),
-            SEO_PROTOCOL: JSON.stringify(seoProtocol),
-            // Google
-            GOOGLE_ANALYTICS_ID: JSON.stringify(process.env.GOOGLE_ANALYTICS_ID || 'G-XXXXXXXXXX'),
-            // Cloudinary
-            CLOUDINARY_SERVER: JSON.stringify(process.env.CLOUDINARY_SERVER),
-            CLOUDINARY_UPLOAD_IMAGE_URL: JSON.stringify(process.env.CLOUDINARY_UPLOAD_IMAGE_URL),
-            CLOUDINARY_CLOUDNAME: JSON.stringify(process.env.CLOUDINARY_CLOUDNAME),
-            CLOUDINARY_PRESETS: JSON.stringify(process.env.CLOUDINARY_PRESETS),
-        }
-    })
+  new webpack.DefinePlugin({
+    'process.env': {
+      // Base
+      HOST: JSON.stringify(host),
+      PORT: JSON.stringify(port),
+      SEO_HOST: JSON.stringify(seoHost),
+      SEO_PORT: JSON.stringify(seoPort),
+      SEO_PROTOCOL: JSON.stringify(seoProtocol),
+      // Google
+      GOOGLE_ANALYTICS_ID: JSON.stringify(process.env.GOOGLE_ANALYTICS_ID || 'G-XXXXXXXXXX'),
+      // Cloudinary
+      CLOUDINARY_SERVER: JSON.stringify(process.env.CLOUDINARY_SERVER),
+      CLOUDINARY_UPLOAD_IMAGE_URL: JSON.stringify(process.env.CLOUDINARY_UPLOAD_IMAGE_URL),
+      CLOUDINARY_CLOUDNAME: JSON.stringify(process.env.CLOUDINARY_CLOUDNAME),
+      CLOUDINARY_PRESETS: JSON.stringify(process.env.CLOUDINARY_PRESETS),
+    }
+  })
 ].concat(isDev ? [] : [
-    new CompressionPlugin({
-        test: /\.js$/i,
-        exclude: /\/node_modules/i
-    })
+  new CompressionPlugin({
+    test: /\.js$/i,
+    exclude: /\/node_modules/i
+  })
 ]);
 
 const config: webpack.Configuration = {
-    mode: isDev ? 'development' : 'production',
-    plugins
+  mode: isDev ? 'development' : 'production',
+  plugins
 };
 
 export default config;

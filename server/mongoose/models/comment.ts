@@ -6,47 +6,47 @@ import { Counter } from './counter';
 const Types = Schema.Types;
 
 export interface CommentDocument extends Document {
-    emoji: string;
-    author: string;
-    description: string;
-    seq: number;
+  emoji: string;
+  author: string;
+  description: string;
+  seq: number;
 }
 
 export interface CommentModel extends Model<any> { }
 
 export const commentSchema = new Schema({
-    emoji: {
-        type: Types.String,
-    },
-    author: {
-        type: Types.String,
-    },
-    description: {
-        type: Types.String,
-    },
-    seq: {
-        type: Types.Number,
-        default: 0
-    }
+  emoji: {
+    type: Types.String,
+  },
+  author: {
+    type: Types.String,
+  },
+  description: {
+    type: Types.String,
+  },
+  seq: {
+    type: Types.Number,
+    default: 0
+  }
 }, {
-    collection: 'comment',
-    timestamps: { createdAt: 'createdAt' },
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
+  collection: 'comment',
+  timestamps: { createdAt: 'createdAt' },
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
 });
 
 commentSchema.pre('save', function(next): void {
-    const comment: any = this;
+  const comment: any = this;
 
 
-    // @ts-ignore
-    Counter.findByIdAndUpdate({ _id: 'commentId' }, { $inc: { seq: 1 }, }, (error, counter): void => {
-        if (error) {
-            return next(error);
-        }
-        comment.seq = counter.seq;
-        next();
-    });
+  // @ts-ignore
+  Counter.findByIdAndUpdate({ _id: 'commentId' }, { $inc: { seq: 1 }, }, (error, counter): void => {
+    if (error) {
+      return next(error);
+    }
+    comment.seq = counter.seq;
+    next();
+  });
 
 });
 

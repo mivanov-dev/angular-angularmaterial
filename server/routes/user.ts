@@ -6,34 +6,34 @@ import { UserController } from './controllers';
 const router = Router();
 
 router.post(
-    '/api/user/register',
-    reqSchema.user.regiser,
-    UserController.register);
+  '/api/user/register',
+  reqSchema.user.regiser,
+  UserController.register);
 
 router.post(
-    '/api/user/login',
-    isGuest,
-    reqSchema.user.login,
-    UserController.login);
+  '/api/user/login',
+  isGuest,
+  reqSchema.user.login,
+  UserController.login);
 
 router.get(
-    '/api/user/isLoggedIn',
-    isAuthenticate,
-    UserController.isLoggedIn);
+  '/api/user/isLoggedIn',
+  isAuthenticate,
+  UserController.isLoggedIn);
 
 router.post(
-    '/api/user/logout',
-    isAuthenticate,
-    UserController.logout);
+  '/api/user/logout',
+  isAuthenticate,
+  UserController.logout);
 
 router.post(
-    '/api/user/forgot-password',
-    reqSchema.user.forgotPassword,
-    UserController.forgotPassword);
+  '/api/user/forgot-password',
+  reqSchema.user.forgotPassword,
+  UserController.forgotPassword);
 
 router.post(
-    '/api/user/reset-password',
-    reqSchema.user.resetPassword,
-    UserController.resetPassword);
+  '/api/user/reset-password',
+  reqSchema.user.resetPassword,
+  UserController.resetPassword);
 
 export { router as userRouter };

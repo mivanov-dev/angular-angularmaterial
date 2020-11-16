@@ -12,206 +12,206 @@ import { config } from '../../config';
 
 class Controller {
 
-    static register = async (req: Request | any, res: Response, next: NextFunction): Promise<void | Response<any>> => {
+  static register = async (req: Request | any, res: Response, next: NextFunction): Promise<void | Response<any>> => {
 
-        try {
+    try {
 
-            let { password } = req.body;
-            const { email } = req.body;
-            const errors: any = validationResult(req);
-            let userImage: UserImageDocument;
+      let { password } = req.body;
+      const { email } = req.body;
+      const errors: any = validationResult(req);
+      let userImage: UserImageDocument;
 
-            if (!errors.isEmpty()) {
-                throw { message: errors.errors[0].msg };
-            }
-            else if (await User.findOne({ email })) {
-                throw { message: 'This email already exists!' };
-            }
-            else if (new Object(req.body).hasOwnProperty('file')) {
-                userImage = await new UserImage({ url: req.body.file }).save();
-            }
-            else {
-                userImage = await new UserImage().save();
-            }
+      if (!errors.isEmpty()) {
+        throw { message: errors.errors[0].msg };
+      }
+      else if (await User.findOne({ email })) {
+        throw { message: 'This email already exists!' };
+      }
+      else if (new Object(req.body).hasOwnProperty('file')) {
+        userImage = await new UserImage({ url: req.body.file }).save();
+      }
+      else {
+        userImage = await new UserImage().save();
+      }
 
-            password = await bcrypt.hashSync(password, 10);
+      password = await bcrypt.hashSync(password, 10);
 
-            await User.create({ email, password, imageId: userImage._id });
+      await User.create({ email, password, imageId: userImage._id });
 
-            res.status(200).send({ message: 'Registration successful!' });
+      res.status(200).send({ message: 'Registration successful!' });
 
-        }
-        catch (error) {
-            console.log(error);
-            handleErrors(error, res);
-
-        }
+    }
+    catch (error) {
+      console.log(error);
+      handleErrors(error, res);
 
     }
 
-    static login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  }
 
-        const errors: any = validationResult(req);
+  static login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-        if (!errors.isEmpty()) {
-            throw { message: errors.errors[0].msg };
-        }
+    const errors: any = validationResult(req);
 
-        passportStrategy.authenticate('login', (error, user, info): Response<any> | void => {
-
-            if (error) { return handleErrors(error, res); }
-            if (info !== undefined) { return res.status(400).send(info); }
-
-            const json = {
-                email: user.email,
-                image: user.imageId.url,
-                role: user.role,
-                expires: ms('1m'),
-                redirect: true
-            };
-
-            req.login(user, (err): Response<any> | void => {
-
-                if (error) {
-                    return handleErrors(error, res);
-                }
-                else if (req.body.remember) {
-                    req.session.cookie.originalMaxAge = ms('1m');
-                    return res.status(200).send(json);
-                }
-                else {
-                    req.session.cookie.expires = undefined;
-                    return res.status(200).send(json);
-                }
-
-            });
-
-        })(req, res, next);
-
+    if (!errors.isEmpty()) {
+      throw { message: errors.errors[0].msg };
     }
 
-    static isLoggedIn = async (req: Request, res: Response, next: NextFunction): Promise<Response<any> | void> => {
+    passportStrategy.authenticate('login', (error, user, info): Response<any> | void => {
 
-        try {
+      if (error) { return handleErrors(error, res); }
+      if (info !== undefined) { return res.status(400).send(info); }
 
-            const body = req.user as { id: any };
-            let expires: number = ms('1m');
-            const user = await User.isLoggedIn(body.id);
+      const json = {
+        email: user.email,
+        image: user.imageId.url,
+        role: user.role,
+        expires: ms('1m'),
+        redirect: true
+      };
 
-            if (req?.session?.cookie.originalMaxAge) {
-                req.session.cookie.originalMaxAge = ms('1m');
+      req.login(user, (err): Response<any> | void => {
 
-                expires = (req.session.cookie.expires as Date).getTime() - Date.now();
-            }
-
-            return res.status(200)
-                .send({
-                    email: user.email,
-                    image: user.imageId.url,
-                    role: user.role,
-                    expires,
-                    redirect: false
-                });
-
+        if (error) {
+          return handleErrors(error, res);
         }
-        catch (error) {
-
-            handleErrors(error, res);
-
+        else if (req.body.remember) {
+          req.session.cookie.originalMaxAge = ms('1m');
+          return res.status(200).send(json);
         }
+        else {
+          req.session.cookie.expires = undefined;
+          return res.status(200).send(json);
+        }
+
+      });
+
+    })(req, res, next);
+
+  }
+
+  static isLoggedIn = async (req: Request, res: Response, next: NextFunction): Promise<Response<any> | void> => {
+
+    try {
+
+      const body = req.user as { id: any };
+      let expires: number = ms('1m');
+      const user = await User.isLoggedIn(body.id);
+
+      if (req?.session?.cookie.originalMaxAge) {
+        req.session.cookie.originalMaxAge = ms('1m');
+
+        expires = (req.session.cookie.expires as Date).getTime() - Date.now();
+      }
+
+      return res.status(200)
+        .send({
+          email: user.email,
+          image: user.imageId.url,
+          role: user.role,
+          expires,
+          redirect: false
+        });
+
     }
+    catch (error) {
 
-    static logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-
-        req.logout();
-        res.clearCookie('uid');
-        res.status(200).send();
+      handleErrors(error, res);
 
     }
+  }
 
-    static forgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<Response<any> | void> => {
+  static logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-        const { host, port } = config;
+    req.logout();
+    res.clearCookie('uid');
+    res.status(200).send();
 
-        try {
+  }
 
-            const { email } = req.body;
-            const errors: any = validationResult(req);
+  static forgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<Response<any> | void> => {
 
-            if (!errors.isEmpty()) {
-                throw { message: errors.errors[0].msg };
-            }
+    const { host, port } = config;
 
-            let user = await User.findOne({ email });
+    try {
 
-            if (user) {
-                user.resetPasswordToken = crypto.randomBytes(16).toString('hex');
-                user.resetPasswordExpires = Date.now() + ms('1m');
-                user = await user.save();
-            }
+      const { email } = req.body;
+      const errors: any = validationResult(req);
 
-            res.status(200).send({ message: `If your email exists in our database, you will receive a reset link shortly!` });
+      if (!errors.isEmpty()) {
+        throw { message: errors.errors[0].msg };
+      }
 
-            if (user) {
-                const to = user.email;
-                const subject = 'Reset password !';
-                const html = `
+      let user = await User.findOne({ email });
+
+      if (user) {
+        user.resetPasswordToken = crypto.randomBytes(16).toString('hex');
+        user.resetPasswordExpires = Date.now() + ms('1m');
+        user = await user.save();
+      }
+
+      res.status(200).send({ message: `If your email exists in our database, you will receive a reset link shortly!` });
+
+      if (user) {
+        const to = user.email;
+        const subject = 'Reset password !';
+        const html = `
                     <p>Reset your password !</p>
                     <a href="http://${host}:${port}/#/user/reset-password/${user.resetPasswordToken}" target="_blank">
                         Click here !
                     </a>`;
-                smtp.sendMail(to, subject, html);
-            }
+        smtp.sendMail(to, subject, html);
+      }
 
-            smtp.close();
-
-        }
-        catch (error) {
-
-            handleErrors(error, res);
-
-        }
-    }
-
-    static resetPassword = async (req: Request, res: Response, next: NextFunction): Promise<void | Response<any>> => {
-
-        try {
-
-            const { token, password, repeatedPassword } = req.body;
-            const errors: any = validationResult(req);
-
-            if (!errors.isEmpty()) {
-                throw { message: errors.errors[0].msg };
-            }
-
-            if (password.localeCompare(repeatedPassword) !== 0) {
-                throw { message: 'New password and repeated password are not equals!' };
-            }
-
-            const user = await User.findOne({
-                resetPasswordToken: token,
-                resetPasswordExpires: { $gt: Date.now() }
-            })
-                .exec();
-
-            if (!user) {
-                throw { message: 'Reset password token is invalid or has expired!' };
-            }
-
-            user.password = await bcrypt.hashSync(password, 10);
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
-            user.save();
-
-            return res.status(200).end();
-        }
-        catch (error) {
-
-            handleErrors(error, res);
-
-        }
+      smtp.close();
 
     }
+    catch (error) {
+
+      handleErrors(error, res);
+
+    }
+  }
+
+  static resetPassword = async (req: Request, res: Response, next: NextFunction): Promise<void | Response<any>> => {
+
+    try {
+
+      const { token, password, repeatedPassword } = req.body;
+      const errors: any = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        throw { message: errors.errors[0].msg };
+      }
+
+      if (password.localeCompare(repeatedPassword) !== 0) {
+        throw { message: 'New password and repeated password are not equals!' };
+      }
+
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() }
+      })
+        .exec();
+
+      if (!user) {
+        throw { message: 'Reset password token is invalid or has expired!' };
+      }
+
+      user.password = await bcrypt.hashSync(password, 10);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      user.save();
+
+      return res.status(200).end();
+    }
+    catch (error) {
+
+      handleErrors(error, res);
+
+    }
+
+  }
 
 }
 
