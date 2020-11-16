@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run serve:ssr",
     "serve": "npx http-server ./dist/browser -c-1 -p 4200",
-    "build": "ng build",
+    "build": "npm run build:ssr",
     "test": "ng test",
     "test-headless": "ng test --watch=false --karmaConfig=karma-ci.conf.js",
     "lint": "ng lint",
