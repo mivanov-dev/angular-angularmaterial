@@ -159,7 +159,7 @@ function run(): void {
 
     // Start up the Node server
     const httpServer = http.createServer(app);
-    httpServer.listen(app.get('httpPort'));
+    httpServer.listen(process.env.PORT || app.get('httpPort'));
     httpServer.on('listening', () => onListening('http', app.get('host'), app.get('httpPort')));
     httpServer.on('error', err => onError);
 
