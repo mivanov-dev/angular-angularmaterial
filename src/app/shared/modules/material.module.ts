@@ -18,36 +18,36 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatListModule,
-        MatButtonModule,
-        MatIconModule,
-        MatProgressBarModule,
-        MatGridListModule,
-        MatCardModule,
-        MatInputModule,
-        MatFormFieldModule,
-        ScrollingModule,
-        MatCheckboxModule,
-        MatChipsModule
-    ],
-    exports: [
-        MatSidenavModule,
-        MatToolbarModule,
-        MatListModule,
-        MatButtonModule,
-        MatIconModule,
-        MatProgressBarModule,
-        MatGridListModule,
-        MatCardModule,
-        MatInputModule,
-        MatFormFieldModule,
-        ScrollingModule,
-        MatCheckboxModule,
-        MatChipsModule
-    ]
+  imports: [
+    CommonModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatGridListModule,
+    MatCardModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ScrollingModule,
+    MatCheckboxModule,
+    MatChipsModule
+  ],
+  exports: [
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatGridListModule,
+    MatCardModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ScrollingModule,
+    MatCheckboxModule,
+    MatChipsModule
+  ]
 })
 export class MaterialModule { }

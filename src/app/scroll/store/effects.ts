@@ -12,18 +12,18 @@ import { CommentService } from '../service/comment.service';
 @Injectable()
 export class CommentEffects {
 
-    constructor(private actions$: Actions, private commentService: CommentService) { }
+  constructor(private actions$: Actions, private commentService: CommentService) { }
 
-    addCommentsStart$ = createEffect(() => this.actions$
+  addCommentsStart$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(CommentActions.addCommentsStart),
+      exhaustMap(({ offset, batch }) => this.commentService.getAll(offset, batch)
         .pipe(
-            ofType(CommentActions.addCommentsStart),
-            exhaustMap(({ offset, batch }) => this.commentService.getAll(offset, batch)
-                .pipe(
-                    map(({ comments }) => CommentActions.addComments({ comments })),
-                    catchError((error) => of(CommentActions.addCommentsError({ error: '' })))
-                )
-            )
+          map(({ comments }) => CommentActions.addComments({ comments })),
+          catchError((error) => of(CommentActions.addCommentsError({ error: '' })))
         )
-    );
+      )
+    )
+  );
 
 }

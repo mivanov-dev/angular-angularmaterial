@@ -16,42 +16,42 @@ import * as fromAuth from '../store/reducer';
 // @ts-ignore
 export class AuthGuard implements CanActivate, OnDestroy {
 
-    private onDestroy$: Subject<void> = new Subject<void>();
+  private onDestroy$: Subject<void> = new Subject<void>();
 
-    constructor(
-        private router: Router,
-        private store$: Store<fromApp.AppState>) { }
+  constructor(
+    private router: Router,
+    private store$: Store<fromApp.AppState>) { }
 
-    ngOnDestroy(): void {
+  ngOnDestroy(): void {
 
-        this.onDestroy$.next();
-        this.onDestroy$.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
 
-    }
+  }
 
-    canActivate(
-        activatedRouteSnapshot: ActivatedRouteSnapshot,
-        routerStateSnapshot: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivate(
+    activatedRouteSnapshot: ActivatedRouteSnapshot,
+    routerStateSnapshot: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
 
-        return this.store$.select(fromAuth.selectLogin)
-            .pipe(
-                takeUntil(this.onDestroy$),
-                take(1),
-                map((user) => {
+    return this.store$.select(fromAuth.selectLogin)
+      .pipe(
+        takeUntil(this.onDestroy$),
+        take(1),
+        map((user) => {
 
-                    const isAuth = user !== null;
+          const isAuth = user !== null;
 
-                    if (isAuth) {
-                        return true;
-                    }
+          if (isAuth) {
+            return true;
+          }
 
-                    // return this.router.createUrlTree(['/user/auth']);
-                    this.router.navigate(['/user/auth']);
-                    return false;
+          // return this.router.createUrlTree(['/user/auth']);
+          this.router.navigate(['/user/auth']);
+          return false;
 
-                })
-            );
+        })
+      );
 
-    }
+  }
 
 }

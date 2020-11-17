@@ -8,17 +8,17 @@ import { SharedModule } from '../../shared/shared.module';
 import { DirtyCheckGuard } from '../../shared/guards';
 
 @NgModule({
-    declarations: [ResetPasswordComponent],
-    imports: [
-        CommonModule,
-        RouterModule.forChild([
-            {
-                path: '',
-                component: ResetPasswordComponent,
-                canDeactivate: [DirtyCheckGuard]
-            }
-        ]),
-        SharedModule,
-    ]
+  declarations: [ResetPasswordComponent],
+  imports: [
+    CommonModule,
+    RouterModule.forChild([
+      {
+        path: '',
+        component: ResetPasswordComponent,
+        canDeactivate: [DirtyCheckGuard]
+      }
+    ]),
+    SharedModule,
+  ]
 })
 export class ResetPasswordModule { }

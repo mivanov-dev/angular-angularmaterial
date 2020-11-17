@@ -31,10 +31,10 @@ const routes: Routes = [
 ];
 
 const options: ExtraOptions = {
-    useHash: true,
-    preloadingStrategy: PreloadAllModules,
-    onSameUrlNavigation: 'reload',
-    relativeLinkResolution: 'corrected'
+  useHash: true,
+  preloadingStrategy: PreloadAllModules,
+  onSameUrlNavigation: 'reload',
+  relativeLinkResolution: 'corrected'
 };
 
 @NgModule({

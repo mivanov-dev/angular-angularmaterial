@@ -1,44 +1,44 @@
 // angular
 import {
-    Injectable, ViewContainerRef,
-    ComponentFactoryResolver,
+  Injectable, ViewContainerRef,
+  ComponentFactoryResolver,
 } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
-    async showMessage(viewContainerRef: ViewContainerRef, message: string, hasError: boolean): Promise<void> {
+  async showMessage(viewContainerRef: ViewContainerRef, message: string, hasError: boolean): Promise<void> {
 
-        if (message !== undefined) {
-            viewContainerRef.clear();
+    if (message !== undefined) {
+      viewContainerRef.clear();
 
-            /**
-             * Read❗
-             * https://webpack.js.org/api/module-methods/#magic-comments
-             */
+      /**
+       * Read❗
+       * https://webpack.js.org/api/module-methods/#magic-comments
+       */
 
-            const { AlertComponent } = await import(
-                /* webpackMode: "lazy" */
-                `../components`
-            );
+      const { AlertComponent } = await import(
+        /* webpackMode: "lazy" */
+        `../components`
+      );
 
-            const alertFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
-            const alertComponentRef = viewContainerRef.createComponent(alertFactory);
-            alertComponentRef.instance.message = message;
-            alertComponentRef.instance.hasError = hasError;
-            alertComponentRef.instance.close
-                .subscribe((res: boolean) => {
+      const alertFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+      const alertComponentRef = viewContainerRef.createComponent(alertFactory);
+      alertComponentRef.instance.message = message;
+      alertComponentRef.instance.hasError = hasError;
+      alertComponentRef.instance.close
+        .subscribe((res: boolean) => {
 
-                    if (res) {
-                        alertComponentRef.destroy();
-                    }
+          if (res) {
+            alertComponentRef.destroy();
+          }
 
-                });
-
-        }
+        });
 
     }
+
+  }
 
 }

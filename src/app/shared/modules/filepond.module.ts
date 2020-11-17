@@ -10,20 +10,20 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 // @ts-ignore
 import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size';
 registerPlugin(
-    FilePondPluginImageExifOrientation,
-    FilePondPluginImagePreview,
-    FilePondPluginFileValidateType,
-    FilePondPluginFileValidateSize,
-    FilePondPluginImageValidateSize
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateType,
+  FilePondPluginFileValidateSize,
+  FilePondPluginImageValidateSize
 );
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FilePondModule
-    ],
-    exports: [
-        FilePondModule
-    ]
+  imports: [
+    CommonModule,
+    FilePondModule
+  ],
+  exports: [
+    FilePondModule
+  ]
 })
 export class FilepondModule { }

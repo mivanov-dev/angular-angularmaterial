@@ -1,11 +1,11 @@
 export interface ForgotPasswordStart {
-    email: string;
+  email: string;
 }
 
 export interface ForgotPassword {
-    message: string;
+  message: string;
 }
 
 export interface Error {
-    error: any;
+  error: any;
 }

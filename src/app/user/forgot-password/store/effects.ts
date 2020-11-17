@@ -12,26 +12,26 @@ import { ForgotPasswordService } from '../../../user/forgot-password/services/fo
 @Injectable()
 export class ForgotPasswordEffects {
 
-    constructor(
-        private actions$: Actions,
-        private forgotPasswordService: ForgotPasswordService) { }
+  constructor(
+    private actions$: Actions,
+    private forgotPasswordService: ForgotPasswordService) { }
 
-    forgotPasswordStart$ = createEffect(() => this.actions$
+  forgotPasswordStart$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(ForgotPasswordActions.forgotPasswordStart),
+      map(action => action.data),
+      exhaustMap((data) => this.forgotPasswordService.forgotPassword$(data)
         .pipe(
-            ofType(ForgotPasswordActions.forgotPasswordStart),
-            map(action => action.data),
-            exhaustMap((data) => this.forgotPasswordService.forgotPassword$(data)
-                .pipe(
-                    map((res) => ForgotPasswordActions.forgotPassword({ data: res })),
-                    catchError((error) => of(ForgotPasswordActions.forgotPasswordError({ error: error.error.message })))
-                )
-            )
-        ));
+          map((res) => ForgotPasswordActions.forgotPassword({ data: res })),
+          catchError((error) => of(ForgotPasswordActions.forgotPasswordError({ error: error.error.message })))
+        )
+      )
+    ));
 
-    forgotPassword$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(ForgotPasswordActions.forgotPassword),
-            tap((res) => { })
-        ), { dispatch: false });
+  forgotPassword$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(ForgotPasswordActions.forgotPassword),
+      tap((res) => { })
+    ), { dispatch: false });
 
 }

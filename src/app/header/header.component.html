@@ -1,55 +1,55 @@
 <mat-toolbar color="primary">
-    <mat-toolbar-row class="mat-elevation-z6"
-                     fxFlex
-                     fxLayout="row">
-        <button type="button"
-                mat-icon-button
-                (click)="sidenav?.toggle()">
-            <mat-icon aria-label="menu">menu</mat-icon>
-        </button>
-        <span fxFlex></span>
+  <mat-toolbar-row class="mat-elevation-z6"
+                   fxFlex
+                   fxLayout="row">
+    <button type="button"
+            mat-icon-button
+            (click)="sidenav?.toggle()">
+      <mat-icon aria-label="menu">menu</mat-icon>
+    </button>
+    <span fxFlex></span>
 
-        <div fxLayout="row"
-             fxLayoutGap="10px">
+    <div fxLayout="row"
+         fxLayoutGap="10px">
 
-            <ng-template [ngIf]="(user$ | async)"
-                         [ngIfElse]="loggedOut">
-                <img width="50"
-                     height="50"
-                     mat-card-avatar
-                     [src]="(user$ | async)?.image"
-                     [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
-                     alt="UserImage">
-                <a mat-button
-                   role="button"
-                   (click)="onLogout()">
-                    Logout
-                </a>
-                <a mat-button
-                   role="button"
-                   href="#/user/profile">
-                    Profile
-                </a>
-            </ng-template>
+      <ng-template [ngIf]="(user$ | async)"
+                   [ngIfElse]="loggedOut">
+        <img width="50"
+             height="50"
+             mat-card-avatar
+             [src]="(user$ | async)?.image"
+             [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
+             alt="UserImage">
+        <a mat-button
+           role="button"
+           (click)="onLogout()">
+          Logout
+        </a>
+        <a mat-button
+           role="button"
+           href="#/user/profile">
+          Profile
+        </a>
+      </ng-template>
 
 
-            <ng-template #loggedOut>
-                <a mat-button
-                   role="button"
-                   href="#/user/auth"
-                   (click)="switchAuthModeTo('login')">
-                    Login
-                </a>
-                <a mat-raised-button
-                   color="warn"
-                   role="button"
-                   href="#/user/auth"
-                   (click)="switchAuthModeTo('register')">
-                    Register
-                </a>
-            </ng-template>
+      <ng-template #loggedOut>
+        <a mat-button
+           role="button"
+           href="#/user/auth"
+           (click)="switchAuthModeTo('login')">
+          Login
+        </a>
+        <a mat-raised-button
+           color="warn"
+           role="button"
+           href="#/user/auth"
+           (click)="switchAuthModeTo('register')">
+          Register
+        </a>
+      </ng-template>
 
-        </div>
+    </div>
 
-    </mat-toolbar-row>
+  </mat-toolbar-row>
 </mat-toolbar>

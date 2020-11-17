@@ -5,20 +5,20 @@ import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } f
 import { Observable } from 'rxjs';
 
 export interface DirtyCheck {
-    canDeactivate: () => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
+  canDeactivate: () => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
 }
 
 @Injectable()
 export class DirtyCheckGuard implements CanDeactivate<DirtyCheck> {
 
-    canDeactivate(
-        dcg: DirtyCheck,
-        currentRoute: ActivatedRouteSnapshot,
-        currentState: RouterStateSnapshot,
-        nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canDeactivate(
+    dcg: DirtyCheck,
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-        return dcg.canDeactivate ? dcg.canDeactivate() : true;
+    return dcg.canDeactivate ? dcg.canDeactivate() : true;
 
-    }
+  }
 
 }

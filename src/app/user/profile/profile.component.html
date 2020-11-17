@@ -1,54 +1,54 @@
 <div fxLayoutAlign="center center"
      class="container">
 
-    <div fxLayoutGap="10px"
-         fxLayout="column"
-         fxLayoutAlign="center center">
+  <div fxLayoutGap="10px"
+       fxLayout="column"
+       fxLayoutAlign="center center">
 
-        <div>
-            <mat-card fxFlex="350px"
-                      fxFlex.xs="300px">
-                <mat-card-content fxFlex
-                                  fxLayout="column"
-                                  fxLayoutAlign="center center">
-                    <div class="wallpaper"></div>
-                    <div class="menu"
-                         fxFlex
-                         fxFill
-                         fxLayout="row"
-                         fxLayoutAlign="end center">
-                        <button mat-icon-button>
-                            <mat-icon aria-label="menu">more_vert</mat-icon>
-                        </button>
-                    </div>
-                    <div class="avatar">
-                        <img [src]="(user$ | async)?.image"
-                        [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
-                             alt="UserImage">
-                    </div>
-                    <h3 class="username">username</h3>
-                    <p class="location mat-small"
-                       fxLayout="row"
-                       fxLayoutAlign="center center">
-                        <mat-icon aria-label="location">location_on</mat-icon>
-                        location
-                    </p>
-                    <p class="email"
-                       fxLayout="row"
-                       fxLayoutAlign="center center">
-                        <mat-icon aria-label="email">email</mat-icon>
-                        {{ (user$ | async)?.email }}
-                    </p>
-                    <div class="social"
-                         fxLayout="row"
-                         fxLayoutAlign="space-around center">
-                        <i>G</i>
-                        <i>G</i>
-                        <i>G</i>
-                        <i>G</i>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+    <div>
+      <mat-card fxFlex="350px"
+                fxFlex.xs="300px">
+        <mat-card-content fxFlex
+                          fxLayout="column"
+                          fxLayoutAlign="center center">
+          <div class="wallpaper"></div>
+          <div class="menu"
+               fxFlex
+               fxFill
+               fxLayout="row"
+               fxLayoutAlign="end center">
+            <button mat-icon-button>
+              <mat-icon aria-label="menu">more_vert</mat-icon>
+            </button>
+          </div>
+          <div class="avatar">
+            <img [src]="(user$ | async)?.image"
+                 [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
+                 alt="UserImage">
+          </div>
+          <h3 class="username">username</h3>
+          <p class="location mat-small"
+             fxLayout="row"
+             fxLayoutAlign="center center">
+            <mat-icon aria-label="location">location_on</mat-icon>
+            location
+          </p>
+          <p class="email"
+             fxLayout="row"
+             fxLayoutAlign="center center">
+            <mat-icon aria-label="email">email</mat-icon>
+            {{ (user$ | async)?.email }}
+          </p>
+          <div class="social"
+               fxLayout="row"
+               fxLayoutAlign="space-around center">
+            <i>G</i>
+            <i>G</i>
+            <i>G</i>
+            <i>G</i>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
+  </div>
 </div>

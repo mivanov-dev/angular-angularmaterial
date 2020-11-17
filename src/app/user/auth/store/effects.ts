@@ -14,118 +14,118 @@ import * as AuthActions from './actions';
 export class AuthEffects {
 
 
-    constructor(private actions$: Actions, private router: Router, private authService: AuthService) { }
+  constructor(private actions$: Actions, private router: Router, private authService: AuthService) { }
 
-    /**
-     * LOGIN
-     */
-    loginStart$ = createEffect(() => this.actions$
+  /**
+   * LOGIN
+   */
+  loginStart$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(AuthActions.loginStart),
+      map(action => action.data),
+      exhaustMap((data) => this.authService.login$(data)
         .pipe(
-            ofType(AuthActions.loginStart),
-            map(action => action.data),
-            exhaustMap((data) => this.authService.login$(data)
-                .pipe(
-                    tap((res) => this.authService.setLogoutTimer(+res.expires)),
-                    map((res) => AuthActions.login({ data: res })),
-                    catchError((error) => of(AuthActions.loginError({ error: error.error.message })))
-                )
-            )
-        ));
+          tap((res) => this.authService.setLogoutTimer(+res.expires)),
+          map((res) => AuthActions.login({ data: res })),
+          catchError((error) => of(AuthActions.loginError({ error: error.error.message })))
+        )
+      )
+    ));
 
-    login$ = createEffect(() => this.actions$
+  login$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(AuthActions.login),
+      tap((res) => {
+
+        if (res.data.redirect) {
+          this.router.navigate(['/']);
+        }
+
+      })
+    ), { dispatch: false });
+
+  /**
+   * REGISTER
+   */
+  registerStart$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(AuthActions.registerStart),
+      map(action => action.data),
+      exhaustMap((data) => this.authService.register$(data)
         .pipe(
-            ofType(AuthActions.login),
-            tap((res) => {
+          map((res) => AuthActions.register({ data: { message: res.message } })),
+          catchError((error) => of(AuthActions.registerError({ error: error.error.message })))
+        )
+      )
+    ));
 
-                if (res.data.redirect) {
-                    this.router.navigate(['/']);
-                }
+  register$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(AuthActions.register),
+      tap(() => { })
+    ), { dispatch: false });
 
-            })
-        ), { dispatch: false });
+  /**
+   * AUTOLOGIN
+   */
+  autoLoginStart$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(AuthActions.autologinStart),
+      exhaustMap(
+        () => this.authService.autoLogin$()
+          .pipe(
+            tap((data) => this.authService.setLogoutTimer(+data.expires)),
+            map((data) => AuthActions.login({ data })),
+            catchError((error) => of(AuthActions.loginError({ error: '' })))
+          )
+      )
+    ));
 
-    /**
-     * REGISTER
-     */
-    registerStart$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(AuthActions.registerStart),
-            map(action => action.data),
-            exhaustMap((data) => this.authService.register$(data)
-                .pipe(
-                    map((res) => AuthActions.register({ data: { message: res.message } })),
-                    catchError((error) => of(AuthActions.registerError({ error: error.error.message })))
-                )
-            )
-        ));
+  /**
+   * LOGOUT
+   */
+  logoutStart$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(AuthActions.logoutStart),
+      exhaustMap(
+        () => this.authService.logout$()
+          .pipe(
+            map(() => AuthActions.logout()),
+            catchError((error) => of(AuthActions.logoutError({ error: '' })))
+          )
+      )
+    ));
 
-    register$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(AuthActions.register),
-            tap(() => { })
-        ), { dispatch: false });
+  logout$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(AuthActions.logout),
+      tap(() => {
 
-    /**
-     * AUTOLOGIN
-     */
-    autoLoginStart$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(AuthActions.autologinStart),
-            exhaustMap(
-                () => this.authService.autoLogin$()
-                    .pipe(
-                        tap((data) => this.authService.setLogoutTimer(+data.expires)),
-                        map((data) => AuthActions.login({ data })),
-                        catchError((error) => of(AuthActions.loginError({ error: '' })))
-                    )
-            )
-        ));
+        this.authService.clearLogoutTimer();
+        this.router.navigate(['/']);
 
-    /**
-     * LOGOUT
-     */
-    logoutStart$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(AuthActions.logoutStart),
-            exhaustMap(
-                () => this.authService.logout$()
-                    .pipe(
-                        map(() => AuthActions.logout()),
-                        catchError((error) => of(AuthActions.logoutError({ error: '' })))
-                    )
-            )
-        ));
+      })
+    ), { dispatch: false });
 
-    logout$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(AuthActions.logout),
-            tap(() => {
-
-                this.authService.clearLogoutTimer();
-                this.router.navigate(['/']);
-
-            })
-        ), { dispatch: false });
-
-    /**
-     * AUTHMODE
-     */
-    authMode$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(AuthActions.switchModeTo),
-            mergeMap((data) => this.changeAuthMode$(data.authMode.mode)),
-        ), { dispatch: false });
+  /**
+   * AUTHMODE
+   */
+  authMode$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(AuthActions.switchModeTo),
+      mergeMap((data) => this.changeAuthMode$(data.authMode.mode)),
+    ), { dispatch: false });
 
 
-    private changeAuthMode$(v: string): Observable<string> {
+  private changeAuthMode$(v: string): Observable<string> {
 
-        return new Observable<string>((o) => {
+    return new Observable<string>((o) => {
 
-            o.next(v);
-            o.complete();
+      o.next(v);
+      o.complete();
 
-        });
+    });
 
-    }
+  }
 
 }

@@ -13,30 +13,30 @@ import * as fromAuth from '../../user/auth/store/reducer';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor, OnDestroy {
 
-    private onDestroy$: Subject<void> = new Subject<void>();
+  private onDestroy$: Subject<void> = new Subject<void>();
 
-    constructor(private store$: Store<fromApp.AppState>) { }
+  constructor(private store$: Store<fromApp.AppState>) { }
 
-    ngOnDestroy(): void {
+  ngOnDestroy(): void {
 
-        this.onDestroy$.next();
-        this.onDestroy$.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
 
-    }
+  }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        return this.store$.select(fromAuth.selectLogin)
-            .pipe(
-                takeUntil(this.onDestroy$),
-                take(1),
-                exhaustMap((res) => {
+    return this.store$.select(fromAuth.selectLogin)
+      .pipe(
+        takeUntil(this.onDestroy$),
+        take(1),
+        exhaustMap((res) => {
 
-                    const modifiedReq = req.clone({ withCredentials: true });
-                    return next.handle(modifiedReq);
+          const modifiedReq = req.clone({ withCredentials: true });
+          return next.handle(modifiedReq);
 
-                })
-            );
+        })
+      );
 
-    }
+  }
 }

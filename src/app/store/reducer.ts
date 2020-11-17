@@ -12,47 +12,47 @@ import * as fromResetPassword from '../user/reset-password/store/reducer';
 import * as fromComment from '../scroll/store/reducer/reducer';
 
 export interface AppState {
-    [fromAuth.key]: fromAuth.State;
-    [fromForgotPassword.key]: fromForgotPassword.State;
-    [fromResetPassword.key]: fromResetPassword.State;
-    [fromComment.key]: fromComment.State;
-    router: fromRouter.RouterReducerState<any>;
+  [fromAuth.key]: fromAuth.State;
+  [fromForgotPassword.key]: fromForgotPassword.State;
+  [fromResetPassword.key]: fromResetPassword.State;
+  [fromComment.key]: fromComment.State;
+  router: fromRouter.RouterReducerState<any>;
 }
 
 export const reducers = new InjectionToken<ActionReducerMap<AppState, Action>>('root reducers', {
-    factory: () => ({
+  factory: () => ({
 
-        [fromAuth.key]: fromAuth.reducer,
-        [fromForgotPassword.key]: fromForgotPassword.reducer,
-        [fromResetPassword.key]: fromResetPassword.reducer,
-        [fromComment.key]: fromComment.reducer,
-        router: fromRouter.routerReducer,
+    [fromAuth.key]: fromAuth.reducer,
+    [fromForgotPassword.key]: fromForgotPassword.reducer,
+    [fromResetPassword.key]: fromResetPassword.reducer,
+    [fromComment.key]: fromComment.reducer,
+    router: fromRouter.routerReducer,
 
-    })
+  })
 });
 
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
 
-    return (state: State<any>, action: Action) => {
+  return (state: State<any>, action: Action) => {
 
-        const result = reducer(state, action);
-        console.groupCollapsed(action.type);
-        console.log('prev state', state);
-        console.log('action', action);
-        console.log('next state', result);
-        console.groupEnd();
-        return result;
+    const result = reducer(state, action);
+    console.groupCollapsed(action.type);
+    console.log('prev state', state);
+    console.log('action', action);
+    console.log('next state', result);
+    console.groupEnd();
+    return result;
 
-    };
+  };
 
 }
 
 export const metaReducers: MetaReducer<any>[] = !environment.production ? [debug, storeFreeze] : [];
 
 export const runtimeChecks: RuntimeChecks = {
-    strictStateImmutability: true,
-    strictActionImmutability: true,
-    strictStateSerializability: true,
-    strictActionSerializability: true,
-    strictActionWithinNgZone: true
+  strictStateImmutability: true,
+  strictActionImmutability: true,
+  strictStateSerializability: true,
+  strictActionSerializability: true,
+  strictActionWithinNgZone: true
 };

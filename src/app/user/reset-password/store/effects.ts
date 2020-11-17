@@ -13,30 +13,30 @@ import { ResetPasswordService } from '../services/reset-password.service';
 @Injectable()
 export class ResetPasswordEffects {
 
-    constructor(private actions$: Actions,
-                private router: Router,
-                private resetPasswordService: ResetPasswordService) { }
+  constructor(private actions$: Actions,
+              private router: Router,
+              private resetPasswordService: ResetPasswordService) { }
 
-    resetPasswordStart$ = createEffect(() => this.actions$
+  resetPasswordStart$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(ResetPasswordActions.resetPasswordStart),
+      map(action => action.data),
+      exhaustMap((data) => this.resetPasswordService.resetPassword$(data)
         .pipe(
-            ofType(ResetPasswordActions.resetPasswordStart),
-            map(action => action.data),
-            exhaustMap((data) => this.resetPasswordService.resetPassword$(data)
-                .pipe(
-                    map(() => ResetPasswordActions.resetPassword()),
-                    catchError((error) => of(ResetPasswordActions.resetPasswordError({ error: error.error.message })))
-                )
-            )
-        ));
+          map(() => ResetPasswordActions.resetPassword()),
+          catchError((error) => of(ResetPasswordActions.resetPasswordError({ error: error.error.message })))
+        )
+      )
+    ));
 
-    resetPassword$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(ResetPasswordActions.resetPassword),
-            tap((res) => {
+  resetPassword$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(ResetPasswordActions.resetPassword),
+      tap((res) => {
 
-                this.router.navigate(['/user/auth']);
+        this.router.navigate(['/user/auth']);
 
-            })
-        ), { dispatch: false });
+      })
+    ), { dispatch: false });
 
 }

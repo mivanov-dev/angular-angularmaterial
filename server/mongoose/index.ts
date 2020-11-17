@@ -11,98 +11,98 @@ mongoose.set('debug', false);
 
 export function database(uri: string, options: object): void {
 
-    const connection = mongoose.connection;
-    connection.on('open', async () => {
+  const connection = mongoose.connection;
+  connection.on('open', async () => {
 
-        await connection
-            .dropDatabase((error) => console.log(`mongoose:drop database: ${JSON.stringify(error)}`));
+    await connection
+      .dropDatabase((error) => console.log(`mongoose:drop database: ${JSON.stringify(error)}`));
 
-        await dropModels();
+    await dropModels();
 
-        await initData();
+    await initData();
 
-        await insertComments(30);
+    await insertComments(30);
 
-        await createAdmin();
+    await createAdmin();
 
-    });
-    connection.on('connected', () => log.info('mongoose:connected'));
-    connection.on('connecting', () => log.info('mongoose:connecting'));
-    connection.on('error', (error) => log.error(`mongoose:error: ${JSON.stringify(error)}`));
-    connection.on('disconnected', () => log.warn('mongoose:disconnected'));
+  });
+  connection.on('connected', () => log.info('mongoose:connected'));
+  connection.on('connecting', () => log.info('mongoose:connecting'));
+  connection.on('error', (error) => log.error(`mongoose:error: ${JSON.stringify(error)}`));
+  connection.on('disconnected', () => log.warn('mongoose:disconnected'));
 
-    mongoose.connect(uri, options);
+  mongoose.connect(uri, options);
 
 }
 
 async function dropModels(): Promise<void> {
 
-    const dbModels = [User, UserImage, Comment, Counter];
+  const dbModels = [User, UserImage, Comment, Counter];
 
-    try {
+  try {
 
-        for (const model of dbModels) {
+    for (const model of dbModels) {
 
-            const list = await model.db.db.listCollections({
-                name: model.name
-            }).toArray();
+      const list = await model.db.db.listCollections({
+        name: model.name
+      }).toArray();
 
-            if (list.length !== 0) {
-                await model.collection.drop();
-            } else {
-                log.warn(`mongoose:dropModels: collection ${model.collection.name} does not exist`);
-            }
-        }
-
+      if (list.length !== 0) {
+        await model.collection.drop();
+      } else {
+        log.warn(`mongoose:dropModels: collection ${model.collection.name} does not exist`);
+      }
     }
-    catch (error) {
-        log.error(`mongoose:dropModels: ${JSON.stringify(error)}`);
-    }
+
+  }
+  catch (error) {
+    log.error(`mongoose:dropModels: ${JSON.stringify(error)}`);
+  }
 
 }
 
 async function initData(): Promise<void> {
 
-    try {
-        await new Counter({ _id: 'commentId', seq: 0 }).save();
-    } catch (error) {
-        log.error(`initData: ${JSON.stringify(error)}`);
-    }
+  try {
+    await new Counter({ _id: 'commentId', seq: 0 }).save();
+  } catch (error) {
+    log.error(`initData: ${JSON.stringify(error)}`);
+  }
 
 }
 
 async function insertComments(count: number): Promise<void> {
 
-    try {
+  try {
 
-        for (let i = 0; i < count; i++) {
-            await new Comment({
-                emoji: emojiRandom(),
-                author: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                description: `${faker.hacker.phrase()}`
-            }).save();
-        }
-
-    } catch (error) {
-        log.error(`insertComments: ${JSON.stringify(error)}`);
+    for (let i = 0; i < count; i++) {
+      await new Comment({
+        emoji: emojiRandom(),
+        author: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        description: `${faker.hacker.phrase()}`
+      }).save();
     }
+
+  } catch (error) {
+    log.error(`insertComments: ${JSON.stringify(error)}`);
+  }
 }
 
 async function createAdmin(): Promise<void> {
 
-    try {
+  try {
 
-        const userImage = await new UserImage().save();
+    const userImage = await new UserImage().save();
 
-        await User.create({
-            email: 'admin@admin.com',
-            // 'password00'
-            password: '$2a$10$eHN.g9xaAhAMhvRTx/doreHr7SdbOJfxhyE7Tg.SGHQHym4kaKQve',
-            role: 'admin',
-            imageId: userImage._id
-        });
+    await User.create({
+      email: 'admin@admin.com',
+      // 'password00'
+      password: '$2a$10$eHN.g9xaAhAMhvRTx/doreHr7SdbOJfxhyE7Tg.SGHQHym4kaKQve',
+      role: 'admin',
+      imageId: userImage._id
+    });
 
-    } catch (error) {
-        log.error(`createAdmin: ${JSON.stringify(error)}`);
-    }
+  } catch (error) {
+    log.error(`createAdmin: ${JSON.stringify(error)}`);
+  }
 }
