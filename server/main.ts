@@ -47,7 +47,19 @@ class App {
 
   private constructor() {
 
-    this.app.engine('html', ngExpressEngine({ bootstrap: AppServerModule }));
+    try {
+      // tslint:disable-next-line: no-shadowed-variable
+      this.app.engine('html', (_, options: any, cb) => {
+        console.log(options);
+        const engine = ngExpressEngine({
+          bootstrap: AppServerModule,
+          providers: []
+        });
+        engine(_, options, cb);
+      });
+    } catch (error) {
+      log.error('Have a problem with engine !');
+    }
 
     this.app.set('view engine', 'html');
     this.app.set('views', distFolder);

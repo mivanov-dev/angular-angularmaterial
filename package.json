@@ -71,7 +71,7 @@
     "lodash": "^4.17.20",
     "method-override": "^3.0.0",
     "moment": "^2.29.1",
-    "mongoose": "^5.10.14",
+    "mongoose": "^5.10.15",
     "ms": "^2.1.2",
     "ngrx-store-freeze": "^0.2.4",
     "ngx-filepond": "5.0.1",

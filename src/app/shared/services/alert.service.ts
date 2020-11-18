@@ -25,6 +25,7 @@ export class AlertService {
       );
 
       const alertFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+      viewContainerRef.clear();
       const alertComponentRef = viewContainerRef.createComponent(alertFactory);
       alertComponentRef.instance.message = message;
       alertComponentRef.instance.hasError = hasError;
