@@ -2,6 +2,7 @@
 
   <cdk-virtual-scroll-viewport [itemSize]="100"
                                (scrolledIndexChange)="onScroll($event)"
+                               class="scroller-vertical"
                                style="height: 100vh; overflow-x: hidden;">
 
     <div *cdkVirtualFor="let item of comments; let i = index; trackBy: trackByIdx">

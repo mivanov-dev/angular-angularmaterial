@@ -20,14 +20,12 @@ import { SwService } from './shared/services';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  mediaQueryList?: MediaQueryList;
   isHandset$?: Observable<boolean>;
   isLoading = true;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store$: Store<fromApp.AppState>,
-    private router: Router,
     private renderer2: Renderer2,
     private sw: SwService,
     @Inject(PLATFORM_ID) private platformId: any,

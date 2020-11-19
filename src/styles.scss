@@ -68,8 +68,6 @@ body {
 
 .scroller-vertical {
     overflow-y: scroll;
-    scrollbar-color: #f44336 white;
-    scrollbar-width: thin;
 
     &::-webkit-scrollbar {
         width: 5px;
@@ -80,9 +78,8 @@ body {
         background-color: white;
     }
 
-    &::-webkit-scrollbar-thumb:vertical {
-        height: 5px;
-        background-color: #f44336;
+    &::-webkit-scrollbar-thumb {
+      background-image: linear-gradient(to bottom, #ff4a63 0%, #ff9335 100%);
     }
 }
 
@@ -95,3 +92,5 @@ body {
 .typed, .typed-cursor {
     font-weight: bold;
 }
+
+.mat-drawer-inner-container{ overflow: hidden !important; }

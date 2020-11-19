@@ -8,11 +8,34 @@
 
 .mat-sidenav {
   position: fixed;
-  top: 56px;
+  top: 64px;
   bottom: 0;
   left: 0;
   padding: 0;
   min-width: 200px;
+
+  &.collapsed {
+    top: 56px;
+  }
+}
+
+mat-nav-list {
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track-piece  {
+    background-color: white;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(to bottom, #ff4a63 0%, #ff9335 100%);
+  }
 }
 
 main {
