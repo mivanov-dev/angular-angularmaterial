@@ -1,12 +1,12 @@
 // angular
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 // cdk
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { skip, takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '../../store';
 import * as fromComment from '../store/reducer';
@@ -18,38 +18,35 @@ import { Comment } from '../store/model';
   templateUrl: './cdk.component.html',
   styleUrls: ['./cdk.component.scss']
 })
-export class CdkComponent implements OnDestroy, AfterViewInit {
+export class CdkComponent implements OnDestroy {
 
   offset = 1;
   batch = 10;
   comments$: Observable<Comment[]>;
   isLoading = false;
-  hasMore = false;
+  hasMore?: boolean;
   @ViewChild(CdkVirtualScrollViewport)
   viewport: CdkVirtualScrollViewport | undefined;
   private onDestroy$: Subject<void> = new Subject<void>();
 
   constructor(private store$: Store<fromApp.AppState>) {
 
+    this.store$.dispatch(CommentActions.addCommentsStart({
+      offset: (this.offset - 1) * this.batch,
+      batch: this.batch
+    }));
+
     this.comments$ = this.store$.select(fromComment.selectAllComments)
       .pipe(takeUntil(this.onDestroy$));
 
     this.store$.select(fromComment.selectHasMore)
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(takeUntil(this.onDestroy$), skip(1))
       .subscribe(res => this.hasMore = res);
 
 
     this.store$.select(fromComment.selectLoading)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(res => this.isLoading = res);
-
-  }
-  ngAfterViewInit(): void {
-
-    this.store$.dispatch(CommentActions.addCommentsStart({
-      offset: (this.offset - 1) * this.batch,
-      batch: this.batch
-    }));
 
   }
 
@@ -63,7 +60,7 @@ export class CdkComponent implements OnDestroy, AfterViewInit {
 
   onScroll(event: any): void {
 
-    if (!this.hasMore) {
+    if (!this.hasMore && (this.hasMore !== undefined)) {
       return;
     }
 
