@@ -213,6 +213,6 @@
   "cli": {
     "packageManager": "npm",
     "defaultCollection": "@schematics/angular",
-    "analytics": "57023531-2a8d-4b68-b6e9-1a6dd81277f9"
+    "analytics": false
   }
 }
