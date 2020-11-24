@@ -19,17 +19,20 @@
              mat-card-avatar
              [src]="(user$ | async)?.image"
              [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
-             alt="UserImage">
-        <a mat-button
-           role="button"
-           (click)="onLogout()">
-          Logout
-        </a>
-        <a mat-button
-           role="button"
-           href="#/user/profile">
-          Profile
-        </a>
+             mat-icon-button
+             [matMenuTriggerFor]="beforeMenu">
+
+        <mat-menu #beforeMenu="matMenu"
+                  xPosition="before">
+          <a mat-menu-item
+             href="#/user/profile">
+            Profile
+          </a> <button mat-menu-item
+                  (click)="onLogout()">
+            Logout
+          </button>
+        </mat-menu>
+
       </ng-template>
 
 
