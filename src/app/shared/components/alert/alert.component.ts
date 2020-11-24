@@ -38,4 +38,4 @@ export class AlertComponent {
   ],
   declarations: [AlertComponent]
 })
-class AlertModule { }
+export class AlertModule { }
