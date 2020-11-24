@@ -1,15 +1,15 @@
 os: linux
 
-dist: xenial
+dist: bionic
 
+# This only works on Ubuntu 16.04 (Xenial) and later on releases i.e. with dist: xenial or dist: bionic
 services:
-  # This only works on Ubuntu 16.04 (Xenial) and later on releases i.e. with dist: xenial or dist: bionic
   - xvfb
 
 language: node_js
 
 node_js:
-  - "10"
+  - "12.18.1"
 
 branches:
   only:
