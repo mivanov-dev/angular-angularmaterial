@@ -3,9 +3,8 @@ os: linux
 dist: xenial
 
 services:
+  # This only works on Ubuntu 16.04 (Xenial) and later on releases i.e. with dist: xenial or dist: bionic
   - xvfb
-
-sudo: true
 
 language: node_js
 
@@ -14,7 +13,7 @@ node_js:
 
 branches:
   only:
-    - master
+    - travisci
 
 notifications:
   email: false
@@ -27,23 +26,20 @@ addons:
       - google-chrome-stable
 
 cache:
-  npm: true
+  npm: false
   directories:
     - node_modules
 
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y libappindicator1 fonts-liberation libxml2-dev
+  #  angular
+  - export NG_CLI_ANALYTICS=false
+  # chrome
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
 
 install:
   - npm set progress=false
   - npm install
-
-before_script:
-  #  angular
-  - export NG_CLI_ANALYTICS=ci
 
 script:
   - npm run wmu
