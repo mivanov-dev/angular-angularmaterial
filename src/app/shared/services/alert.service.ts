@@ -1,13 +1,16 @@
 // angular
 import {
   Injectable, ViewContainerRef,
-  ComponentFactoryResolver,
+  NgModuleFactory,
+  Compiler,
+  Injector,
 } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private compiler: Compiler,
+              private injector: Injector) { }
 
   async showMessage(viewContainerRef: ViewContainerRef, message: string, hasError: boolean): Promise<void> {
 
@@ -19,13 +22,25 @@ export class AlertService {
        * https://webpack.js.org/api/module-methods/#magic-comments
        */
 
-      const { AlertComponent } = await import(
+      const { AlertComponent, AlertModule } = await import(
         /* webpackMode: "lazy" */
+        /* webpackChunkName: "alert" */
         `../components`
       );
 
-      const alertFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+      let moduleFactory;
+
+      if (AlertModule instanceof NgModuleFactory) {
+        moduleFactory = AlertModule;
+      }
+      else {
+        moduleFactory = await this.compiler.compileModuleAsync(AlertModule);
+      }
+      const moduleRef = moduleFactory.create(this.injector);
+
+      const alertFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(AlertComponent);
       viewContainerRef.clear();
+
       const alertComponentRef = viewContainerRef.createComponent(alertFactory);
       alertComponentRef.instance.message = message;
       alertComponentRef.instance.hasError = hasError;
