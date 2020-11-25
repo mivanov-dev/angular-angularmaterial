@@ -17,9 +17,9 @@
         <img width="50"
              height="50"
              mat-card-avatar
+             class="user-profile-btn"
              [src]="(user$ | async)?.image"
              [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
-             mat-icon-button
              [matMenuTriggerFor]="beforeMenu">
 
         <mat-menu #beforeMenu="matMenu"
