@@ -13,7 +13,7 @@ node_js:
 
 branches:
   only:
-    - circleci
+    - master
 
 notifications:
   email: false
