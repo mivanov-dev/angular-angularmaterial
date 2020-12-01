@@ -9,7 +9,7 @@ var_1: &only_on_branches
   filters:
     branches:
       only:
-        - circleci
+        - master
 var_2: &working_directory ~/ng
 var_3: &node_version cimg/node:12.19.1
 
