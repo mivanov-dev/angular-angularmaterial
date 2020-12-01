@@ -1,4 +1,8 @@
-[![Build Status](https://travis-ci.com/mivanov-dev/angular-angularmaterial.svg?branch=master)](https://travis-ci.com/mivanov-dev/angular-angularmaterial) ![GitHub](https://img.shields.io/github/license/mivanov-dev/angular-angularmaterial)
+<div align="center">
+
+[![Build Status](https://img.shields.io/travis/com/mivanov-dev/angular-angularmaterial/master?label=Travis&logo=travis)](https://travis-ci.com/mivanov-dev/angular-angularmaterial) ![GitHub](https://img.shields.io/github/license/mivanov-dev/angular-angularmaterial) [![CircleCI](https://img.shields.io/circleci/build/gh/mivanov-dev/angular-angularmaterial/master?label=CircleCI&logo=circleci&token=ac0fad07f9b84a922cc01fbe1b025597a5fbb64b)](https://app.circleci.com/pipelines/github/mivanov-dev/angular-angularmaterial)
+
+</div>
 
 # AngularAngularMaterial
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11+.
