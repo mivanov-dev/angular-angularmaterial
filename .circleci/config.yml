@@ -39,7 +39,7 @@ executors:
 
 # WORKFLOWS
 workflows:
-  node-tests:
+  default_workflow:
     jobs:
       - install:
           <<: *only_on_branches
