@@ -36,7 +36,7 @@ class Controller {
 
       password = await bcrypt.hashSync(password, 10);
 
-      await User.create({ email, password, imageId: userImage._id });
+      await new User({ email, password, imageId: userImage._id }).save();
 
       res.status(200).send({ message: 'Registration successful!' });
 

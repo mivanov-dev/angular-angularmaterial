@@ -15,7 +15,7 @@ export interface UserDocument extends Document {
   imageId?: any;
 }
 
-export interface UserModel extends Model<any> {
+export interface UserModel extends Model<UserDocument> {
   authenticate(body: { email: string, password: string }): Promise<any>;
   isLoggedIn(id: string): Promise<any>;
 }
@@ -66,7 +66,7 @@ userSchema.index({ imageId: 1 }, { background: true });
 
 // Statics
 userSchema.statics.authenticate = async function(body: { email: string, password: string }): Promise<any> {
-  const user: any = this;
+  const user: UserModel = this;
   const { email, password } = body;
   const result = await user.findOne({ email })
     .select('email password role')
@@ -88,7 +88,7 @@ userSchema.statics.authenticate = async function(body: { email: string, password
 
 userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
 
-  const user: any = this;
+  const user: UserModel = this;
 
   return user.findById(id)
     .select('email role')

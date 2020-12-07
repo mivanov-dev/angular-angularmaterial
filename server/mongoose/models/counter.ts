@@ -8,7 +8,7 @@ export interface CounterDocument extends Document {
   seq: number;
 }
 
-export interface CounterModel extends Model<any> { }
+export interface CounterModel extends Model<CounterDocument> { }
 
 export const counterSchema = new Schema({
   _id: {
