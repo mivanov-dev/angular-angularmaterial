@@ -123,8 +123,9 @@ class Controller {
 
   static logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
+    req.session.destroy((err) => console.log(err));
+    res.clearCookie('uid', { path: '/' });
     req.logout();
-    res.clearCookie('uid');
     res.status(200).send();
 
   }
