@@ -66,7 +66,7 @@ userSchema.index({ imageId: 1 }, { background: true });
 
 // Statics
 userSchema.statics.authenticate = async function(body: { email: string, password: string }): Promise<any> {
-  const user: UserModel = this;
+  const user: UserModel = this as any;
   const { email, password } = body;
   const result = await user.findOne({ email })
     .select('email password role')
@@ -88,7 +88,7 @@ userSchema.statics.authenticate = async function(body: { email: string, password
 
 userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
 
-  const user: UserModel = this;
+  const user: UserModel = this as any;
 
   return user.findById(id)
     .select('email role')
