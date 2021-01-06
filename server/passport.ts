@@ -1,7 +1,7 @@
 import * as passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 // custom
-import { User, UserDocument } from './mongoose/models';
+import { User } from './mongoose/models';
 
 const localStrategy = new LocalStrategy(
   {
@@ -41,8 +41,10 @@ passport.deserializeUser(async (id: any, cb) => {
 
   try {
 
-    const user: UserDocument = await User.findById(id).select('id').exec();
-    cb(null, user);
+    const user = await User.findById(id).select('id').exec();
+    if (user) {
+      cb(null, user);
+    }
 
   } catch (error) {
 

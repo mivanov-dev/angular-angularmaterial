@@ -1,11 +1,15 @@
 .container {
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
-.card {
-    margin: 10px;
-    padding: 20px 10px;
-    width: 100%;
-    justify-content: center;
+.box {
+  margin: 10px;
+  padding: 20px 10px;
+  justify-content: center;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  position: relative;
+  background: transparent;
 }
