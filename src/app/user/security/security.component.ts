@@ -10,16 +10,16 @@ import {
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 // custom
-import * as fromApp from '../../store';
+import * as fromApp from '@app/store';
 import * as fromAuth from '../auth/store/reducer';
 import * as AuthModels from '../auth/store/models';
 import * as fromQr from './store/reducer';
 import * as QrActions from './store/actions';
 import * as QrModels from './store/models';
-import { AlertService, LoggerService } from 'src/app/shared/services';
+import { AlertService, LoggerService, SeoService } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-security',
@@ -33,33 +33,23 @@ export class SecurityComponent implements OnInit, OnDestroy {
   image?: string | null;
   codeElement?: HTMLInputElement;
   user?: AuthModels.Login | null;
+  isLoading = false;
   @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
   @ViewChild('secretKey', { read: ElementRef }) secretKey?: ElementRef;
   @ViewChild('formDirective') formDirective?: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
+  private qrCode: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private store$: Store<fromApp.AppState>,
     private alertService: AlertService,
-    private logger: LoggerService) {
+    private logger: LoggerService,
+    private seoService: SeoService) {
 
+    this.seoService.config({ title: 'Security', url: 'user/security' });
     this.form = this.initForm();
-
-  }
-
-  get isLoading$(): Observable<boolean> {
-
-    return this.store$.select(fromQr.selectLoading)
-      .pipe(
-        takeUntil(this.onDestroy$),
-        tap(res => {
-          if (!res) {
-            this.isSubmitted = false;
-          }
-        })
-      );
 
   }
 
@@ -69,12 +59,18 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
     this.subscribeSetup();
     this.subscribeLogin();
     this.subscribeVerify();
     this.subscribeError();
+    this.subscribeLoading();
+
+    this.qrCode = await import(
+      /* webpackMode: "lazy" */
+      'qrcode'
+    );
 
   }
 
@@ -170,6 +166,19 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   }
 
+  private subscribeLoading(): void {
+
+    this.store$.select(fromQr.selectLoading)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => {
+        if (!res) {
+          this.isSubmitted = false;
+        }
+        this.isLoading = res;
+      });
+
+  }
+
   private showAlertMessage(message: string, hasError: boolean): void {
 
     if (this.alertContainer) {
@@ -190,10 +199,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   private async drawQrImage(res: QrModels.Setup): Promise<void> {
 
-    const qrCode = await import('qrcode').then(res => res);
-
     try {
-      const data = await qrCode.toDataURL(res.url, { errorCorrectionLevel: 'H' });
+      const data = await this.qrCode.toDataURL(res.url, { errorCorrectionLevel: 'H' });
       this.image = data;
     } catch (error) {
       this.logger.error(error);

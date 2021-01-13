@@ -16,7 +16,7 @@ export class QrService {
     constructor(private http: HttpClient) { }
 
     setup$(data: QrModels.SetupStart): Observable<QrModels.Setup> {
-        
+
         const { enable } = data;
         const params = new HttpParams().set('enable', `${enable}`);
         return this.http.get<QrModels.Setup>(this.qrSetupUrl, { params });

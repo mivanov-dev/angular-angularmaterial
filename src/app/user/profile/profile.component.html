@@ -3,7 +3,7 @@
      fxLayoutGap="10px"
      fxLayout="column">
 
-  <div>
+  <div *ngIf="(user$ | async) as user">
     <mat-card fxFlex="350px"
               fxFlex.xs="300px"
               class="mat-elevation-z4">
@@ -22,8 +22,8 @@
           </button>
         </div>
         <div class="avatar">
-          <img [src]="(user$ | async)?.image"
-               [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
+          <img [src]="user?.image"
+               [appImageFallback]="user?.role === 'user' ? userImage : adminImage"
                alt="UserImage">
         </div>
         <h3 class="username">username</h3>
@@ -37,7 +37,7 @@
            fxLayout="row"
            fxLayoutAlign="center center">
           <mat-icon aria-label="email">email</mat-icon>
-          {{ (user$ | async)?.email }}
+          {{ user?.email }}
         </p>
         <div class="social"
              fxLayout="row"

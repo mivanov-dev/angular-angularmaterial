@@ -16,8 +16,7 @@
                    [ngIfElse]="loggedOut">
         <img width="50"
              height="50"
-             mat-card-avatar
-             class="user-profile-btn"
+             class="user-avatar"
              [src]="(user$ | async)?.image"
              [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
              [matMenuTriggerFor]="beforeMenu">

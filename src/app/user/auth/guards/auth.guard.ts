@@ -6,7 +6,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
 import * as fromApp from '../../../store';
 import * as fromAuth from '../store/reducer';
@@ -45,7 +45,6 @@ export class AuthGuard implements CanActivate, OnDestroy {
             return true;
           }
 
-          // return this.router.createUrlTree(['/user/auth']);
           this.router.navigate(['/user/auth']);
           return false;
 

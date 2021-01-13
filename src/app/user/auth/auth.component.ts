@@ -12,18 +12,18 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable, of } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil, filter, tap } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
-import { LoggerService, SeoService, AlertService } from '../../shared/services';
+import { AlertService, SeoService } from '@app/shared/services';
 import * as fromApp from '../../store';
 import * as AuthActions from './store/actions';
 import * as AuthModels from './store/models';
 import * as fromAuth from './store/reducer';
 import { environment } from 'src/environments/environment';
-import { DirtyCheck } from '../../shared/guards';
+import { DirtyCheck } from '@app/shared/guards';
 import { UserFormValidatorToken, UserFormValidator } from '../validators';
 
 @Component({
@@ -35,6 +35,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   authMode?: string;
   form: FormGroup;
+  isLoading = false;
   fileOptions = {
     // Core
     name: 'filepond',
@@ -79,7 +80,6 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     }
   };
   pondFiles: [] = [];
-  isLoading$: Observable<boolean>;
   hidePassword = true;
   emailElement?: HTMLElement;
   submitButtonElement?: HTMLElement;
@@ -95,7 +95,6 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   constructor(
     private formBuilder: FormBuilder,
-    private logger: LoggerService,
     private store$: Store<fromApp.AppState>,
     private seoService: SeoService,
     private alertService: AlertService,
@@ -105,7 +104,6 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Auth', url: 'user/auth' });
-    this.isLoading$ = this.store$.select(fromAuth.selectLoading).pipe(takeUntil(this.onDestroy$));
     this.form = this.initForm();
 
   }
@@ -130,9 +128,10 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   ngOnInit(): void {
 
-    this.getSuccessfulMessage();
-    this.getUnsuccessfulMessage();
-    this.onChangeAuthMode();
+    this.subscribeRegister();
+    this.subscribeError();
+    this.subscribeAuthMode();
+    this.subscribeLoading();
 
   }
 
@@ -238,7 +237,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   }
 
-  private getSuccessfulMessage(): void {
+  private subscribeRegister(): void {
 
     this.store$.select(fromAuth.selectRegister)
       .pipe(
@@ -248,13 +247,13 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
       .subscribe((res) => {
 
         this.showAlertMessage(res.message, false);
-        this.switchAuthModeTo('login');
+        this.switchModeTo('login');
 
       });
 
   }
 
-  private getUnsuccessfulMessage(): void {
+  private subscribeError(): void {
 
     this.store$.select(fromAuth.selectError)
       .pipe(
@@ -276,7 +275,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   }
 
-  private onChangeAuthMode(): void {
+  private subscribeAuthMode(): void {
 
     this.store$.select(fromAuth.selectAuthMode)
       .pipe(
@@ -306,6 +305,14 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   }
 
+  private subscribeLoading(): void {
+
+    this.store$.select(fromAuth.selectLoading)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => this.isLoading = res);
+
+  }
+
   private showAlertMessage(message: string, hasError: boolean): void {
 
     if (this.alertContainer) {
@@ -314,7 +321,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   }
 
-  switchAuthModeTo(mode: AuthModels.AuthModeType): void {
+  switchModeTo(mode: AuthModels.AuthModeType): void {
 
     if (this.canDeactivate()) {
       this.isSwitchedAuthModeFromHere = true;

@@ -47,8 +47,19 @@ describe('user-auth-effects', () => {
 
     it('successful', () => {
 
-      const req: AuthModels.LoginStart = { email: 'email', password: 'password', remember: true };
-      const res: AuthModels.Login = { email: 'email', expires: 1000, redirect: true, image: 'image', role: 'user' };
+      const req: AuthModels.LoginStart = {
+        email: 'email',
+        password: 'password',
+        remember: true
+      };
+      const res: AuthModels.Login = {
+        email: 'email',
+        expires: 1000,
+        redirect: true,
+        image: 'image',
+        role: 'user',
+        is2FAenabled: false
+      };
 
       const startAction = AuthActions.loginStart({ data: req });
       const endAction = AuthActions.login({ data: res });

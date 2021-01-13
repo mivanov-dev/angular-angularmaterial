@@ -4,9 +4,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 // rxjs
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 // custom
-import * as fromApp from '../../store';
+import * as fromApp from '@app/store';
 import * as fromAuth from '../auth/store/reducer';
 import * as AuthModels from '../auth/store/models';
 
@@ -25,7 +25,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(private store$: Store<fromApp.AppState>) {
 
-    this.user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$));
+    this.user$ = this.store$.select(fromAuth.selectLogin)
+      .pipe(takeUntil(this.onDestroy$));
 
   }
 

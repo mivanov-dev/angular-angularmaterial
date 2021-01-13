@@ -10,17 +10,17 @@ import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
 // rxjs
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
-import { LoggerService, SeoService, AlertService } from '../../shared/services';
-import * as fromApp from '../../store';
+import { SeoService, AlertService } from '@app/shared/services';
+import * as fromApp from '@app/store';
 import * as fromResetPassword from './store/reducer/';
 import * as ResetPasswordActions from './store/actions';
 import * as ResetPasswordModels from './store/models';
-import { DirtyCheck } from '../../shared/guards';
+import { DirtyCheck } from '@app/shared/guards';
 import { UserFormValidator, UserFormValidatorToken } from '../validators';
 
 @Component({
@@ -31,7 +31,7 @@ import { UserFormValidator, UserFormValidatorToken } from '../validators';
 export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewInit {
 
   form: FormGroup;
-  isLoading$: Observable<boolean>;
+  isLoading = false;
   hidePassword = true;
   hideRepeatedPassword = true;
   passwordElement?: HTMLElement;
@@ -44,7 +44,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
   private isSubmitted = false;
 
   constructor(private formBuilder: FormBuilder,
-              private logger: LoggerService,
               private store$: Store<fromApp.AppState>,
               private seoService: SeoService,
               private activatedRoute: ActivatedRoute,
@@ -54,7 +53,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
               @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
-    this.isLoading$ = this.store$.select(fromResetPassword.selectLoading).pipe(takeUntil(this.onDestroy$));
     this.form = this.initForm();
 
   }
@@ -79,8 +77,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   ngOnInit(): void {
 
-    this.getToken();
-    this.getUnsuccessfulMessage();
+    this.subscribeRouteData();
+    this.subscribeError();
+    this.subscribeLoading();
 
   }
 
@@ -147,7 +146,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   }
 
-  private getUnsuccessfulMessage(): void {
+  private subscribeError(): void {
 
     this.store$.select(fromResetPassword.selectError)
       .pipe(
@@ -155,6 +154,14 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
         filter(res => res !== null)
       )
       .subscribe((res) => this.showAlertMessage(res, true));
+
+  }
+
+  private subscribeLoading(): void {
+
+    this.store$.select(fromResetPassword.selectLoading)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => this.isLoading = res);
 
   }
 
@@ -168,7 +175,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   }
 
-  private getToken(): void {
+  private subscribeRouteData(): void {
 
     this.activatedRoute.data
       .pipe(takeUntil(this.onDestroy$))

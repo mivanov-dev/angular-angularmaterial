@@ -12,11 +12,11 @@ import { MatButton } from '@angular/material/button';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
-import { DirtyCheck } from '../../shared/guards';
-import { SeoService, AlertService } from '../../shared/services';
-import * as fromApp from '../../store';
+import { DirtyCheck } from '@app/shared/guards';
+import { SeoService, AlertService } from '@app/shared/services';
+import * as fromApp from '@app/store';
 import * as fromForgotPassword from './store/reducer';
 import * as ForgotPasswordActions from './store/actions';
 import * as ForgotPasswordModels from './store/models';
@@ -30,7 +30,7 @@ import { UserFormValidatorToken, UserFormValidator } from '../validators';
 export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewInit {
 
   form: FormGroup;
-  isLoading$: Observable<boolean>;
+  isLoading = false;
   emailElement?: HTMLElement;
   submitButtonElement?: HTMLElement;
   @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
@@ -48,7 +48,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
               @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
-    this.isLoading$ = this.store$.select(fromForgotPassword.selectLoading).pipe(takeUntil(this.onDestroy$));
     this.form = this.initForm();
 
   }
@@ -67,8 +66,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
 
   ngOnInit(): void {
 
-    this.getSuccessfulMessage();
-    this.getUnsuccessfulMessage();
+    this.subscribeForgotPassword();
+    this.subscribeError();
+    this.subscribeLoading();
 
   }
   ngAfterViewInit(): void {
@@ -122,7 +122,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
 
   }
 
-  private getSuccessfulMessage(): void {
+  private subscribeForgotPassword(): void {
 
     this.store$.select(fromForgotPassword.selectForgotPassword)
       .pipe(
@@ -135,7 +135,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
 
   }
 
-  private getUnsuccessfulMessage(): void {
+  private subscribeError(): void {
 
     this.store$.select(fromForgotPassword.selectError)
       .pipe(
@@ -143,6 +143,14 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
         filter(res => res !== null)
       )
       .subscribe((res) => this.showAlertMessage(res, true));
+
+  }
+
+  private subscribeLoading(): void {
+
+    this.store$.select(fromForgotPassword.selectLoading)
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(res => this.isLoading = res);
 
   }
 

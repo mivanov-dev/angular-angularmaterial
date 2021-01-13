@@ -110,10 +110,10 @@
                 (click)="onTriggerSubmit()"
                 fxLayout="column"
                 fxLayoutAlign="center stretch"
-                [disabled]="(isLoading$ | async)">
+                [disabled]="isLoading">
           {{ authMode === 'login' ? 'Login' : 'Register' }}&nbsp;
           <mat-icon aria-label="loading"
-                    *ngIf="(isLoading$ | async)">hourglass_empty</mat-icon>
+                    *ngIf="isLoading">hourglass_empty</mat-icon>
         </button>
 
         <button mat-button
@@ -123,7 +123,7 @@
         </button>
 
         <app-social *ngIf="authMode == 'login'"
-                    [isLoading]="(isLoading$ | async)"></app-social>
+                    [isLoading]="isLoading"></app-social>
 
       </mat-card-actions>
       <mat-card-footer fxLayout="column"
@@ -132,7 +132,7 @@
         <small>{{ authMode === 'login' ? 'Don’t have an account ?' : 'Already have an account ?' }}</small>
         <button mat-button
                 color="primary"
-                (click)="authMode == 'login' ? switchAuthModeTo('register') : switchAuthModeTo('login')">
+                (click)="authMode == 'login' ? switchModeTo('register') : switchModeTo('login')">
           {{ authMode == 'login' ? 'Register' : 'Login' }}
         </button>
       </mat-card-footer>

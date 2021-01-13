@@ -38,7 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.drawParticle('particles-js', '../assets/particlesjs-config.json');
 
-    this.onLoading();
+    this.subscribeLoading();
 
     this.isHandset$ = this.breakpointObserver
       .observe(Breakpoints.Handset)
@@ -60,7 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-  private onLoading(): void {
+  private subscribeLoading(): void {
     this.store$.select(fromAuth.selectLoading)
       .pipe(
         filter(res => !res)

@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 // custom
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@app/shared/shared.module';
 import { userFormValidator, UserFormValidatorToken } from './validators';
 
 @NgModule({
