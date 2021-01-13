@@ -26,14 +26,14 @@ export class ImageFallbackDirective implements AfterViewInit, OnDestroy {
               @Inject(PLATFORM_ID) private platformId: any) { }
 
   ngAfterViewInit(): void {
+
     if (isPlatformBrowser(this.platformId)) {
       const img: HTMLImageElement = this.elementRef.nativeElement as HTMLImageElement;
+
       fromEvent(img, 'error')
-        .pipe(
-          takeUntil(this.onDestroy$),
-          distinctUntilChanged()
-        )
+        .pipe(takeUntil(this.onDestroy$), distinctUntilChanged())
         .subscribe((res) => {
+
           if (this.appImageFallback) {
             img.src = this.appImageFallback;
           }

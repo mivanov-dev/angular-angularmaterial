@@ -18,7 +18,6 @@ export class ConfirmEqualValidatorDirective implements Validator {
 
     if (this.appConfirmEqualValidator) {
       const compare = control.parent?.get(this.appConfirmEqualValidator);
-
       const isNotEqual = compare && compare.value !== control.value;
 
       if (control.value === null || control.value.length === 0) {
