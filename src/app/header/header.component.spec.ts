@@ -40,7 +40,8 @@ describe('HeaderComponent', () => {
     expires: 1000,
     redirect: false,
     image: '../../assets/user.png',
-    role: 'USER'
+    role: 'USER',
+    is2FAenabled: false
   };
 
   beforeEach(() => {
@@ -96,7 +97,7 @@ describe('HeaderComponent', () => {
   it('should dispatch an onLogout event', () => {
 
     const action = AuthActions.logoutStart();
-    component.onLogout();
+    component.logout();
     expect(store.dispatch).toHaveBeenCalledWith(action);
 
   });
@@ -105,7 +106,7 @@ describe('HeaderComponent', () => {
 
     const mode = 'login';
     const action = AuthActions.switchModeTo({ authMode: { mode } });
-    component.switchAuthModeTo(mode);
+    component.switchModeTo(mode);
     expect(store.dispatch).toHaveBeenCalledWith(action);
 
   });

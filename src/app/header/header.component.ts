@@ -6,7 +6,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
 import * as fromApp from '../store';
 import * as fromAuth from '../user/auth/store/reducer';
@@ -22,17 +22,19 @@ import * as AuthModels from '../user/auth/store/models';
 export class HeaderComponent implements OnDestroy {
 
 
-  user$: Observable<AuthModels.Login | null>;
+  // user$: Observable<AuthModels.Login | null>;
   userImage = '../../assets/user.png';
   adminImage = '../../assets/admin.png';
   @Input() sidenav?: MatSidenav;
   private onDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private store$: Store<fromApp.AppState>) {
+  get user$(): Observable<AuthModels.Login | null> {
 
-    this.user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$));
-
+    return this.store$.select(fromAuth.selectLogin)
+      .pipe(takeUntil(this.onDestroy$));
   }
+
+  constructor(private store$: Store<fromApp.AppState>) { }
 
   ngOnDestroy(): void {
 
@@ -41,13 +43,13 @@ export class HeaderComponent implements OnDestroy {
 
   }
 
-  onLogout(): void {
+  logout(): void {
 
     this.store$.dispatch(AuthActions.logoutStart());
 
   }
 
-  switchAuthModeTo(mode: AuthModels.AuthModeType): void {
+  switchModeTo(mode: AuthModels.AuthModeType): void {
 
     this.store$.dispatch(AuthActions.switchModeTo({ authMode: { mode } }));
 
