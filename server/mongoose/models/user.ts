@@ -12,6 +12,8 @@ export interface UserDocument extends Document {
   resetPasswordToken?: string;
   resetPasswordExpires?: number;
   role: string;
+  is2FAenabled?: boolean;
+  twoFAkey?: string;
   imageId?: any;
 }
 
@@ -45,6 +47,16 @@ export const userSchema = new Schema({
     default: 'user',
     required: true
   },
+  is2FAenabled: {
+    type: Types.Boolean,
+    default: false,
+    required: false
+  },
+  twoFAkey: {
+    type: Types.String,
+    default: '',
+    required: false
+  },
   imageId: {
     type: Types.ObjectId,
     ref: 'UserImage'
@@ -69,7 +81,7 @@ userSchema.statics.authenticate = async function(body: { email: string, password
   const user: UserModel = this as any;
   const { email, password } = body;
   const result = await user.findOne({ email })
-    .select('email password role')
+    .select('email password role is2FAenabled')
     .populate({
       path: 'imageId',
       model: UserImage,
@@ -91,7 +103,7 @@ userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
   const user: UserModel = this as any;
 
   return user.findById(id)
-    .select('email role')
+    .select('email role is2FAenabled')
     .populate({
       path: 'imageId',
       model: UserImage,

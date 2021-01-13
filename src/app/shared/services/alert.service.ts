@@ -24,7 +24,6 @@ export class AlertService {
 
       const { AlertComponent, AlertModule } = await import(
         /* webpackMode: "lazy" */
-        /* webpackChunkName: "alert" */
         `../components`
       );
 

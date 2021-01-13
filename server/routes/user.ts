@@ -36,4 +36,15 @@ router.post(
   reqSchema.user.resetPassword,
   UserController.resetPassword);
 
+router.get(
+  '/api/user/qr/setup',
+  isAuthenticate,
+  UserController.qrSetup);
+
+router.post(
+  '/api/user/qr/verify',
+  isAuthenticate,
+  reqSchema.qr.verify,
+  UserController.qrVerify);
+
 export { router as userRouter };

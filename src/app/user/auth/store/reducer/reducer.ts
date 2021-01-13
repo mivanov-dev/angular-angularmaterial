@@ -27,92 +27,61 @@ export const authReducer = createReducer<State>(
    */
   on(AuthActions.loginStart, (state, { data }) => ({
     ...state,
-    // login: null,
-    register: null,
-    // error: null,
     loading: true,
-    // authMode: { mode: 'login' },
   })),
   on(AuthActions.login, (state, { data }) => ({
     ...state,
     login: data,
-    // register: null,
     error: null,
     loading: false,
-    // authMode: { mode: 'login' },
   })),
   on(AuthActions.loginError, (state, { error }) => ({
     ...state,
-    // login: null,
-    // register: null,
     error,
     loading: false,
-    // authMode: { mode: 'login' },
   })),
   /**
    * REGISTER
    */
   on(AuthActions.registerStart, (state) => ({
     ...state,
-    // login: null,
-    // register: null,
-    // error: null,
     loading: true,
-    // authMode: { mode: 'login' },
   })),
   on(AuthActions.register, (state, { data }) => ({
     ...state,
-    // login: null,
     register: data,
     error: null,
     loading: false,
-    // authMode: { mode: 'login' },
   })),
   on(AuthActions.registerError, (state, { error }) => ({
     ...state,
-    // login: null,
-    register: null,
     error,
     loading: false,
-    // authMode: { mode: 'login' },
   })),
   /**
    * LOGOUT
    */
   on(AuthActions.logoutStart, (state) => ({
     ...state,
-    // login: null,
-    // register: null,
-    // error: null,
     loading: true,
-    // authMode: { mode: 'login' },
   })),
   on(AuthActions.logout, (state) => ({
     ...state,
     login: null,
-    // register: null,
-    // error: null,
     loading: false,
-    // authMode: { mode: 'login' },
   })),
   on(AuthActions.logoutError, (state, { error }) => ({
     ...state,
-    // login: null,
-    // register: null,
     error,
     loading: false,
-    // authMode: { mode: 'login' },
   })),
   /**
    * AUTOLOGIN
    */
   on(AuthActions.autologinStart, (state) => ({
     ...state,
-    // login: null,
-    // register: null,
     error: null,
     loading: true,
-    // authMode: { mode: 'login' },
   })),
 
   /**
@@ -120,10 +89,7 @@ export const authReducer = createReducer<State>(
    */
   on(AuthActions.switchModeTo, (state, { authMode }) => ({
     ...state,
-    // login: null,
-    // register: null,
     error: null,
-    // loading: false,
     authMode,
   })),
 
@@ -132,7 +98,6 @@ export const authReducer = createReducer<State>(
    */
   on(AuthActions.resetOnSuccessfulLogin, (state) => ({
     ...state,
-    // login: null,
     register: null,
     error: null,
     loading: false,

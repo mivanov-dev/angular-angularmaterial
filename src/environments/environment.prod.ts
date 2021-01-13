@@ -18,7 +18,9 @@ export const environment = {
     apiUserIsLoggedIn: '/api/user/isLoggedIn',
     apiUserLogout: '/api/user/logout',
     apiUserForgotPassword: '/api/user/forgot-password',
-    apiUserResetPassword: '/api/user/reset-password'
+    apiUserResetPassword: '/api/user/reset-password',
+    apiUserQrSetup: '/api/user/qr/setup',
+    apiUserQrVerify: '/api/user/qr/verify',
   },
   cloudinary: {
     server: process.env.CLOUDINARY_SERVER,

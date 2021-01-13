@@ -131,6 +131,19 @@ export const reqSchema = {
         }
       }
     })
+  },
+  qr: {
+    verify: checkSchema({
+      code: {
+        notEmpty: {
+          errorMessage: 'Code is required!',
+        },
+        isLength: {
+          errorMessage: 'Code length must be 6 characters!',
+          options: { min: 6, max: 6 }
+        }
+      }
+    })
   }
 };
 

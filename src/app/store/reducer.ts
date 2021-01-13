@@ -10,12 +10,14 @@ import { environment } from 'src/environments/environment';
 import * as fromForgotPassword from '../user/forgot-password/store/reducer';
 import * as fromResetPassword from '../user/reset-password/store/reducer';
 import * as fromComment from '../scroll/store/reducer/reducer';
+import * as fromQr from '../user/security/store/reducer';
 
 export interface AppState {
   [fromAuth.key]: fromAuth.State;
   [fromForgotPassword.key]: fromForgotPassword.State;
   [fromResetPassword.key]: fromResetPassword.State;
   [fromComment.key]: fromComment.State;
+  [fromQr.key]: fromQr.State;
   router: fromRouter.RouterReducerState<any>;
 }
 
@@ -26,6 +28,7 @@ export const reducers = new InjectionToken<ActionReducerMap<AppState, Action>>('
     [fromForgotPassword.key]: fromForgotPassword.reducer,
     [fromResetPassword.key]: fromResetPassword.reducer,
     [fromComment.key]: fromComment.reducer,
+    [fromQr.key]: fromQr.reducer,
     router: fromRouter.routerReducer,
 
   })
