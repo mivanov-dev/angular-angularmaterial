@@ -1,14 +1,14 @@
 // angular
 import {
-  Component, OnInit, ViewChild, ElementRef,
+  Component, OnInit, ViewChild,
   OnDestroy, Inject,
-  PLATFORM_ID, ViewContainerRef, AfterViewInit, ChangeDetectorRef
+  ViewContainerRef, AfterViewInit, ChangeDetectorRef
 } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Data } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
 // rxjs
 import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
@@ -34,11 +34,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
   isLoading = false;
   hidePassword = true;
   hideRepeatedPassword = true;
-  passwordElement?: HTMLElement;
   submitButtonElement?: HTMLElement;
-  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
-  @ViewChild('password', { static: true }) password?: ElementRef;
-  @ViewChild('submitButton', { static: true }) submitButton?: MatButton;
+  @ViewChild('alertContainer', { static: false, read: ViewContainerRef }) alertContainer?: ViewContainerRef;
+  @ViewChild('passwordInput', { static: false, read: MatInput }) passwordInput?: MatInput;
+  @ViewChild('submitButton', { static: false, read: MatButton }) submitButton?: MatButton;
   private token?: string | undefined;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
@@ -49,7 +48,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService,
               private cdr: ChangeDetectorRef,
-              @Inject(PLATFORM_ID) private platformId: any,
               @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
@@ -85,13 +83,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   ngAfterViewInit(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.passwordElement = this.password?.nativeElement as HTMLElement;
-      this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
-      // https://stackoverflow.com/a/54794081
-      this.passwordElement?.focus({ preventScroll: true });
-      this.cdr.detectChanges();
-    }
+    this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
+    // https://stackoverflow.com/a/54794081
+    this.passwordInput?.focus({ preventScroll: true });
+    this.cdr.detectChanges();
 
   }
 
@@ -140,9 +135,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   onTriggerClick(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.submitButtonElement?.click();
-    }
+    this.submitButtonElement?.click();
 
   }
 

@@ -5,7 +5,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '../../store';
@@ -25,21 +25,14 @@ export class CdkComponent implements OnInit, OnDestroy {
   batch = 10;
   isLoading = false;
   hasMore?: boolean;
-  @ViewChild(CdkVirtualScrollViewport)
-  viewport: CdkVirtualScrollViewport | undefined;
+  comments?: Comment[];
+  @ViewChild('scroll', { read: CdkVirtualScrollViewport }) scroll: CdkVirtualScrollViewport | undefined;
   private onDestroy$: Subject<void> = new Subject<void>();
-
-  get comments$(): Observable<Comment[]> {
-
-    return this.store$.select(fromComment.selectAllComments)
-      .pipe(takeUntil(this.onDestroy$));
-
-  }
 
   constructor(private store$: Store<fromApp.AppState>,
               private seoService: SeoService) {
 
-    this.seoService.config({ title: 'Scroll/Cdk', url: 'scroll/cdk' });
+    this.seoService.config({ title: 'CdkScroll', url: 'scroll/cdk' });
 
   }
 
@@ -48,6 +41,7 @@ export class CdkComponent implements OnInit, OnDestroy {
     this.addComments();
     this.subscribeHasMore();
     this.subscribeLoading();
+    this.subscribeComments();
 
   }
 
@@ -65,8 +59,8 @@ export class CdkComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const end = this.viewport?.getRenderedRange().end;
-    const total = this.viewport?.getDataLength();
+    const end = this.scroll?.getRenderedRange().end;
+    const total = this.scroll?.getDataLength();
 
     if (end === total && !this.isLoading) {
       this.offset += 1;
@@ -105,6 +99,14 @@ export class CdkComponent implements OnInit, OnDestroy {
       offset: (this.offset - 1) * this.batch,
       batch: this.batch
     }));
+
+  }
+
+  private subscribeComments(): void {
+
+    this.store$.select(fromComment.selectAllComments)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => this.comments = res);
 
   }
 

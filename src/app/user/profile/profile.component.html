@@ -17,14 +17,16 @@
              fxFill
              fxLayout="row"
              fxLayoutAlign="end center">
-          <button mat-icon-button>
-            <mat-icon aria-label="menu">more_vert</mat-icon>
+          <button mat-icon-button
+                  aria-label="menu">
+            <mat-icon>more_vert</mat-icon>
           </button>
         </div>
         <div class="avatar">
           <img [src]="user?.image"
+          
                [appImageFallback]="user?.role === 'user' ? userImage : adminImage"
-               alt="UserImage">
+               alt="show user image when is logged in">
         </div>
         <h3 class="username">username</h3>
         <p class="location mat-small"

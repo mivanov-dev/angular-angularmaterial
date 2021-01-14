@@ -4,8 +4,9 @@
                    fxLayout="row">
     <button type="button"
             mat-icon-button
-            (click)="sidenav?.toggle()">
-      <mat-icon aria-label="menu">menu</mat-icon>
+            (click)="sidenav?.toggle()"
+            aria-label="menu">
+      <mat-icon>menu</mat-icon>
     </button>
     <span fxFlex></span>
 
@@ -19,7 +20,8 @@
              class="user-avatar"
              [src]="(user$ | async)?.image"
              [appImageFallback]="(user$ | async)?.role === 'user' ? userImage : adminImage"
-             [matMenuTriggerFor]="beforeMenu">
+             [matMenuTriggerFor]="beforeMenu"
+             alt="show user image when is logged in">
 
         <mat-menu #beforeMenu="matMenu"
                   xPosition="before">

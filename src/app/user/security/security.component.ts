@@ -34,9 +34,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
   codeElement?: HTMLInputElement;
   user?: AuthModels.Login | null;
   isLoading = false;
-  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
-  @ViewChild('secretKey', { read: ElementRef }) secretKey?: ElementRef;
-  @ViewChild('formDirective') formDirective?: FormGroupDirective;
+  @ViewChild('alertContainer', { static: false, read: ViewContainerRef }) alertContainer?: ViewContainerRef;
+  @ViewChild('secretKey', { static: false, read: ElementRef }) secretKey?: ElementRef<HTMLElement>;
+  @ViewChild('formDirective', { static: false, read: FormGroupDirective }) formDirective?: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
   private qrCode: any;
@@ -108,8 +108,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const secretKey = (this.secretKey?.nativeElement as HTMLElement).innerText;
-    this.store$.dispatch(QrActions.verifyStart({ data: { secretKey, code: this.codeControl?.value } }));
+    const secretKey = this.secretKey?.nativeElement.innerText;
+    if (secretKey) {
+      this.store$.dispatch(QrActions.verifyStart({ data: { secretKey, code: this.codeControl?.value } }));
+    }
 
   }
 

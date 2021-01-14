@@ -24,7 +24,7 @@ describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   let store: MockStore<fromAuth.State>;
   let dom: HTMLElement;
-  const userProfileBtn = '.user-profile-btn';
+  const userProfileBtn = '.user-avatar';
   let mockUserSelector: any;
   const initialState: fromAuth.State = {
     authMode: {

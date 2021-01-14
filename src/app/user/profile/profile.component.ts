@@ -4,7 +4,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 // rxjs
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '@app/store';
 import * as fromAuth from '../auth/store/reducer';
@@ -16,7 +16,6 @@ import * as AuthModels from '../auth/store/models';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-
 
   user$: Observable<AuthModels.Login | null>;
   userImage = '../../assets/user.png';

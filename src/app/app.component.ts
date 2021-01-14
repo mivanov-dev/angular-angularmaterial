@@ -1,7 +1,7 @@
 // angular
-import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, Renderer2 } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { Component, OnInit, OnDestroy, Inject, Renderer2 } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 // cdk
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 // rxjs
@@ -28,7 +28,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private store$: Store<fromApp.AppState>,
     private renderer2: Renderer2,
     private sw: SwService,
-    @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
@@ -67,11 +66,9 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((res) => {
 
-        if (isPlatformBrowser(this.platformId)) {
-          this.isLoading = res;
-          const element = this.document.getElementById('loading-box');
-          this.renderer2.setStyle(element, 'display', 'none');
-        }
+        this.isLoading = res;
+        const element = this.document.getElementById('loading-box');
+        this.renderer2.setStyle(element, 'display', 'none');
 
       });
 
@@ -79,15 +76,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async drawParticle(id: string, config: string): Promise<void> {
 
-    if (isPlatformBrowser(this.platformId)) {
-      const particle = await import(
-        /* webpackMode: "lazy" */
-        'tsparticles'
-      ).then(({ tsParticles }) => tsParticles);
+    const particle = await import(
+      /* webpackMode: "lazy" */
+      'tsparticles'
+    ).then(({ tsParticles }) => tsParticles);
 
-      particle.loadJSON(id, config);
-    }
+    particle.loadJSON(id, config);
 
   }
+
 
 }

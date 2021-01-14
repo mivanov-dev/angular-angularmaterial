@@ -1,6 +1,5 @@
 // angular
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 // custom
 import { SeoService } from '../shared/services';
 
@@ -13,8 +12,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private typed: any;
 
-  constructor(private seoService: SeoService,
-              @Inject(PLATFORM_ID) private platformId: any) {
+  constructor(private seoService: SeoService) {
 
     this.seoService.config({ title: 'Home', url: 'home' });
 
@@ -22,38 +20,34 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
 
-    if (isPlatformBrowser(this.platformId)) {
-      const Typed = await import(
-        /* webpackMode: "lazy" */
-        'typed.js'
-      ).then((res) => res.default);
+    const Typed = await import(
+      /* webpackMode: "lazy" */
+      'typed.js'
+    ).then((res) => res.default);
 
-      this.typed = new Typed('.typed', {
-        strings: [
-          'Angular',
-          'Angular Flex-Layout',
-          'Angular Material',
-          'Angular Cdk',
-          'NgRX',
-          'RxJS',
-          'and many others 😉'
-        ],
-        typeSpeed: 25,
-        startDelay: 1000,
-        backSpeed: 25,
-        smartBackspace: true,
-        loop: true,
-        showCursor: true
-      });
-    }
+    this.typed = new Typed('.typed', {
+      strings: [
+        'Angular',
+        'Angular Flex-Layout',
+        'Angular Material',
+        'Angular Cdk',
+        'NgRX',
+        'RxJS',
+        'and many others 😉'
+      ],
+      typeSpeed: 25,
+      startDelay: 1000,
+      backSpeed: 25,
+      smartBackspace: true,
+      loop: true,
+      showCursor: true
+    });
 
   }
 
   ngOnDestroy(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.typed.destroy();
-    }
+    this.typed.destroy();
 
   }
 
