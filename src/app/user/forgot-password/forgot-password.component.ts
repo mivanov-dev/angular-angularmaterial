@@ -1,15 +1,16 @@
 // angular
 import {
-  Component, OnInit, ViewChild, ElementRef,
+  Component, OnInit, ViewChild,
   OnDestroy, Inject,
-  PLATFORM_ID, ViewContainerRef, AfterViewInit, ChangeDetectorRef
+  ViewContainerRef, AfterViewInit, ChangeDetectorRef
 } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
 // rxjs
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store } from '@ngrx/store';
@@ -34,8 +35,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
   emailElement?: HTMLElement;
   submitButtonElement?: HTMLElement;
   @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
-  @ViewChild('email', { static: true }) email?: ElementRef;
-  @ViewChild('submitButton', { static: true }) submitButton?: MatButton;
+  @ViewChild('emailInput', { static: false, read: MatInput }) emailInput?: MatInput;
+  @ViewChild('submitButton', { static: false, read: MatButton }) submitButton?: MatButton;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
 
@@ -44,7 +45,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
               private seoService: SeoService,
               private alertService: AlertService,
               private cdr: ChangeDetectorRef,
-              @Inject(PLATFORM_ID) private platformId: any,
               @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
@@ -73,13 +73,10 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
   }
   ngAfterViewInit(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.emailElement = this.email?.nativeElement as HTMLElement;
-      this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
-      // https://stackoverflow.com/a/54794081
-      this.emailElement.focus({ preventScroll: true });
-      this.cdr.detectChanges();
-    }
+    this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
+    // https://stackoverflow.com/a/54794081
+    this.emailInput?.focus({ preventScroll: true });
+    this.cdr.detectChanges();
 
   }
 
@@ -149,8 +146,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
   private subscribeLoading(): void {
 
     this.store$.select(fromForgotPassword.selectLoading)
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe(res => this.isLoading = res);
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => this.isLoading = res);
 
   }
 
