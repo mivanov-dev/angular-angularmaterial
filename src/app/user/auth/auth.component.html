@@ -28,7 +28,7 @@
                             appearance="outline">
               <mat-label>Email</mat-label>
               <input matInput
-                     #email
+                     #emailInput
                      type="email"
                      formControlName="email"
                      autocomplete="off"
@@ -112,8 +112,7 @@
                 fxLayoutAlign="center stretch"
                 [disabled]="isLoading">
           {{ authMode === 'login' ? 'Login' : 'Register' }}&nbsp;
-          <mat-icon aria-label="loading"
-                    *ngIf="isLoading">hourglass_empty</mat-icon>
+          <mat-icon *ngIf="isLoading">hourglass_empty</mat-icon>
         </button>
 
         <button mat-button

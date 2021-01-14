@@ -1,16 +1,17 @@
 // angular
 import {
-  Component, OnInit, ViewChild, ElementRef,
+  Component, OnInit, ViewChild,
   OnDestroy, Inject,
-  PLATFORM_ID, ViewContainerRef, AfterViewInit, ChangeDetectorRef
+  ViewContainerRef, AfterViewInit, ChangeDetectorRef
 } from '@angular/core';
 import {
   FormGroup, FormBuilder,
   FormControl, AbstractControl, FormGroupDirective
 } from '@angular/forms';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
 // rxjs
 import { Subject } from 'rxjs';
 import { takeUntil, filter, tap } from 'rxjs/operators';
@@ -81,13 +82,12 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
   };
   pondFiles: [] = [];
   hidePassword = true;
-  emailElement?: HTMLElement;
-  submitButtonElement?: HTMLElement;
-  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
-  @ViewChild('email', { static: true }) email?: ElementRef;
-  @ViewChild('submitButton', { static: true }) submitButton?: MatButton;
-  @ViewChild('filepond') filepond: any;
-  @ViewChild('formDirective') formDirective?: FormGroupDirective;
+  submitButtonElement?: HTMLButtonElement;
+  @ViewChild('alertContainer', { static: false, read: ViewContainerRef }) alertContainer?: ViewContainerRef;
+  @ViewChild('emailInput', { static: false, read: MatInput }) emailInput?: MatInput;
+  @ViewChild('submitButton', { static: false, read: MatButton }) submitButton?: MatButton;
+  @ViewChild('filepond', { static: false }) filepond?: any;
+  @ViewChild('formDirective', { static: false, read: FormGroupDirective }) formDirective?: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
   private isSwitchedAuthModeFromHere?: boolean;
@@ -100,7 +100,6 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     private alertService: AlertService,
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformId: any,
     @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Auth', url: 'user/auth' });
@@ -137,13 +136,10 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   ngAfterViewInit(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.emailElement = this.email?.nativeElement as HTMLElement;
-      this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
-      // https://stackoverflow.com/a/54794081
-      this.emailElement?.focus({ preventScroll: true });
-      this.cdr.detectChanges();
-    }
+    this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLButtonElement;
+    // https://stackoverflow.com/a/54794081
+    this.emailInput?.focus({ preventScroll: true });
+    this.cdr.detectChanges();
 
   }
 
@@ -195,11 +191,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     }
 
     this.form.reset();
-
-    if (isPlatformBrowser(this.platformId)) {
-      this.emailElement?.focus({ preventScroll: true });
-    }
-
+    this.emailInput?.focus({ preventScroll: true });
     this.hidePassword = true;
     this.isSubmitted = false;
 
@@ -214,9 +206,8 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     }
     if (this.authMode === 'register') {
 
-      const fileElement = this.document.getElementsByName('filepond')[1] as HTMLInputElement;
-      let file: any = fileElement.value;
-      file = JSON.parse(file ? file : '{}');
+      const filepondValue = (this.document.getElementsByName('filepond')[1] as HTMLInputElement).value;
+      const file = JSON.parse(filepondValue ? filepondValue : '{}');
       let data = this.userGroup?.value;
 
       if (new Object(file).hasOwnProperty('url')) {
