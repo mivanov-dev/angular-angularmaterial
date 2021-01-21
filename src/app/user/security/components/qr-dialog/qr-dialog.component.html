@@ -1,0 +1,41 @@
+<div fxLayout="column"
+     fxLayoutAlign="center center">
+    <p>Scan</p>
+    <img width="150"
+         height="150"
+         [src]="image"
+         loading="lazy" />
+    <p>or enter Secret Key</p>
+    <p #secretKey>{{ setup?.secretKey }}</p>
+</div>
+
+<mat-dialog-content [formGroup]="form"
+                    #formDirective="ngForm"
+                    fxLayout="column"
+                    fxLayoutGap="10px"
+                    fxLayoutAlign="space-between none">
+
+    <mat-form-field class="field"
+                    appearance="outline">
+        <mat-label>One time code</mat-label>
+        <input #codeInput
+               matInput
+               type="text"
+               formControlName="code"
+               required>
+        <mat-error *ngIf="hasCodeControlErrorRequired(codeControl)">
+            Code is <strong>required</strong> !
+        </mat-error>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="isLoading"
+            (click)="onSubmit()">
+        Verify
+    </button>
+    <button mat-raised-button
+            (click)="onClose()">Cancel</button>
+</mat-dialog-actions>

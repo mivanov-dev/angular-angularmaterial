@@ -40,6 +40,10 @@ export const authReducer = createReducer<State>(
     error,
     loading: false,
   })),
+  on(AuthActions.updateLogin, (state, { data }) => ({
+    ...state,
+    login: data
+  })),
   /**
    * REGISTER
    */

@@ -7,6 +7,7 @@ export enum ActionTypes {
   LOGIN_START = '[Auth] Login Start',
   LOGIN = '[Auth] Login',
   LOGIN_ERROR = '[Auth] Login Error',
+  UPDATE_LOGIN = '[Auth] Update Login',
   REGISTER_START = '[Auth] Register Start',
   REGISTER = '[Auth] Register',
   REGISTER_ERROR = '[Auth] Register Error',
@@ -30,6 +31,10 @@ export const login = createAction(
 export const loginError = createAction(
   ActionTypes.LOGIN_ERROR,
   props<AuthModels.Error>()
+);
+export const updateLogin = createAction(
+  ActionTypes.UPDATE_LOGIN,
+  props<{ data: AuthModels.Login }>()
 );
 
 // REGISTER

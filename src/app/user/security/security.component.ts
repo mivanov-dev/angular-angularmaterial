@@ -1,12 +1,10 @@
 // angular
 import {
-  Component, ElementRef, OnDestroy, OnInit,
+  Component, OnDestroy, OnInit,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import {
-  AbstractControl, FormBuilder, FormGroup,
-  FormGroupDirective
-} from '@angular/forms';
+// material
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
@@ -16,10 +14,11 @@ import { filter, takeUntil } from 'rxjs/operators';
 import * as fromApp from '@app/store';
 import * as fromAuth from '../auth/store/reducer';
 import * as AuthModels from '../auth/store/models';
+import * as AuthActions from '../auth/store/actions';
 import * as fromQr from './store/reducer';
 import * as QrActions from './store/actions';
 import * as QrModels from './store/models';
-import { AlertService, LoggerService, SeoService } from 'src/app/shared/services';
+import { AlertService, SeoService } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-security',
@@ -28,122 +27,111 @@ import { AlertService, LoggerService, SeoService } from 'src/app/shared/services
 })
 export class SecurityComponent implements OnInit, OnDestroy {
 
-  form: FormGroup;
   setup?: QrModels.Setup | null;
-  image?: string | null;
-  codeElement?: HTMLInputElement;
   user?: AuthModels.Login | null;
+  is2FAenabled?: boolean;
   isLoading = false;
+  isDialogOpened = false;
   @ViewChild('alertContainer', { static: false, read: ViewContainerRef }) alertContainer?: ViewContainerRef;
-  @ViewChild('secretKey', { static: false, read: ElementRef }) secretKey?: ElementRef<HTMLElement>;
-  @ViewChild('formDirective', { static: false, read: FormGroupDirective }) formDirective?: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
-  private isSubmitted = false;
-  private qrCode: any;
 
   constructor(
-    private formBuilder: FormBuilder,
+    public dialog: MatDialog,
     private store$: Store<fromApp.AppState>,
     private alertService: AlertService,
-    private logger: LoggerService,
     private seoService: SeoService) {
 
     this.seoService.config({ title: 'Security', url: 'user/security' });
-    this.form = this.initForm();
-
-  }
-
-  get codeControl(): AbstractControl | null {
-
-    return this.form.get('code');
 
   }
 
   async ngOnInit(): Promise<void> {
 
-    this.subscribeSetup();
     this.subscribeLogin();
     this.subscribeVerify();
     this.subscribeError();
     this.subscribeLoading();
 
-    this.qrCode = await import(
-      /* webpackMode: "lazy" */
-      'qrcode'
-    );
-
   }
 
   ngOnDestroy(): void {
 
-    this.store$.dispatch(QrActions.reset());
     this.onDestroy$.next();
     this.onDestroy$.complete();
 
   }
 
-  private initForm(): FormGroup {
+  async setupQr(check: boolean): Promise<void> {
 
-    return this.formBuilder.group({
-      code: [null],
-    }, { updateOn: 'blur' });
-
-  }
-
-  setupQr(check: boolean): void {
+    const { QrDialogComponent } = await import(
+      /* webpackPrefetch: true */
+      './components/qr-dialog');
 
     if (check) {
-      this.resetForm();
-    }
+      this.isDialogOpened = true;
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = { check };
+      dialogConfig.width = '400px';
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+      const dialogRef = this.dialog.open(QrDialogComponent, dialogConfig);
 
-    this.store$.dispatch(QrActions.setupStart({ data: { enable: check } }));
+      dialogRef.afterClosed()
+        .subscribe((res: { secretKey: string, code: string } | null) => {
+
+          this.isDialogOpened = false;
+
+          if (res) {
+            this.verifyQr(res);
+          }
+
+        });
+    }
+    else {
+      this.store$.dispatch(QrActions.setupStart({ data: { enable: false } }));
+
+      if (this.user) {
+        this.store$.dispatch(AuthActions.updateLogin({ data: { ...this.user, is2FAenabled: false } }));
+      }
+    }
 
   }
 
-  onSubmit(): void {
+  verifyQr(res: { secretKey: string, code: string }): void {
 
-    this.isSubmitted = true;
-
-    if (this.form.invalid) {
-      return;
+    if (res.secretKey && res.code) {
+      this.store$.dispatch(QrActions.verifyStart({ data: { secretKey: res.secretKey, code: res.code } }));
     }
-
-    const secretKey = this.secretKey?.nativeElement.innerText;
-    if (secretKey) {
-      this.store$.dispatch(QrActions.verifyStart({ data: { secretKey, code: this.codeControl?.value } }));
-    }
-
-  }
-
-  hasCodeControlErrorRequired(control: AbstractControl | null): boolean {
-
-    if (control) {
-      return control.hasError('required');
-    }
-
-    return false;
 
   }
 
   private subscribeVerify(): void {
 
     this.store$.select(fromQr.selectVerify)
-      .pipe(
-        takeUntil(this.onDestroy$),
-        filter((res): res is QrModels.Verify => res !== null)
-      )
-      .subscribe((res) => this.showAlertMessage(res.message, false));
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((res) => {
+
+        if (res && this.user) {
+          this.showAlertMessage(res.message, false);
+          this.store$.dispatch(AuthActions.updateLogin({ data: { ...this.user, is2FAenabled: true } }));
+        }
+
+      });
 
   }
 
   private subscribeError(): void {
 
     this.store$.select(fromQr.selectError)
-      .pipe(
-        takeUntil(this.onDestroy$),
-        filter(res => res !== null)
-      )
-      .subscribe((res) => this.showAlertMessage(res, true));
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((res) => {
+
+        if (res && this.user) {
+          this.showAlertMessage(res, true);
+          this.store$.dispatch(AuthActions.updateLogin({ data: { ...this.user, is2FAenabled: false } }));
+        }
+
+      });
 
   }
 
@@ -151,19 +139,13 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
     this.store$.select(fromAuth.selectLogin)
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(res => this.user = res);
+      .subscribe(res => {
 
-  }
-
-  private subscribeSetup(): void {
-
-    this.store$.select(fromQr.selectSetup)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((res) => {
-        this.setup = res;
         if (res) {
-          this.drawQrImage(res);
+          this.user = res;
+          this.is2FAenabled = res.is2FAenabled;
         }
+
       });
 
   }
@@ -173,9 +155,6 @@ export class SecurityComponent implements OnInit, OnDestroy {
     this.store$.select(fromQr.selectLoading)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(res => {
-        if (!res) {
-          this.isSubmitted = false;
-        }
         this.isLoading = res;
       });
 
@@ -185,27 +164,6 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
     if (this.alertContainer) {
       this.alertService.showMessage(this.alertContainer, message, hasError);
-    }
-
-  }
-
-  private resetForm(): void {
-
-    if (this.formDirective) {
-      this.formDirective.resetForm();
-    }
-
-    this.form.reset();
-
-  }
-
-  private async drawQrImage(res: QrModels.Setup): Promise<void> {
-
-    try {
-      const data = await this.qrCode.toDataURL(res.url, { errorCorrectionLevel: 'H' });
-      this.image = data;
-    } catch (error) {
-      this.logger.error(error);
     }
 
   }

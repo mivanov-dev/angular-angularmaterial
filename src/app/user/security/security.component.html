@@ -20,76 +20,25 @@
 
                 <mat-list>
                     <mat-list-item>
-                        <h3 mat-line
-                            class="mat-title mat-h3">QR Code</h3>
-                        <div mat-line>
-                            <div fxLayout="row"
-                                 fxLayoutGap="10px"
-                                 fxLayoutAlign="space-between center">
-                                <mat-icon>qr_code_2</mat-icon>
-                                <p>Authenticator</p>
-                            </div>
-                            <div fxLayout="row"
-                                 fxLayoutAlign="end center"
-                                 fxFlex>
-                                <mat-checkbox [ngModel]="user?.is2FAenabled"
-                                              (change)="setupQr($event.checked)"
-                                              color="primary"></mat-checkbox>
-                            </div>
-                        </div>
-                    </mat-list-item>
-
-                    <mat-list-item *ngIf="user && setup">
-                        <span mat-line
-                              fxLayoutAlign="center center">
-                            Scan the QR code with Authenticator
-                        </span>
                         <div mat-line
-                             fxLayoutAlign="center center">
-                            <img [src]="image"
-                                 loading="lazy" />
+                             fxLayoutAlign="space-between center">
+                            <div fxLayout="row"
+                                 fxLayoutAlign="space-around center"
+                                 fxLayoutGap="10px">
+                                <mat-icon mat-list-icon>qr_code_2</mat-icon>
+                                <span>Authenticator App</span>
+                            </div>
+                            <mat-checkbox *ngIf="!isLoading && !isDialogOpened"
+                                          [(ngModel)]="is2FAenabled"
+                                          (change)="setupQr($event.checked)"
+                                          color="primary"></mat-checkbox>
                         </div>
-                        <span mat-line
-                              fxLayoutAlign="center center">
-                            or enter Secret Key
-                        </span>
-                        <span mat-line
-                              #secretKey
-                              fxLayoutAlign="center center">
-                            {{ setup?.secretKey }}
-                        </span>
+                        <div mat-line>
+                            <span class="mat-small">(e.g. Google Authenticator, Authy)</span>
+                        </div>
                     </mat-list-item>
-
                     <mat-divider [inset]="true"></mat-divider>
                 </mat-list>
-
-                <form [formGroup]="form"
-                      #formDirective="ngForm"
-                      (ngSubmit)="onSubmit()"
-                      *ngIf="user && setup">
-                    <mat-form-field class="field"
-                                    fxLayout="column"
-                                    appearance="outline">
-                        <mat-label>One-Time-Code</mat-label>
-                        <input matInput
-                               type="text"
-                               formControlName="code"
-                               required>
-                        <mat-error *ngIf="hasCodeControlErrorRequired(codeControl)">
-                            Code is <strong>required</strong> !
-                        </mat-error>
-                    </mat-form-field>
-                    <div fxLayout="column">
-                        <button mat-raised-button
-                                color="primary"
-                                fxLayout="column"
-                                fxLayoutAlign="center stretch"
-                                type="submit"
-                                [disabled]="isLoading">
-                            Verify
-                        </button>
-                    </div>
-                </form>
 
             </mat-card-content>
         </mat-card>

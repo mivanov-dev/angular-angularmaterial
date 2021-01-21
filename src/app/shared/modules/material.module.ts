@@ -15,6 +15,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 // cdk
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
@@ -34,7 +35,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ScrollingModule,
     MatCheckboxModule,
     MatChipsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule
   ],
   exports: [
     MatSidenavModule,
@@ -50,7 +52,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ScrollingModule,
     MatCheckboxModule,
     MatChipsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule
   ]
 })
 export class MaterialModule { }
