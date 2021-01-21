@@ -1,11 +1,7 @@
 <div fxLayout="column"
      fxLayoutAlign="center center">
     <p>Scan</p>
-    <img width="150"
-         height="150"
-         [src]="image"
-         loading="lazy"
-         alt="qrCode image" />
+    <div id="qr-box"></div>
     <p>or enter Secret Key</p>
     <p #secretKey>{{ setup?.secretKey }}</p>
 </div>

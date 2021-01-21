@@ -7,7 +7,7 @@ import {
   AbstractControl, FormBuilder, FormGroup,
   FormGroupDirective, FormsModule, ReactiveFormsModule
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 // material
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -40,7 +40,6 @@ export class QrDialogComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   setup?: QrModels.Setup | null;
-  image?: string | null;
   codeElement?: HTMLInputElement;
   user?: AuthModels.Login | null;
   isLoading = false;
@@ -59,7 +58,8 @@ export class QrDialogComponent implements OnInit, OnDestroy {
               @Inject(MAT_DIALOG_DATA) public data: any,
               private formBuilder: FormBuilder,
               private store$: Store<fromApp.AppState>,
-              private logger: LoggerService) {
+              private logger: LoggerService,
+              @Inject(DOCUMENT) private document: Document, ) {
 
     this.form = this.initForm();
 
@@ -153,10 +153,14 @@ export class QrDialogComponent implements OnInit, OnDestroy {
 
 
   private async drawQrImage(res: QrModels.Setup): Promise<void> {
+    const qrBox = this.document.getElementById('qr-box') as HTMLElement;
 
     try {
-      const data = await qrcode.toDataURL(res.url, { errorCorrectionLevel: 'H' });
-      this.image = data;
+      const data = await qrcode.toString(res.url, { errorCorrectionLevel: 'H', type: 'svg', width: 150 });
+      const parser = new DOMParser().parseFromString(data, 'image/svg+xml');
+      qrBox.appendChild(
+        qrBox.ownerDocument.importNode(parser.documentElement, true)
+      );
     } catch (error) {
       this.logger.error(error);
     }
