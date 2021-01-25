@@ -48,7 +48,6 @@
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "node_modules/filepond/dist/filepond.min.css",
               "node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css",
-              "node_modules/animate.css/animate.min.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -128,7 +127,6 @@
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "node_modules/filepond/dist/filepond.min.css",
               "node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css",
-              "node_modules/animate.css/animate.min.css",
               "src/styles.scss"
             ],
             "scripts": []

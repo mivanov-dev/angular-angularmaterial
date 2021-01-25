@@ -44,7 +44,6 @@
     "@ngrx/router-store": "10.1.2",
     "@ngrx/store": "10.1.2",
     "@ngrx/store-devtools": "10.1.2",
-    "animate.css": "^4.1.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.23.0",
     "compression": "^1.7.4",

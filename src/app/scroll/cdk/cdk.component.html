@@ -8,8 +8,7 @@
 
     <div *cdkVirtualFor="let item of comments; let i = index; trackBy: trackByIdx">
 
-      <mat-card class="animate__animated animate__fadeInRight"
-                style="padding: 10px; margin: 10px; height: 100px;">
+      <mat-card style="padding: 10px; margin: 10px; height: 100px;">
         <h2>{{item.seq}}.{{ item.emoji }} {{ item.author }}</h2>
         <p>{{ item.description }}</p>
       </mat-card>
