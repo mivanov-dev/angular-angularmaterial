@@ -19,7 +19,7 @@ const localStrategy = new LocalStrategy(
         const user = await User.authenticate(request.body);
 
         if (user == null) {
-          return cb(null, false, { message: 'Wrong credentials!' });
+          return cb({ message: 'Wrong credentials!' }, false);
         }
 
         return cb(null, user);

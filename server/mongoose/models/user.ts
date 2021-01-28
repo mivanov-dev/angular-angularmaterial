@@ -89,7 +89,7 @@ userSchema.statics.authenticate = async function(body: { email: string, password
     })
     .exec();
 
-  if (result && await bcrypt.compareSync(password, result.password)) {
+  if (result && await bcrypt.compare(password, result.password)) {
     return result;
   }
   else {

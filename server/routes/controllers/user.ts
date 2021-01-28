@@ -48,7 +48,6 @@ class Controller {
     passportStrategy.authenticate('login', (error, user, info): Response<any> | void => {
 
       if (error) { return handleErrors(error, res); }
-      if (info !== undefined) { return res.status(400).send(info); }
 
       const json = {
         email: user.email,
