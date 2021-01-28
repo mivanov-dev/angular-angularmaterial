@@ -1,0 +1,30 @@
+@host = localhost:4200
+
+###
+# @name userRegister
+POST http://{{host}}/api/user/register HTTP/1.1
+content-type: application/json
+
+{
+  "email": "demo@demo.com",
+  "password": "demo@demo.com"
+}
+
+###
+# @name userLogin
+POST http://{{host}}/api/user/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "demo@demo.com",
+  "password": "demo@demo.com",
+  "remember": true
+}
+
+###
+# @name userLogout
+POST http://{{host}}/api/user/logout HTTP/1.1
+content-type: application/json
+
+###
+

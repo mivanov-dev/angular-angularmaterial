@@ -1,6 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
 import * as crypto from 'crypto';
-import { validationResult } from 'express-validator';
 import * as bcrypt from 'bcryptjs';
 import * as speakeasy from 'speakeasy';
 const ms = require('ms');
@@ -19,13 +18,9 @@ class Controller {
 
       let { password } = req.body;
       const { email } = req.body;
-      const errors: any = validationResult(req);
       let userImage: UserImageDocument;
 
-      if (!errors.isEmpty()) {
-        throw { message: errors.errors[0].msg };
-      }
-      else if (await User.findOne({ email })) {
+      if (await User.findOne({ email })) {
         throw { message: 'This email already exists!' };
       }
       else if (new Object(req.body).hasOwnProperty('file')) {
@@ -49,12 +44,6 @@ class Controller {
   }
 
   static login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-
-    const errors: any = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      throw { message: errors.errors[0].msg };
-    }
 
     passportStrategy.authenticate('login', (error, user, info): Response<any> | void => {
 
@@ -138,11 +127,6 @@ class Controller {
     try {
 
       const { email } = req.body;
-      const errors: any = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        throw { message: errors.errors[0].msg };
-      }
 
       const user = await User.findOneAndUpdate({ email }, {
         resetPasswordToken: crypto.randomBytes(16).toString('hex'),
@@ -177,11 +161,7 @@ class Controller {
     try {
 
       const { token, password, repeatedPassword } = req.body;
-      const errors: any = validationResult(req);
 
-      if (!errors.isEmpty()) {
-        throw { message: errors.errors[0].msg };
-      }
       if (password.localeCompare(repeatedPassword) !== 0) {
         throw { message: 'New password and repeated password are not equals!' };
       }
@@ -251,7 +231,6 @@ class Controller {
 
     const body = req.user as { id: any };
     const { secretKey, code } = req.body;
-    const errors: any = validationResult(req);
     const isVerified = speakeasy.totp.verify({
       secret: secretKey,
       encoding: 'base32',
@@ -259,10 +238,6 @@ class Controller {
     });
 
     try {
-
-      if (!errors.isEmpty()) {
-        throw { message: errors.errors[0].msg };
-      }
 
       if (isVerified) {
         await User.findByIdAndUpdate(body.id, { is2FAenabled: true, twoFAkey: secretKey }).exec();

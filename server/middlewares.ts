@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { checkSchema } from 'express-validator';
+import { checkSchema, validationResult } from 'express-validator';
 // custom
 import { log } from './logger';
 
@@ -36,6 +36,19 @@ export function isGuest(req: Request, res: Response, next: NextFunction): void {
   if (req.isAuthenticated()) {
     res.status(400).send({ message: 'You are already logged in!' });
   } else {
+    next();
+  }
+
+}
+
+export function hasErros(req: Request, res: Response, next: NextFunction): void {
+
+  const errors: any = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    handleErrors({ message: errors.errors[0].msg }, res);
+  }
+  else {
     next();
   }
 
