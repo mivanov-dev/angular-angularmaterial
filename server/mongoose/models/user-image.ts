@@ -18,4 +18,4 @@ export const userImageSchema = new Schema({
   timestamps: { createdAt: 'createdAt' },
 });
 
-export const UserImage = mongoose.model<UserImageDocument, UserImageModel>('UserImage', userImageSchema);
+export const UserImage = mongoose.model<UserImageDocument>('UserImage', userImageSchema) as UserImageModel;

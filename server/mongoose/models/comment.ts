@@ -54,4 +54,4 @@ commentSchema.pre<CommentDocument>('save', function(this: CommentDocument, next)
 
 });
 
-export const Comment = mongoose.model<CommentDocument, CommentModel>('Comment', commentSchema);
+export const Comment = mongoose.model<CommentDocument>('Comment', commentSchema) as CommentModel;

@@ -26,4 +26,4 @@ export const counterSchema = new Schema({
   toObject: { virtuals: true },
 });
 
-export const Counter = mongoose.model<CounterDocument, CounterModel>('Counter', counterSchema);
+export const Counter = mongoose.model<CounterDocument>('Counter', counterSchema) as CounterModel;

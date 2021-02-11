@@ -115,4 +115,4 @@ userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
 
 
 
-export const User = mongoose.model<UserDocument, UserModel>('User', userSchema);
+export const User = mongoose.model<UserDocument>('User', userSchema) as UserModel;
