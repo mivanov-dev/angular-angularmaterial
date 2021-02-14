@@ -1,10 +1,7 @@
 <ng-container *ngIf="comments">
 
-  <cdk-virtual-scroll-viewport #scroll
-                               [itemSize]="100"
-                               (scrolledIndexChange)="onScroll($event)"
-                               class="scroller-vertical"
-                               style="height: 100vh; overflow-x: hidden;">
+  <cdk-virtual-scroll-viewport #scroll [itemSize]="100" (scrolledIndexChange)="onScroll($event)"
+    class="scroller-vertical" style="height: 100vh; overflow-x: hidden;">
 
     <div *cdkVirtualFor="let item of comments; let i = index; trackBy: trackByIdx">
 
@@ -15,13 +12,15 @@
 
     </div>
 
-    <div *ngIf="!this.hasMore && (this.hasMore !== undefined)"
-         style="display: flex; justify-content: center;">
+    <p *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">Loading...</p>
 
-      <h1>
-        <span class="mirror-text">📢</span>
-        <span>END📢</span>
-      </h1>
+    <div *ngIf="!this.hasMore && (this.hasMore !== undefined)" fxLayout="row" fxLayoutAlign="center center">
+
+      <p>
+        <span class="mirror-text">🚩</span>
+        NO MORE
+        <span>🚩</span>
+      </p>
 
     </div>
 

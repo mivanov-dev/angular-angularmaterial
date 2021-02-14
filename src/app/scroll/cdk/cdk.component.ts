@@ -23,7 +23,7 @@ export class CdkComponent implements OnInit, OnDestroy {
 
   offset = 1;
   batch = 10;
-  isLoading = false;
+  isLoading = true;
   hasMore?: boolean;
   comments?: Comment[];
   @ViewChild('scroll', { read: CdkVirtualScrollViewport }) scroll: CdkVirtualScrollViewport | undefined;
