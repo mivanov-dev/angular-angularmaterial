@@ -50,7 +50,6 @@ class App {
     try {
       // tslint:disable-next-line: no-shadowed-variable
       this.app.engine('html', (_, options: any, cb) => {
-        console.log(options);
         const engine = ngExpressEngine({
           bootstrap: AppServerModule,
           providers: []
@@ -112,7 +111,7 @@ class App {
       const isJs = req.url.match(/\.js$/i) !== null;
 
       if (err !== undefined || err !== null || err !== '') {
-        console.error(err);
+        log.error('errors:', JSON.stringify(err));
       }
 
       if (isJs) {

@@ -16,7 +16,7 @@ export function database(uri: string, options: object): void {
   connection.on('open', async () => {
 
     await connection
-      .dropDatabase((error) => console.log(`mongoose:drop database: ${JSON.stringify(error)}`));
+      .dropDatabase((error) => log.info(`mongoose:drop database: ${JSON.stringify(error)}`));
 
     await dropModels();
 

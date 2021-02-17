@@ -9,6 +9,7 @@ import { handleErrors } from '../../middlewares';
 import { passportStrategy } from '../../passport';
 import { smtp } from '../../smtp';
 import { config } from '../../config';
+import { log } from '../../logger';
 
 class Controller {
 
@@ -112,7 +113,7 @@ class Controller {
 
   static logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-    req.session.destroy((err) => console.log(err));
+    req.session.destroy((err) => log.error('session:destroy:', JSON.stringify(err)));
     res.clearCookie('uid', { path: '/' });
     req.logout();
     res.status(200).send();
