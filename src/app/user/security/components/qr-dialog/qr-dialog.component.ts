@@ -57,11 +57,11 @@ export class QrDialogComponent implements OnInit, OnDestroy {
   }
 
   constructor(public dialogRef: MatDialogRef<QrDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private formBuilder: FormBuilder,
-              private store$: Store<fromApp.AppState>,
-              private logger: LoggerService,
-              @Inject(DOCUMENT) private document: Document, ) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private formBuilder: FormBuilder,
+    private store$: Store<fromApp.AppState>,
+    private logger: LoggerService,
+    @Inject(DOCUMENT) private document: Document,) {
 
     this.form = this.initForm();
 
