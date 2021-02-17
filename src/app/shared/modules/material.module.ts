@@ -32,11 +32,12 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
-    ScrollingModule,
     MatCheckboxModule,
     MatChipsModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    // cdk
+    ScrollingModule,
   ],
   exports: [
     MatSidenavModule,
@@ -49,11 +50,12 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
-    ScrollingModule,
     MatCheckboxModule,
     MatChipsModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    // cdk
+    ScrollingModule,
   ]
 })
 export class MaterialModule { }

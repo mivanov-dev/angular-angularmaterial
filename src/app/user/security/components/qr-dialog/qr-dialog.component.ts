@@ -12,6 +12,9 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+// cdk
+import { ClipboardModule } from '@angular/cdk/clipboard';
 // flex-layout
 import { FlexLayoutModule } from '@angular/flex-layout';
 // ngrx
@@ -39,11 +42,10 @@ import { LoggerService } from '@app/shared/services';
 export class QrDialogComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
-  setup?: QrModels.Setup | null;
   codeElement?: HTMLInputElement;
   user?: AuthModels.Login | null;
   isLoading = false;
-  @ViewChild('secretKey', { static: false, read: ElementRef }) secretKey?: ElementRef<HTMLElement>;
+  secretKey = '';
   @ViewChild('formDirective', { static: false, read: FormGroupDirective }) formDirective?: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
@@ -98,7 +100,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const secretKey = this.secretKey?.nativeElement.innerText;
+    const secretKey = this.secretKey;
     this.dialogRef.close({ secretKey, code: this.codeControl?.value });
 
   }
@@ -128,7 +130,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
 
         if (res) {
-          this.setup = res;
+          this.secretKey = res.secretKey;
           this.drawQrImage(res);
         }
 
@@ -189,7 +191,10 @@ export class QrDialogComponent implements OnInit, OnDestroy {
     FlexLayoutModule,
     MatDialogModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule,
+    // cdk
+    ClipboardModule,
   ],
   declarations: [QrDialogComponent]
 })
