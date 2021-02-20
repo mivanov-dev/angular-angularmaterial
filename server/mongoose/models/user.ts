@@ -13,7 +13,7 @@ export interface UserDocument extends Document {
   resetPasswordExpires?: number;
   role: string;
   is2FAenabled?: boolean;
-  twoFAkey?: string;
+  twoFAsecret?: string;
   imageId?: any;
 }
 
@@ -52,7 +52,7 @@ export const userSchema = new Schema({
     default: false,
     required: false
   },
-  twoFAkey: {
+  twoFAsecret: {
     type: Types.String,
     default: '',
     required: false

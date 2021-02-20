@@ -216,7 +216,7 @@ class Controller {
     else {
       try {
 
-        await User.findByIdAndUpdate(body.id, { is2FAenabled: false, twoFAkey: '' }).exec();
+        await User.findByIdAndUpdate(body.id, { is2FAenabled: false, twoFAsecret: '' }).exec();
         return res.status(200).send(null);
 
       } catch (error) {
@@ -240,7 +240,7 @@ class Controller {
     try {
 
       if (isVerified) {
-        await User.findByIdAndUpdate(body.id, { is2FAenabled: true, twoFAkey: secretKey }).exec();
+        await User.findByIdAndUpdate(body.id, { is2FAenabled: true, twoFAsecret: secretKey }).exec();
       }
       else {
         throw { message: 'This code is not a valid try again!' };
