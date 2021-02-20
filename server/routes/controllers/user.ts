@@ -3,6 +3,7 @@ import * as crypto from 'crypto';
 import * as bcrypt from 'bcryptjs';
 import * as speakeasy from 'speakeasy';
 const ms = require('ms');
+import * as _ from 'lodash';
 // custom
 import { UserImage, User, UserImageDocument } from '../../mongoose/models';
 import { handleErrors } from '../../middlewares';
@@ -216,7 +217,7 @@ class Controller {
     else {
       try {
 
-        await User.findByIdAndUpdate(body.id, { is2FAenabled: false, twoFAsecret: '' }).exec();
+        await User.findByIdAndUpdate(body.id, { is2FAenabled: false, tfaSecret: '' }).exec();
         return res.status(200).send(null);
 
       } catch (error) {
@@ -240,7 +241,7 @@ class Controller {
     try {
 
       if (isVerified) {
-        await User.findByIdAndUpdate(body.id, { is2FAenabled: true, twoFAsecret: secretKey }).exec();
+        await User.findByIdAndUpdate(body.id, { is2FAenabled: true, tfaSecret: secretKey }).exec();
       }
       else {
         throw { message: 'This code is not a valid try again!' };

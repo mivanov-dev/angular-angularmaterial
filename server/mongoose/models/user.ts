@@ -13,7 +13,7 @@ export interface UserDocument extends Document {
   resetPasswordExpires?: number;
   role: string;
   is2FAenabled?: boolean;
-  twoFAsecret?: string;
+  tfaSecret?: string;
   imageId?: any;
 }
 
@@ -52,7 +52,7 @@ export const userSchema = new Schema({
     default: false,
     required: false
   },
-  twoFAsecret: {
+  tfaSecret: {
     type: Types.String,
     default: '',
     required: false
@@ -81,7 +81,7 @@ userSchema.statics.authenticate = async function(body: { email: string, password
   const user: UserModel = this as any;
   const { email, password } = body;
   const result = await user.findOne({ email })
-    .select('email password role is2FAenabled')
+    .select('email password role is2FAenabled tfaSecret')
     .populate({
       path: 'imageId',
       model: UserImage,
