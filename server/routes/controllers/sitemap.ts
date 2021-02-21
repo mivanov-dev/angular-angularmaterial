@@ -2,8 +2,8 @@ import { Response, Request } from 'express';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import { createGzip } from 'zlib';
 // custom
-import { handleErrors } from '../../middlewares';
-import { config } from '../../config';
+import { handleErrors } from '@server/middlewares';
+import { config } from '@server/config';
 
 let sitemap: Buffer;
 

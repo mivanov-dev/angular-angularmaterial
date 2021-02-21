@@ -5,12 +5,12 @@ import * as speakeasy from 'speakeasy';
 const ms = require('ms');
 import * as _ from 'lodash';
 // custom
-import { UserImage, User, UserImageDocument } from '../../mongoose/models';
-import { handleErrors } from '../../middlewares';
-import { passportStrategy } from '../../passport';
-import { smtp } from '../../smtp';
-import { config } from '../../config';
-import { log } from '../../logger';
+import { UserImage, User, UserImageDocument } from '@server/mongoose/models';
+import { handleErrors } from '@server/middlewares';
+import { passportStrategy } from '@server/passport';
+import { smtp } from '@server/smtp';
+import { config } from '@server/config';
+import { log } from '@server/logger';
 
 class Controller {
 

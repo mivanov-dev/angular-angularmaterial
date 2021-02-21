@@ -4,8 +4,8 @@ import * as faker from 'faker';
 import * as bcrypt from 'bcryptjs';
 // custom
 import { User, UserImage, Comment, Counter } from './models';
-import { log } from '../logger';
-import { emojiRandom } from '../emojis';
+import { log } from '@server/logger';
+import { emojiRandom } from '@server/emojis';
 
 (mongoose as any).Promise = bluebird.Promise;
 mongoose.set('debug', false);
