@@ -25,7 +25,7 @@
               "qrcode"
             ],
             "customWebpackConfig": {
-              "path": "./webpack.config.client.ts",
+              "path": "./webpack/client/webpack.config.ts",
               "replaceDuplicatePlugins": true,
               "mergeStrategies": {
                 "externals": "replace"
@@ -55,7 +55,7 @@
           "configurations": {
             "production": {
               "customWebpackConfig": {
-                "path": "./webpack.config.client.ts",
+                "path": "./webpack/client/webpack.config.ts",
                 "replaceDuplicatePlugins": true,
                 "mergeStrategies": {
                   "externals": "replace"
@@ -159,8 +159,15 @@
           }
         },
         "server": {
-          "builder": "@angular-devkit/build-angular:server",
+          "builder": "@angular-builders/custom-webpack:server",
           "options": {
+            "customWebpackConfig": {
+              "path": "./webpack/server/webpack.config.ts",
+              "replaceDuplicatePlugins": true,
+              "mergeStrategies": {
+                "externals": "replace"
+              }
+            },
             "outputPath": "dist/server",
             "main": "server.ts",
             "tsConfig": "tsconfig.server.json",
