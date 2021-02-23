@@ -2,7 +2,7 @@ import * as webpack from 'webpack';
 import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: './.env', encoding: 'utf-8' });
+dotenv.config({ encoding: 'utf-8' });
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || '4200';
