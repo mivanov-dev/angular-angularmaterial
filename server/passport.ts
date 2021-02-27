@@ -1,7 +1,7 @@
 import * as passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 // custom
-import { User } from './mongoose/models';
+import { User, UserImage } from './mongoose/models';
 
 const localStrategy = new LocalStrategy(
   {
@@ -10,20 +10,28 @@ const localStrategy = new LocalStrategy(
     session: true,
     passReqToCallback: true
   },
-  (request, email, password, cb) => {
+  (req, email, password, cb) => {
 
     process.nextTick(async () => {
 
       try {
 
-        const user = await User.authenticate(request.body);
+        const user = await User.findOne({ email: req.body.email })
+          .select('email password role is2FAenabled tfaSecret')
+          .populate({
+            path: 'imageId',
+            model: UserImage,
+            select: 'url'
+          }).exec();
 
-        if (user == null) {
+        if (!user) {
+          return cb({ message: 'Wrong credentials!' }, false);
+        }
+        if (!await User.isComparedPasswords(req.body.password, user.password)) {
           return cb({ message: 'Wrong credentials!' }, false);
         }
 
         return cb(null, user);
-
       }
       catch (error) {
 
@@ -42,6 +50,7 @@ passport.deserializeUser(async (id: any, cb) => {
   try {
 
     const user = await User.findById(id).select('id').exec();
+
     if (user) {
       cb(null, user);
     }

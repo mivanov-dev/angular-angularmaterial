@@ -18,8 +18,7 @@ export interface UserDocument extends Document {
 }
 
 export interface UserModel extends Model<UserDocument> {
-  authenticate(body: { email: string, password: string }): Promise<any>;
-  isLoggedIn(id: string): Promise<any>;
+  isComparedPasswords(password: string, userPassword: string): Promise<boolean>;
 }
 
 export const userSchema = new Schema({
@@ -77,40 +76,8 @@ userSchema.index({ imageId: 1 }, { background: true });
 // Methods
 
 // Statics
-userSchema.statics.authenticate = async function(body: { email: string, password: string }): Promise<any> {
-  const user: UserModel = this as any;
-  const { email, password } = body;
-  const result = await user.findOne({ email })
-    .select('email password role is2FAenabled tfaSecret')
-    .populate({
-      path: 'imageId',
-      model: UserImage,
-      select: 'url'
-    })
-    .exec();
-
-  if (result && await bcrypt.compare(password, result.password)) {
-    return result;
-  }
-  else {
-    return null;
-  }
-
-};
-
-userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
-
-  const user: UserModel = this as any;
-
-  return user.findById(id)
-    .select('email role is2FAenabled')
-    .populate({
-      path: 'imageId',
-      model: UserImage,
-      select: 'url'
-    })
-    .exec();
-
+userSchema.statics.isComparedPasswords = async (password: string, userPassword: string): Promise<boolean> => {
+  return await bcrypt.compare(password, userPassword);
 };
 
 

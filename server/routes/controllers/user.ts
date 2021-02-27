@@ -86,7 +86,18 @@ class Controller {
 
       const body = req.user as { id: any };
       let expires: number = ms('1m');
-      const user = await User.isLoggedIn(body.id);
+      const user = await User.findById(body.id)
+        .select('email role is2FAenabled')
+        .populate({
+          path: 'imageId',
+          model: UserImage,
+          select: 'url'
+        })
+        .exec();
+
+      if (!user) {
+        return res.sendStatus(401);
+      }
 
       if (req?.session?.cookie.originalMaxAge) {
         req.session.cookie.originalMaxAge = ms('1m');
@@ -97,7 +108,7 @@ class Controller {
         email: user.email,
         image: user.imageId.url,
         role: user.role,
-        is2FAenabled: user.is2FAenabled,
+        is2FAenabled: user?.is2FAenabled,
         expires,
         redirect: false
       };
@@ -114,7 +125,13 @@ class Controller {
 
   static logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-    req.session.destroy((err) => log.error('session:destroy:', JSON.stringify(err)));
+    req.session.destroy((err) => {
+
+      if (err) {
+        log.error('session:destroy:', JSON.stringify(err));
+      }
+
+    });
     res.clearCookie('uid', { path: '/' });
     req.logout();
     res.status(200).send();
