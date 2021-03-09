@@ -5,7 +5,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '../../store';
@@ -25,7 +25,7 @@ export class CdkComponent implements OnInit, OnDestroy {
   batch = 10;
   isLoading = true;
   hasMore?: boolean;
-  comments?: Comment[];
+  comments$?: Observable<Comment[]>;
   @ViewChild('scroll', { read: CdkVirtualScrollViewport }) scroll: CdkVirtualScrollViewport | undefined;
   private onDestroy$: Subject<void> = new Subject<void>();
 
@@ -34,6 +34,9 @@ export class CdkComponent implements OnInit, OnDestroy {
 
     this.seoService.config({ title: 'CdkScroll', url: 'scroll/cdk' });
 
+    this.comments$ = this.store$.select(fromComment.selectAllComments)
+      .pipe(takeUntil(this.onDestroy$));
+
   }
 
   ngOnInit(): void {
@@ -41,7 +44,7 @@ export class CdkComponent implements OnInit, OnDestroy {
     this.addComments();
     this.subscribeHasMore();
     this.subscribeLoading();
-    this.subscribeComments();
+    // this.subscribeComments();
 
   }
 
@@ -102,12 +105,12 @@ export class CdkComponent implements OnInit, OnDestroy {
 
   }
 
-  private subscribeComments(): void {
+  // private subscribeComments(): void {
 
-    this.store$.select(fromComment.selectAllComments)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(res => this.comments = res);
+  //   this.store$.select(fromComment.selectAllComments)
+  //     .pipe(takeUntil(this.onDestroy$))
+  //     .subscribe(res => this.comments = res);
 
-  }
+  // }
 
 }

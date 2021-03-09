@@ -30,7 +30,8 @@ export class HeaderComponent implements OnDestroy {
 
   constructor(private store$: Store<fromApp.AppState>) {
 
-    this.user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$), map((res => res?.user)));
+    this.user$ = this.store$.select(fromAuth.selectLogin)
+      .pipe(takeUntil(this.onDestroy$), map((res => res?.user)));
 
   }
 

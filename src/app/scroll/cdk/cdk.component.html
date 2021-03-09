@@ -1,4 +1,4 @@
-<ng-container *ngIf="comments">
+<ng-container *ngIf="(comments$ | async) as comments">
 
   <cdk-virtual-scroll-viewport #scroll [itemSize]="100" (scrolledIndexChange)="onScroll($event)"
     class="scroller-vertical" style="height: 100vh; overflow-x: hidden;">
@@ -14,7 +14,7 @@
 
     <p *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">Loading...</p>
 
-    <div *ngIf="!this.hasMore && (this.hasMore !== undefined)" fxLayout="row" fxLayoutAlign="center center">
+    <div *ngIf="!hasMore && (hasMore !== undefined)" fxLayout="row" fxLayoutAlign="center center">
 
       <p>
         <span class="mirror-text">🚩</span>
