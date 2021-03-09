@@ -37,9 +37,9 @@ export class AuthGuard implements CanActivate, OnDestroy {
       .pipe(
         takeUntil(this.onDestroy$),
         take(1),
-        map((user) => {
+        map((res) => {
 
-          const isAuth = user !== null;
+          const isAuth = res?.user !== null;
 
           if (isAuth) {
             return true;

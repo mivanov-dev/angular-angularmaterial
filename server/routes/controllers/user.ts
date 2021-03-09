@@ -67,11 +67,11 @@ class Controller {
         }
         else if (req.body.remember) {
           req.session.cookie.originalMaxAge = ms('1m');
-          return res.status(200).send(json);
+          return res.status(200).send({ user: json });
         }
         else {
           req.session.cookie.expires = undefined;
-          return res.status(200).send(json);
+          return res.status(200).send({ user: json });
         }
 
       });
@@ -113,7 +113,7 @@ class Controller {
         redirect: false
       };
 
-      return res.status(200).send(json);
+      return res.status(200).send({ user: json });
 
     }
     catch (error) {

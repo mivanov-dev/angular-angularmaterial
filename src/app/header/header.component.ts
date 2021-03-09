@@ -4,7 +4,7 @@ import { Component, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/c
 import { MatSidenav } from '@angular/material/sidenav';
 // rxjs
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil, tap, take } from 'rxjs/operators';
 // ngrx
 import { Store } from '@ngrx/store';
 // custom
@@ -22,20 +22,17 @@ import * as AuthModels from '../user/auth/store/models';
 export class HeaderComponent implements OnDestroy {
 
 
-  // user$: Observable<AuthModels.Login | null>;
+  user$: Observable<AuthModels.LoggedUser | undefined>;
   userImage = '../../assets/user.png';
   adminImage = '../../assets/admin.png';
   @Input() sidenav?: MatSidenav;
   private onDestroy$: Subject<void> = new Subject<void>();
 
-  get user$(): Observable<AuthModels.Login | null> {
+  constructor(private store$: Store<fromApp.AppState>) {
 
-    return this.store$.select(fromAuth.selectLogin)
-      .pipe(takeUntil(this.onDestroy$));
+    this.user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$), map((res => res?.user)));
 
   }
-
-  constructor(private store$: Store<fromApp.AppState>) { }
 
   ngOnDestroy(): void {
 

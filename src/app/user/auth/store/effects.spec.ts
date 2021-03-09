@@ -53,12 +53,14 @@ describe('user-auth-effects', () => {
         remember: true
       };
       const res: AuthModels.Login = {
-        email: 'email',
-        expires: 1000,
-        redirect: true,
-        image: 'image',
-        role: 'user',
-        is2FAenabled: false
+        user: {
+          email: 'email',
+          expires: 1000,
+          redirect: true,
+          image: 'image',
+          role: 'user',
+          is2FAenabled: false
+        }
       };
 
       const startAction = AuthActions.loginStart({ data: req });

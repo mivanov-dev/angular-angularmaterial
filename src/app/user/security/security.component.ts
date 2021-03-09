@@ -9,7 +9,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 // rxjs
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '@app/store';
 import * as fromAuth from '../auth/store/reducer';
@@ -28,7 +28,7 @@ import { AlertService, SeoService } from 'src/app/shared/services';
 export class SecurityComponent implements OnInit, OnDestroy {
 
   setup?: QrModels.Setup | null;
-  user?: AuthModels.Login | null;
+  user?: AuthModels.LoggedUser | null;
   is2FAenabled?: boolean;
   isLoading = false;
   isDialogOpened = false;
@@ -91,7 +91,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       this.store$.dispatch(QrActions.setupStart({ data: { enable: false } }));
 
       if (this.user) {
-        this.store$.dispatch(AuthActions.updateLogin({ data: { ...this.user, is2FAenabled: false } }));
+        this.store$.dispatch(AuthActions.updateLogin({ data: { user: { ...this.user, is2FAenabled: false } } }));
       }
     }
 
@@ -113,7 +113,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
         if (res && this.user) {
           this.showAlertMessage(res.message, false);
-          this.store$.dispatch(AuthActions.updateLogin({ data: { ...this.user, is2FAenabled: true } }));
+          this.store$.dispatch(AuthActions.updateLogin({ data: { user: { ...this.user, is2FAenabled: true } } }));
         }
 
       });
@@ -128,7 +128,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
         if (res && this.user) {
           this.showAlertMessage(res, true);
-          this.store$.dispatch(AuthActions.updateLogin({ data: { ...this.user, is2FAenabled: false } }));
+          this.store$.dispatch(AuthActions.updateLogin({ data: { user: { ...this.user, is2FAenabled: false } } }));
         }
 
       });
@@ -141,9 +141,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(res => {
 
-        if (res) {
-          this.user = res;
-          this.is2FAenabled = res.is2FAenabled;
+        if (res?.user) {
+          this.user = res.user;
+          this.is2FAenabled = res.user.is2FAenabled;
         }
 
       });

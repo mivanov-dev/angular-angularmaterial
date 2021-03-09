@@ -36,12 +36,14 @@ describe('HeaderComponent', () => {
     error: null
   };
   const loggedUser: AuthModels.Login = {
-    email: 'email@email.com',
-    expires: 1000,
-    redirect: false,
-    image: '../../assets/user.png',
-    role: 'USER',
-    is2FAenabled: false
+    user: {
+      email: 'email@email.com',
+      expires: 1000,
+      redirect: false,
+      image: '../../assets/user.png',
+      role: 'USER',
+      is2FAenabled: false
+    }
   };
 
   beforeEach(() => {

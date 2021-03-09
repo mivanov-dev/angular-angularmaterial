@@ -11,13 +11,16 @@ export interface LoginStart {
   password: string;
   remember: boolean;
 }
-export interface Login {
+export interface LoggedUser {
   email: string;
   image: string;
   redirect: boolean;
   expires: number;
   role: string;
   is2FAenabled: boolean;
+}
+export interface Login {
+  user: LoggedUser;
 }
 export interface Error {
   error: any;

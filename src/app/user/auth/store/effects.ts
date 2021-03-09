@@ -25,7 +25,11 @@ export class AuthEffects {
       map(action => action.data),
       exhaustMap((data) => this.authService.login$(data)
         .pipe(
-          tap((res) => this.authService.setLogoutTimer(+res.expires)),
+          tap((res) => {
+            if (res.user) {
+              this.authService.setLogoutTimer(+res.user.expires);
+            }
+          }),
           map((res) => AuthActions.login({ data: res })),
           catchError((error) => of(AuthActions.loginError({ error: error.error.message })))
         )
@@ -37,7 +41,7 @@ export class AuthEffects {
       ofType(AuthActions.login),
       tap((res) => {
 
-        if (res.data.redirect) {
+        if (res.data.user) {
           this.router.navigate(['/']);
         }
 
@@ -74,7 +78,11 @@ export class AuthEffects {
       exhaustMap(
         () => this.authService.autoLogin$()
           .pipe(
-            tap((data) => this.authService.setLogoutTimer(+data.expires)),
+            tap((res) => {
+              if (res.user) {
+                this.authService.setLogoutTimer(+res.user.expires);
+              }
+            }),
             map((data) => AuthActions.login({ data })),
             catchError((error) => of(AuthActions.loginError({ error: '' })))
           )

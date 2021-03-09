@@ -1,6 +1,6 @@
 // angular
 import {
-  Component, ElementRef, Inject, NgModule,
+  Component, Inject, NgModule,
   OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import {
@@ -43,7 +43,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   codeElement?: HTMLInputElement;
-  user?: AuthModels.Login | null;
+  user?: AuthModels.LoggedUser;
   isLoading = false;
   secretKey = '';
   @ViewChild('formDirective', { static: false, read: FormGroupDirective }) formDirective?: FormGroupDirective;
@@ -57,11 +57,11 @@ export class QrDialogComponent implements OnInit, OnDestroy {
   }
 
   constructor(public dialogRef: MatDialogRef<QrDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
               private formBuilder: FormBuilder,
               private store$: Store<fromApp.AppState>,
               private logger: LoggerService,
-              @Inject(DOCUMENT) private document: Document, ) {
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              @Inject(DOCUMENT) private document: Document) {
 
     this.form = this.initForm();
 
@@ -119,7 +119,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
 
     this.store$.select(fromAuth.selectLogin)
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(res => this.user = res);
+      .subscribe(res => this.user = res?.user);
 
   }
 
@@ -174,7 +174,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
     this.store$.dispatch(QrActions.reset());
 
     if (this.user) {
-      this.store$.dispatch(AuthActions.updateLogin({ data: { ...this.user, is2FAenabled: false } }));
+      this.store$.dispatch(AuthActions.updateLogin({ data: { user: { ...this.user, is2FAenabled: false } } }));
     }
 
     this.dialogRef.close();

@@ -3,12 +3,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '@app/store';
 import * as fromAuth from '../auth/store/reducer';
-import * as AuthModels from '../auth/store/models';
 
 @Component({
   selector: 'app-profile',
@@ -17,17 +16,12 @@ import * as AuthModels from '../auth/store/models';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 
-  user$: Observable<AuthModels.Login | null>;
   userImage = '../../assets/user.png';
   adminImage = '../../assets/admin.png';
   private onDestroy$: Subject<void> = new Subject<void>();
+  user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$), map(res => res?.user));
 
-  constructor(private store$: Store<fromApp.AppState>) {
-
-    this.user$ = this.store$.select(fromAuth.selectLogin)
-      .pipe(takeUntil(this.onDestroy$));
-
-  }
+  constructor(private store$: Store<fromApp.AppState>) { }
 
   ngOnInit(): void { }
 
