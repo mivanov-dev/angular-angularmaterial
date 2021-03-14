@@ -48,6 +48,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
   secretKey = '';
   @ViewChild('formDirective', { static: false, read: FormGroupDirective }) formDirective?: FormGroupDirective;
   private onDestroy$: Subject<void> = new Subject<void>();
+  // @ts-ignore
   private isSubmitted = false;
 
   get codeControl(): AbstractControl | null {
@@ -198,4 +199,5 @@ export class QrDialogComponent implements OnInit, OnDestroy {
   ],
   declarations: [QrDialogComponent]
 })
+// @ts-ignore
 class QrDialogModule { }

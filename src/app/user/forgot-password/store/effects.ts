@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 // rxjs
 import { of } from 'rxjs';
-import { tap, map, exhaustMap, catchError } from 'rxjs/operators';
+import { map, exhaustMap, catchError } from 'rxjs/operators';
 // ngrx
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 // custom
@@ -31,7 +31,7 @@ export class ForgotPasswordEffects {
   forgotPassword$ = createEffect(() => this.actions$
     .pipe(
       ofType(ForgotPasswordActions.forgotPassword),
-      tap((res) => { })
+      // tap((res) => { })
     ), { dispatch: false });
 
 }

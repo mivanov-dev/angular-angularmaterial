@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 // rxjs
 import { of } from 'rxjs';
-import { tap, map, exhaustMap, catchError } from 'rxjs/operators';
+import { map, exhaustMap, catchError } from 'rxjs/operators';
 // ngrx
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 // custom
@@ -30,9 +30,7 @@ export class QrEffects {
     setup$ = createEffect(() => this.actions$
         .pipe(
             ofType(QrActions.setup),
-            tap((res) => {
-
-            })
+            // tap((res) => { })
         ), { dispatch: false });
 
     verifyStart$ = createEffect(() => this.actions$
@@ -50,9 +48,7 @@ export class QrEffects {
     verify$ = createEffect(() => this.actions$
         .pipe(
             ofType(QrActions.verify),
-            tap((res) => {
-
-            })
+            // tap((res) => { })
         ), { dispatch: false });
 
 }

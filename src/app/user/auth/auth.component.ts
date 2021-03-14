@@ -14,7 +14,7 @@ import { MatButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 // rxjs
 import { Subject } from 'rxjs';
-import { takeUntil, filter, tap } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
 import { Store } from '@ngrx/store';
 // custom
@@ -145,7 +145,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   ngOnDestroy(): void {
 
-    this.store$.dispatch(AuthActions.resetOnSuccessfulLogin());
+    // this.store$.dispatch(AuthActions.resetOnSuccessfulLogin());
     this.onDestroy$.next();
     this.onDestroy$.complete();
 

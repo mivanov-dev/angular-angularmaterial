@@ -41,7 +41,7 @@ export class AuthEffects {
       ofType(AuthActions.login),
       tap((res) => {
 
-        if (res.data.user) {
+        if (res.data.user.redirect) {
           this.router.navigate(['/']);
         }
 
@@ -66,7 +66,7 @@ export class AuthEffects {
   register$ = createEffect(() => this.actions$
     .pipe(
       ofType(AuthActions.register),
-      tap(() => { })
+      // tap(() => { })
     ), { dispatch: false });
 
   /**

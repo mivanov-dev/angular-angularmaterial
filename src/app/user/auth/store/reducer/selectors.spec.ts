@@ -4,7 +4,6 @@ import {
   selectLogin, selectRegister, selectError, selectLoading, selectAuthMode,
   getLogin, getRegister, getError, getLoading, getAuthMode
 } from './selectors';
-import * as models from '../models';
 
 const defaultState: State = {
   login: null,

@@ -99,6 +99,7 @@ Then(/^I should't see more loading indicator$/,
 AfterAll(() => {
 
   browser.driver
+    // tslint:disable:no-empty
     .wait(() => { }, 1000)
     .then(_ => (browser.driver.quit()));
 

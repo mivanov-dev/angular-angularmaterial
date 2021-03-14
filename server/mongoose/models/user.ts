@@ -2,7 +2,6 @@ import * as mongoose from 'mongoose';
 import { Model, Document, Schema } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 // custom
-import { UserImage } from './user-image';
 
 const Types = Schema.Types;
 

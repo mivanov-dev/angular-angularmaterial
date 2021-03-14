@@ -51,13 +51,13 @@
       "timeEnd",
       "trace"
     ],
-    // "no-empty": true,
-    // "no-invalid-template-strings": true,
+    "no-empty": true,
+    "no-invalid-template-strings": true,
     "no-inferrable-types": [
       true,
       "ignore-params"
     ],
-    // "no-unused-variable": true,
+    "no-unused-variable": true,
     "no-non-null-assertion": true,
     "no-redundant-jsdoc": true,
     "no-switch-case-fall-through": true,

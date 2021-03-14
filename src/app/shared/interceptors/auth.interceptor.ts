@@ -3,9 +3,9 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 // rxjs
 import { Subject, Observable } from 'rxjs';
-import { take, exhaustMap, takeUntil, filter } from 'rxjs/operators';
+import { take, exhaustMap, takeUntil } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
 import * as fromApp from '../../store';
 import * as fromAuth from '../../user/auth/store/reducer';

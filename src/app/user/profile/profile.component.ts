@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
@@ -14,7 +14,7 @@ import * as fromAuth from '../auth/store/reducer';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnDestroy {
 
   userImage = '../../assets/user.png';
   adminImage = '../../assets/admin.png';
@@ -22,8 +22,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$), map(res => res?.user));
 
   constructor(private store$: Store<fromApp.AppState>) { }
-
-  ngOnInit(): void { }
 
   ngOnDestroy(): void {
 

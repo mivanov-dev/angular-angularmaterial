@@ -1,19 +1,14 @@
 // angular
-import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { MatMenu, MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardAvatar, MatCardModule } from '@angular/material/card';
-import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 // ngrx
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { MemoizedSelector, Store } from '@ngrx/store';
-// rxjs
-import { of } from 'rxjs';
 // custom
 import { HeaderComponent } from './header.component';
-import * as fromApp from '../store';
 import * as fromAuth from '../user/auth/store/reducer';
 import * as AuthActions from '../user/auth/store/actions';
 import * as AuthModels from '../user/auth/store/models';
@@ -81,6 +76,7 @@ describe('HeaderComponent', () => {
 
     fixture.detectChanges();
 
+    // tslint:disable:no-empty
     spyOn(store, 'dispatch').and.callFake(() => { });
 
   });

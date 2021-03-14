@@ -4,7 +4,7 @@ import { Component, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/c
 import { MatSidenav } from '@angular/material/sidenav';
 // rxjs
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil, tap, take } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 // ngrx
 import { Store } from '@ngrx/store';
 // custom

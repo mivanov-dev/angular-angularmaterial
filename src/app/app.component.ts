@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit, OnDestroy, Inject, Renderer2 } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 // cdk
@@ -19,7 +19,7 @@ import { SwService } from './shared/services';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   isHandset$?: Observable<boolean>;
   isLoading = true;
 
@@ -47,15 +47,9 @@ export class AppComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnDestroy(): void { }
-
   prepareRoute(routerOutlet: RouterOutlet): boolean {
 
-    return (
-      routerOutlet &&
-      routerOutlet.activatedRouteData &&
-      routerOutlet.activatedRouteData.animation
-    );
+    return routerOutlet && routerOutlet.activatedRouteData && routerOutlet.activatedRouteData.animation;
 
   }
 
