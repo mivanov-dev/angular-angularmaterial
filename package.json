@@ -18,7 +18,7 @@
     "build:ssr": "ng build --prod && ng run angular-angularmaterial:server:production",
     "ssr": "npm run build:ssr && npm run serve:ssr",
     "prerender": "ng run angular-angularmaterial:prerender",
-    "preinstall": "npm i -g @angular/cli typescript tslint node-sass rxjs-tslint",
+    "preinstall": "npm i -g @angular/cli typescript tslint node-sass",
     "docker:deploy": "docker-compose -f \"docker-compose.yml\" up -d --build",
     "wmu": ".\\node_modules\\.bin\\webdriver-manager update"
   },
@@ -142,6 +142,7 @@
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-html-reporter": "^1.5.4",
     "karma-spec-reporter": "0.0.32",
+    "node-sass": "^5.0.0",
     "nodemailer": "^6.5.0",
     "protractor": "~7.0.0",
     "protractor-cucumber-framework": "~6.2.1",
