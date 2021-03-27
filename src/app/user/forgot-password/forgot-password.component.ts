@@ -52,15 +52,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
   }
 
   get userGroup(): AbstractControl | null {
-
     return this.form.get('user');
-
   }
 
   get emailControl(): AbstractControl | null {
-
     return this.form.get('user.email');
-
   }
 
   ngOnInit(): void {
@@ -89,7 +85,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
 
   private initForm(): FormGroup {
 
-    return this.formBuilder.group({
+    const fb = this.formBuilder.group({
       user: this.formBuilder.group({
         email: [null,
           {
@@ -99,6 +95,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
       })
     }, { updateOn: 'blur' });
 
+    return fb;
+
   }
 
   onSubmit(): void {
@@ -106,16 +104,15 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
     this.isSubmitted = true;
     const data = this.userGroup?.value;
 
-    if (!this.form.valid) { return; }
-
+    if (!this.form.valid) {
+      return;
+    }
     this.store$.dispatch(ForgotPasswordActions.forgotPasswordStart({ data }));
 
   }
 
   onTriggerClick(): void {
-
     this.submitButtonElement?.click();
-
   }
 
   private subscribeForgotPassword(): void {
@@ -125,9 +122,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
         takeUntil(this.onDestroy$),
         filter((res): res is ForgotPasswordModels.ForgotPassword => res !== null)
       )
-      .subscribe((res) => {
-        this.showAlertMessage(res.message, false);
-      });
+      .subscribe((res) => this.showAlertMessage(res.message, false));
 
   }
 
@@ -155,7 +150,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
     if (!this.isSubmitted && this.form.dirty) {
       return confirm('Are you shure ?');
     }
-
     return true;
 
   }
@@ -173,7 +167,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
     if (control) {
       return (control.hasError('required') || control.hasError('email')) && (control.dirty || control.touched);
     }
-
     return false;
 
   }
@@ -183,7 +176,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
     if (control) {
       return !(control.hasError('minLength') && control.hasError('maxLength')) && (control.dirty || control.touched);
     }
-
     return false;
 
   }
