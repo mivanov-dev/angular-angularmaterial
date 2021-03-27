@@ -56,21 +56,15 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
   }
 
   get userGroup(): AbstractControl | null {
-
     return this.form.get('user');
-
   }
 
   get passwordControl(): AbstractControl | null {
-
     return this.form.get('user.password');
-
   }
 
   get repeatedPasswordControl(): AbstractControl | null {
-
     return this.form.get('user.repeatedPassword');
-
   }
 
   ngOnInit(): void {
@@ -100,7 +94,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   private initForm(): FormGroup {
 
-    return this.formBuilder.group({
+    const fb = this.formBuilder.group({
       user: this.formBuilder.group({
         password: [null,
           {
@@ -114,6 +108,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
         ]
       })
     }, { updateOn: 'blur' });
+
+    return fb;
 
   }
 
@@ -134,9 +130,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
   }
 
   onTriggerClick(): void {
-
     this.submitButtonElement?.click();
-
   }
 
   private subscribeError(): void {
@@ -163,7 +157,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
     if (!this.isSubmitted && this.form.dirty) {
       return confirm('Are you shure ?');
     }
-
     return true;
 
   }
@@ -189,7 +182,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
     if (control) {
       return control.hasError('required') && (control.dirty || control.touched);
     }
-
     return false;
 
   }
@@ -200,7 +192,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
       return !(control.hasError('minLength') && control.hasError('maxLength'))
         && (control.dirty || control.touched);
     }
-
     return false;
 
   }
