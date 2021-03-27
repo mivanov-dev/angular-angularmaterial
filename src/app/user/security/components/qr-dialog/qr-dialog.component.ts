@@ -52,9 +52,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
   private isSubmitted = false;
 
   get codeControl(): AbstractControl | null {
-
     return this.form.get('code');
-
   }
 
   constructor(public dialogRef: MatDialogRef<QrDialogComponent>,
@@ -87,9 +85,11 @@ export class QrDialogComponent implements OnInit, OnDestroy {
 
   private initForm(): FormGroup {
 
-    return this.formBuilder.group({
+    const fb = this.formBuilder.group({
       code: [null],
     }, { updateOn: 'blur' });
+
+    return fb;
 
   }
 
@@ -100,7 +100,6 @@ export class QrDialogComponent implements OnInit, OnDestroy {
     if (this.form.invalid) {
       return;
     }
-
     const secretKey = this.secretKey;
     this.dialogRef.close({ secretKey, code: this.codeControl?.value });
 
@@ -111,7 +110,6 @@ export class QrDialogComponent implements OnInit, OnDestroy {
     if (control) {
       return control.hasError('required');
     }
-
     return false;
 
   }
@@ -156,6 +154,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
 
 
   private async drawQrImage(res: QrModels.Setup): Promise<void> {
+
     const qrBox = this.document.getElementById('qr-box') as HTMLElement;
 
     try {
@@ -177,7 +176,6 @@ export class QrDialogComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.store$.dispatch(AuthActions.updateLogin({ data: { user: { ...this.user, is2FAenabled: false } } }));
     }
-
     this.dialogRef.close();
 
   }
