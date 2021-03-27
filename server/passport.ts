@@ -1,5 +1,6 @@
 import * as passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import * as speakeasy from 'speakeasy';
 // custom
 import { User, UserImage } from './mongoose/models';
 
@@ -16,7 +17,9 @@ const localStrategy = new LocalStrategy(
 
       try {
 
-        const user = await User.findOne({ email: req.body.email })
+        const body = req.body as { email: string; password: string, otpCode?: string };
+
+        const user = await User.findOne({ email: body.email })
           .select('email password role is2FAenabled tfaSecret')
           .populate({
             path: 'imageId',
@@ -24,26 +27,44 @@ const localStrategy = new LocalStrategy(
             select: 'url'
           }).exec();
 
-        if (!user) {
-          return cb({ message: 'Wrong credentials!' }, false);
+        if (user && await User.isComparedPasswords(body.password, user.password)) {
+          if (user.is2FAenabled) {
+            if (body.otpCode) {
+              const isVerified = speakeasy.totp.verify({
+                secret: user.tfaSecret as string,
+                encoding: 'base32',
+                token: body.otpCode
+              });
+
+              if (!isVerified) {
+                throw { name: 'OtpError', message: 'Please enter a valid OTP code' };
+              }
+              else {
+                return cb(null, user);
+              }
+            }
+            else {
+              throw { name: 'OtpError', message: 'Please enter a OTP code' };
+            }
+          }
+          else {
+            return cb(null, user);
+          }
         }
-        if (!await User.isComparedPasswords(req.body.password, user.password)) {
+        else {
           return cb({ message: 'Wrong credentials!' }, false);
         }
 
-        return cb(null, user);
       }
       catch (error) {
-
         return cb(error);
-
       }
 
     });
 
   });
-passport.use('login', localStrategy);
 
+passport.use('login', localStrategy);
 passport.serializeUser((user: any, cb) => cb(null, user.id));
 passport.deserializeUser(async (id: any, cb) => {
 
@@ -56,9 +77,7 @@ passport.deserializeUser(async (id: any, cb) => {
     }
 
   } catch (error) {
-
     cb(error);
-
   }
 
 });

@@ -41,7 +41,7 @@ export class AuthEffects {
       ofType(AuthActions.login),
       tap((res) => {
 
-        if (res.data.user.redirect) {
+        if (res.data.user?.redirect) {
           this.router.navigate(['/']);
         }
 

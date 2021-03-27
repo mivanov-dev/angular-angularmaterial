@@ -68,6 +68,25 @@
               </mat-error>
             </mat-form-field>
 
+            <mat-form-field class="field"
+                            fxLayout="column"
+                            appearance="outline"
+                            *ngIf="isEnabledOtp">
+              <mat-label>OTP Code</mat-label>
+              <input matInput
+                     #otpCode
+                     type="text"
+                     formControlName="otpCode"
+                     autocomplete="off"
+                     required>
+              <mat-error *ngIf="hasPasswordControlErrorRequired(otpControl)">
+                Otp code is <strong>required</strong> !
+              </mat-error>
+              <mat-error *ngIf="hasControlErrorLengtgh(otpControl)">
+                Otp code thelength must be 6 characters!
+              </mat-error>
+            </mat-form-field>
+
             <app-caps-lock [field]="password"
                            (isActiveCapsLock)="$event"></app-caps-lock>
 

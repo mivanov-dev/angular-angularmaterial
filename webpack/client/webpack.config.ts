@@ -12,7 +12,7 @@ const seoHost = process.env.SEO_HOST || host;
 const seoPort = process.env.SEO_PORT || port;
 const seoProtocol = process.env.SEO_PROTOCOL || protocol;
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = true; // process.env.NODE_ENV === 'development';
 
 const plugins = [
   new webpack.DefinePlugin({

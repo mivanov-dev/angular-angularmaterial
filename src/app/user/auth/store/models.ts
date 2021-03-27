@@ -19,8 +19,12 @@ export interface LoggedUser {
   role: string;
   is2FAenabled: boolean;
 }
+export interface OtpLogin {
+  message: string;
+}
 export interface Login {
-  user: LoggedUser;
+  user?: LoggedUser;
+  otp?: OtpLogin;
 }
 export interface Error {
   error: any;

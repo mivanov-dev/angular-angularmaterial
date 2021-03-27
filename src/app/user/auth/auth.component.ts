@@ -82,6 +82,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
   };
   pondFiles: [] = [];
   hidePassword = true;
+  isEnabledOtp = false;
   submitButtonElement?: HTMLButtonElement;
   @ViewChild('alertContainer', { static: false, read: ViewContainerRef }) alertContainer?: ViewContainerRef;
   @ViewChild('emailInput', { static: false, read: MatInput }) emailInput?: MatInput;
@@ -108,21 +109,19 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
   }
 
   get userGroup(): AbstractControl | null {
-
     return this.form.get('user');
-
   }
 
   get emailControl(): AbstractControl | null {
-
     return this.form.get('user.email');
-
   }
 
   get passwordControl(): AbstractControl | null {
-
     return this.form.get('user.password');
+  }
 
+  get otpControl(): AbstractControl | null {
+    return this.form.get('user.otpCode');
   }
 
   ngOnInit(): void {
@@ -131,6 +130,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     this.subscribeError();
     this.subscribeAuthMode();
     this.subscribeLoading();
+    this.subscribeLogin();
 
   }
 
@@ -153,21 +153,16 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
 
   private initForm(): FormGroup {
 
-    return this.formBuilder.group({
+    const fg = this.formBuilder.group({
       user: this.formBuilder.group({
-        email: [null,
-          {
-            validators: this.userFormValidator.EMAIL_VALIDATOR
-          }
-        ],
-        password: [null,
-          {
-            validators: this.userFormValidator.PASSWORD_VALIDATOR
-          }
-        ],
+        email: [null, { validators: this.userFormValidator.EMAIL_VALIDATOR }],
+        password: [null, { validators: this.userFormValidator.PASSWORD_VALIDATOR }],
+        otpCode: [null],
         remember: [null]
       })
     }, { updateOn: 'blur' });
+
+    return fg;
 
   }
 
@@ -176,9 +171,15 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     this.resetForm();
 
     if (this.authMode === 'register') {
+      if (this.isEnabledOtp) {
+        (this.userGroup as FormGroup).removeControl('otpCode');
+      }
       (this.userGroup as FormGroup).removeControl('remember');
     }
     else {
+      if (this.isEnabledOtp) {
+        (this.userGroup as FormGroup).addControl('otpCode', new FormControl(null, { validators: this.userFormValidator.OTP_VALIDATOR }));
+      }
       (this.userGroup as FormGroup).addControl('remember', new FormControl(null));
     }
 
@@ -194,6 +195,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     this.emailInput?.focus({ preventScroll: true });
     this.hidePassword = true;
     this.isSubmitted = false;
+    this.isEnabledOtp = false;
 
   }
 
@@ -301,6 +303,19 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     this.store$.select(fromAuth.selectLoading)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(res => this.isLoading = res);
+
+  }
+
+  private subscribeLogin(): void {
+
+    this.store$.select(fromAuth.selectLogin)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => {
+        if (res?.otp) {
+          this.isEnabledOtp = true;
+          this.showAlertMessage(res.otp.message, false);
+        }
+      });
 
   }
 

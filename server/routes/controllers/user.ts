@@ -49,7 +49,18 @@ class Controller {
 
     passportStrategy.authenticate('login', (error, user, info): Response<any> | void => {
 
-      if (error) { return handleErrors(error, res); }
+      if (error) {
+        if (error.name === 'OtpError') {
+          return res.status(206).send({
+            otp: {
+              message: error.message
+            }
+          });
+        }
+        else {
+          return handleErrors(error, res);
+        }
+      }
 
       const json = {
         email: user.email,
