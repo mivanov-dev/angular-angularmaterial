@@ -51,7 +51,7 @@ export class AuthComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewIn
     allowImagePreview: true,
     imagePreviewTransparencyIndicator: '#f00',
     // FilePondPluginImageExifOrientation
-    allowImageExifOrientation: true,
+    // allowImageExifOrientation: true,
     // FilePondPluginFileValidateSize
     maxFileSize: '1MB',
     // FilePondPluginImageValidateSize
