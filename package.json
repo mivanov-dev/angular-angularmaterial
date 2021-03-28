@@ -18,7 +18,7 @@
     "build:ssr": "ng build --prod && ng run angular-angularmaterial:server:production",
     "ssr": "npm run build:ssr && npm run serve:ssr",
     "prerender": "ng run angular-angularmaterial:prerender",
-    "preinstall": "npm i -g @angular/cli typescript tslint node-sass",
+    "preinstall": "npm i -g @angular/cli typescript tslint sass",
     "docker:deploy": "docker-compose -f \"docker-compose.yml\" up -d --build",
     "wmu": ".\\node_modules\\.bin\\webdriver-manager update"
   },
