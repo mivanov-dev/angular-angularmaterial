@@ -2,47 +2,47 @@ $wallpaper-height: 180px;
 $avatar-size: 120px;
 
 .container {
-    min-height: 90vh;
+  height: 90vh;
 }
 .wallpaper {
-	position: relative;
-	height: $wallpaper-height;
-	width: 100%;
-	background-color: #3f51b5;
-	background-size: cover;
-	backface-visibility: hidden;
-	overflow: hidden;
-	border-top-right-radius: 5px;
+  position: relative;
+  height: $wallpaper-height;
+  width: 100%;
+  background-color: #3f51b5;
+  background-size: cover;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border-top-right-radius: 5px;
   border-top-left-radius: 5px;
 }
 .avatar {
-	position: relative;
-	top: -100px;
-	img {
-        width: $avatar-size;
-        height: $avatar-size;
-		border-radius: 50%;
-		border: 5px solid white;
-        background-color: white;
-        display: flex;
-	}
+  position: relative;
+  top: -100px;
+  img {
+    width: $avatar-size;
+    height: $avatar-size;
+    border-radius: 50%;
+    border: 5px solid white;
+    background-color: white;
+    display: flex;
+  }
 }
 .menu {
-	top: -$wallpaper-height;
-	position: relative;
-	button {
-		color: white;
-	}
+  top: -$wallpaper-height;
+  position: relative;
+  button {
+    color: white;
+  }
 }
 .username {
-	text-transform: uppercase;
-	margin-top: -70px;
+  text-transform: uppercase;
+  margin-top: -70px;
 }
 .location {
-	margin: 0;
-	text-transform: uppercase;
+  margin: 0;
+  text-transform: uppercase;
 }
 .social {
-	width: -webkit-fill-available;
-	margin-top: 50px;
+  width: -webkit-fill-available;
+  margin-top: 50px;
 }
