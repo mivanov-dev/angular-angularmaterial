@@ -67,7 +67,7 @@ class Controller {
         image: user.imageId.url,
         role: user.role,
         is2FAenabled: user.is2FAenabled,
-        expires: ms('1m'),
+        expires: ms('1d'),
         redirect: true
       };
 
@@ -77,7 +77,7 @@ class Controller {
           return handleErrors(err, res);
         }
         else if (req.body.remember) {
-          req.session.cookie.originalMaxAge = ms('1m');
+          req.session.cookie.originalMaxAge = ms('1d');
           return res.status(200).send({ user: json });
         }
         else {
@@ -96,7 +96,7 @@ class Controller {
     try {
 
       const body = req.user as { id: any };
-      let expires: number = ms('1m');
+      let expires: number = ms('1d');
       const user = await User.findById(body.id)
         .select('email role is2FAenabled')
         .populate({
@@ -111,7 +111,7 @@ class Controller {
       }
 
       if (req?.session?.cookie.originalMaxAge) {
-        req.session.cookie.originalMaxAge = ms('1m');
+        req.session.cookie.originalMaxAge = ms('1d');
         expires = (req.session.cookie.expires as Date).getTime() - Date.now();
       }
 

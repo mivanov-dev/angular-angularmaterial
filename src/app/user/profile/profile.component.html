@@ -24,8 +24,7 @@
         </div>
         <div class="avatar">
           <img [src]="user?.image"
-               [appImageFallback]="user?.role === 'user' ? userImage : adminImage"
-               alt="show user image when is logged in">
+               [appImageFallback]="user?.role === 'user' ? userImage : adminImage">
         </div>
         <h3 class="username">username</h3>
         <p class="location mat-small"
