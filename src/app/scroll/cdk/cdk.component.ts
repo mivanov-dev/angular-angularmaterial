@@ -44,7 +44,6 @@ export class CdkComponent implements OnInit, OnDestroy {
     this.addComments();
     this.subscribeHasMore();
     this.subscribeLoading();
-    // this.subscribeComments();
 
   }
 
@@ -104,13 +103,5 @@ export class CdkComponent implements OnInit, OnDestroy {
     }));
 
   }
-
-  // private subscribeComments(): void {
-
-  //   this.store$.select(fromComment.selectAllComments)
-  //     .pipe(takeUntil(this.onDestroy$))
-  //     .subscribe(res => this.comments = res);
-
-  // }
 
 }
