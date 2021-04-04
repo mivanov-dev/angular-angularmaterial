@@ -1,7 +1,7 @@
 // angular
 import {
   Component, Inject, NgModule,
-  OnDestroy, OnInit, ViewChild
+  OnDestroy, OnInit, Renderer2, ViewChild
 } from '@angular/core';
 import {
   AbstractControl, FormBuilder, FormGroup,
@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { CommonModule, DOCUMENT } from '@angular/common';
 // material
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -59,6 +59,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private store$: Store<fromApp.AppState>,
               private logger: LoggerService,
+              private renderer2: Renderer2,
               @Inject(MAT_DIALOG_DATA) public data: any,
               @Inject(DOCUMENT) private document: Document) {
 
@@ -80,6 +81,7 @@ export class QrDialogComponent implements OnInit, OnDestroy {
 
     this.onDestroy$.next();
     this.onDestroy$.complete();
+    this.data = null;
 
   }
 
@@ -159,10 +161,10 @@ export class QrDialogComponent implements OnInit, OnDestroy {
 
     try {
       const data = await qrcode.toString(res.url, { errorCorrectionLevel: 'H', type: 'svg', width: 150 });
-      const parser = new DOMParser().parseFromString(data, 'image/svg+xml');
-      qrBox.appendChild(
-        qrBox.ownerDocument.importNode(parser.documentElement, true)
-      );
+      // const parser = new DOMParser().parseFromString(data, 'image/svg+xml').documentElement;
+      // qrBox.ownerDocument.importNode(parser, true);
+      // qrBox.appendChild(parser);
+      qrBox.innerHTML = data;
     } catch (error) {
       this.logger.error(error);
     }
