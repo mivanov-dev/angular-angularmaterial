@@ -73,7 +73,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
       dialogConfig.data = { check };
       dialogConfig.width = '350px';
       dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
+      dialogConfig.autoFocus = false;
+      dialogConfig.role = 'dialog';
       const dialogRef = this.dialog.open(QrDialogComponent, dialogConfig);
 
       dialogRef.afterClosed()
