@@ -11,10 +11,8 @@ export class LoggerService {
 
   log(value: any, ...rest: any[]): void {
 
-    if (!environment.production) {
-      if (isPlatformBrowser(this.platformId)) {
-        console.log('LOG', value, ...rest);
-      }
+    if (!environment.production && isPlatformBrowser(this.platformId)) {
+      console.log(`%cLOG: ${value} ${rest}`, 'color: lime;');
     }
 
   }
@@ -22,7 +20,7 @@ export class LoggerService {
   error(value: any, ...rest: any[]): void {
 
     if (isPlatformBrowser(this.platformId)) {
-      console.error('ERROR', value, ...rest);
+      console.log(`%cERROR: ${value} ${rest}`, 'color: red;');
     }
 
   }
@@ -30,7 +28,7 @@ export class LoggerService {
   warn(value: any, ...rest: any[]): void {
 
     if (isPlatformBrowser(this.platformId)) {
-      console.warn('WARN', value, ...rest);
+      console.log(`%cWARN: ${value} ${rest}`, 'color: orangered;');
     }
 
   }
