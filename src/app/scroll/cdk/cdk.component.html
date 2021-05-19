@@ -1,27 +1,34 @@
-<ng-container *ngIf="comments$ | async as comments">
+<ng-container *ngIf="(comments$ | async) as comments">
 
-  <cdk-virtual-scroll-viewport [itemSize]="100"
+  <cdk-virtual-scroll-viewport #scroll
+                               [itemSize]="100"
                                (scrolledIndexChange)="onScroll($event)"
                                class="scroller-vertical"
                                style="height: 100vh; overflow-x: hidden;">
 
-    <div *cdkVirtualFor="let item of comments; let i = index; trackBy: trackByIdx">
+    <div *cdkVirtualFor="let item of comments; let i = index; trackBy: trackByIdx"
+         style="font-size: clamp(0.8rem, 0.5517rem + 1.1034vw, 1rem);">
 
-      <mat-card class="animate__animated animate__fadeInRight"
-                style="padding: 10px; margin: 10px; height: 100px;">
+      <mat-card style="padding: 10px; margin: 10px; height: 100px;">
         <h2>{{item.seq}}.{{ item.emoji }} {{ item.author }}</h2>
         <p>{{ item.description }}</p>
       </mat-card>
 
     </div>
 
-    <div *ngIf="!this.hasMore && (this.hasMore !== undefined)"
-         style="display: flex; justify-content: center;">
+    <p *ngIf="isLoading"
+       fxLayout="row"
+       fxLayoutAlign="center center">Loading...</p>
 
-      <h1>
-        <span class="mirror-text">📢</span>
-        <span>END📢</span>
-      </h1>
+    <div *ngIf="!hasMore && (hasMore !== undefined)"
+         fxLayout="row"
+         fxLayoutAlign="center center">
+
+      <p>
+        <span class="mirror-text">🚩</span>
+        NO MORE
+        <span>🚩</span>
+      </p>
 
     </div>
 

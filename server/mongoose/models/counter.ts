@@ -8,7 +8,7 @@ export interface CounterDocument extends Document {
   seq: number;
 }
 
-export interface CounterModel extends Model<any> { }
+export interface CounterModel extends Model<CounterDocument> { }
 
 export const counterSchema = new Schema({
   _id: {
@@ -26,4 +26,4 @@ export const counterSchema = new Schema({
   toObject: { virtuals: true },
 });
 
-export const Counter = mongoose.model<CounterDocument, CounterModel>('Counter', counterSchema);
+export const Counter = mongoose.model<CounterDocument>('Counter', counterSchema) as CounterModel;

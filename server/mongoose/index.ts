@@ -1,10 +1,11 @@
 import * as mongoose from 'mongoose';
 import * as bluebird from 'bluebird';
 import * as faker from 'faker';
+import * as bcrypt from 'bcryptjs';
 // custom
 import { User, UserImage, Comment, Counter } from './models';
-import { log } from '../logger';
-import { emojiRandom } from '../emojis';
+import { log } from '@server/logger';
+import { emojiRandom } from '@server/emojis';
 
 (mongoose as any).Promise = bluebird.Promise;
 mongoose.set('debug', false);
@@ -15,7 +16,7 @@ export function database(uri: string, options: object): void {
   connection.on('open', async () => {
 
     await connection
-      .dropDatabase((error) => console.log(`mongoose:drop database: ${JSON.stringify(error)}`));
+      .dropDatabase((error) => log.info(`mongoose:drop database: ${JSON.stringify(error)}`));
 
     await dropModels();
 
@@ -94,10 +95,11 @@ async function createAdmin(): Promise<void> {
 
     const userImage = await new UserImage().save();
 
+    const password = bcrypt.hashSync('1234567890', 10);
+
     await User.create({
       email: 'admin@admin.com',
-      // 'password00'
-      password: '$2a$10$eHN.g9xaAhAMhvRTx/doreHr7SdbOJfxhyE7Tg.SGHQHym4kaKQve',
+      password,
       role: 'admin',
       imageId: userImage._id
     });

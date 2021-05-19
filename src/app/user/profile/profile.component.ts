@@ -1,35 +1,27 @@
 // angular
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 // ngrx
 import { Store } from '@ngrx/store';
 // rxjs
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 // custom
-import * as fromApp from '../../store';
+import * as fromApp from '@app/store';
 import * as fromAuth from '../auth/store/reducer';
-import * as AuthModels from '../auth/store/models';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnDestroy {
 
-
-  user$: Observable<AuthModels.Login | null>;
   userImage = '../../assets/user.png';
   adminImage = '../../assets/admin.png';
   private onDestroy$: Subject<void> = new Subject<void>();
+  user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$), map(res => res?.user));
 
-  constructor(private store$: Store<fromApp.AppState>) {
-
-    this.user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$));
-
-  }
-
-  ngOnInit(): void { }
+  constructor(private store$: Store<fromApp.AppState>) { }
 
   ngOnDestroy(): void {
 

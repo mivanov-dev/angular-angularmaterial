@@ -1,7 +1,6 @@
 // angular
-import { Injectable, PLATFORM_ID, Inject, NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { isPlatformBrowser } from '@angular/common';
 // rxjs
 import { Observable } from 'rxjs';
 // ngrx
@@ -25,8 +24,7 @@ export class AuthService {
   constructor(
     private store$: Store<fromApp.AppState>,
     private http: HttpClient,
-    private zone: NgZone,
-    @Inject(PLATFORM_ID) private platformId: any) { }
+    private zone: NgZone) { }
 
   login$(data: AuthModels.LoginStart): Observable<AuthModels.Login> {
 
@@ -56,30 +54,26 @@ export class AuthService {
 
   setLogoutTimer(expirationDate: number): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.zone.runOutsideAngular(() => {
+    this.zone.runOutsideAngular(() => {
 
-        this.expirationTimer = setTimeout(() => {
+      this.expirationTimer = setTimeout(() => {
 
-          this.zone.run(() => this.store$.dispatch(AuthActions.logout()));
+        this.zone.run(() => this.store$.dispatch(AuthActions.logout()));
 
-        }, expirationDate);
+      }, expirationDate);
 
-      });
-    }
+    });
 
   }
 
   clearLogoutTimer(): void {
 
-    if (this.expirationTimer && isPlatformBrowser(this.platformId)) {
-      this.zone.runOutsideAngular(() => {
+    this.zone.runOutsideAngular(() => {
 
-        clearTimeout(this.expirationTimer);
-        this.expirationTimer = null;
+      clearTimeout(this.expirationTimer);
+      this.expirationTimer = null;
 
-      });
-    }
+    });
 
   }
 

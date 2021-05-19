@@ -4,7 +4,7 @@ import * as SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { RedisOptions } from 'ioredis';
 const ms = require('ms');
 
-dotenv.config({ path: './.env', encoding: 'utf-8' });
+dotenv.config({ encoding: 'utf-8' });
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 4200;

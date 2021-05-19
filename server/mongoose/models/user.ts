@@ -2,7 +2,6 @@ import * as mongoose from 'mongoose';
 import { Model, Document, Schema } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 // custom
-import { UserImage } from './user-image';
 
 const Types = Schema.Types;
 
@@ -12,12 +11,13 @@ export interface UserDocument extends Document {
   resetPasswordToken?: string;
   resetPasswordExpires?: number;
   role: string;
+  is2FAenabled?: boolean;
+  tfaSecret?: string;
   imageId?: any;
 }
 
-export interface UserModel extends Model<any> {
-  authenticate(body: { email: string, password: string }): Promise<any>;
-  isLoggedIn(id: string): Promise<any>;
+export interface UserModel extends Model<UserDocument> {
+  isComparedPasswords(password: string, userPassword: string): Promise<boolean>;
 }
 
 export const userSchema = new Schema({
@@ -45,6 +45,16 @@ export const userSchema = new Schema({
     default: 'user',
     required: true
   },
+  is2FAenabled: {
+    type: Types.Boolean,
+    default: false,
+    required: false
+  },
+  tfaSecret: {
+    type: Types.String,
+    default: '',
+    required: false
+  },
   imageId: {
     type: Types.ObjectId,
     ref: 'UserImage'
@@ -65,42 +75,10 @@ userSchema.index({ imageId: 1 }, { background: true });
 // Methods
 
 // Statics
-userSchema.statics.authenticate = async function(body: { email: string, password: string }): Promise<any> {
-  const user: any = this;
-  const { email, password } = body;
-  const result = await user.findOne({ email })
-    .select('email password role')
-    .populate({
-      path: 'imageId',
-      model: UserImage,
-      select: 'url'
-    })
-    .exec();
-
-  if (result && await bcrypt.compareSync(password, result.password)) {
-    return result;
-  }
-  else {
-    return null;
-  }
-
-};
-
-userSchema.statics.isLoggedIn = function(id: string): Promise<any> {
-
-  const user: any = this;
-
-  return user.findById(id)
-    .select('email role')
-    .populate({
-      path: 'imageId',
-      model: UserImage,
-      select: 'url'
-    })
-    .exec();
-
+userSchema.statics.isComparedPasswords = async (password: string, userPassword: string): Promise<boolean> => {
+  return await bcrypt.compare(password, userPassword);
 };
 
 
 
-export const User = mongoose.model<UserDocument, UserModel>('User', userSchema);
+export const User = mongoose.model<UserDocument>('User', userSchema) as UserModel;

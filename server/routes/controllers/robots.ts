@@ -2,8 +2,8 @@ import { NextFunction, Response, Request } from 'express';
 // @ts-ignore
 import robotstxt from 'generate-robotstxt';
 // custom
-import { handleErrors } from '../../middlewares';
-import { config } from '../../config';
+import { handleErrors } from '@server/middlewares';
+import { config } from '@server/config';
 
 let robotsTxt: any;
 

@@ -8,7 +8,7 @@ import { filter } from 'rxjs/operators';
 // ngrx
 import { Store } from '@ngrx/store';
 // custom
-import { SeoService, SwService } from './shared/services';
+import { LoggerService, SeoService, SwService } from './shared/services';
 import * as fromApp from '../app/store';
 import * as fromAuth from './user/auth/store/reducer/';
 import * as AuthActions from './user/auth/store/actions';
@@ -16,7 +16,8 @@ import { TokenResolver } from './user/reset-password/resolvers';
 import { AuthInterceptor, HttpErrorInterceptor, ErrorInterceptor } from './shared/interceptors';
 import { DirtyCheckGuard } from './shared/guards';
 
-export const appInit = (store: Store<fromApp.AppState>) => {
+export const appInit = (store: Store<fromApp.AppState>, logger: LoggerService) => {
+  logger.log('APP_INITIALIZER');
 
   return () => new Promise((resolve: any) => {
 
@@ -43,7 +44,7 @@ export const appInit = (store: Store<fromApp.AppState>) => {
     {
       provide: APP_INITIALIZER,
       useFactory: appInit,
-      deps: [Store],
+      deps: [Store, LoggerService],
       multi: true
     },
     {

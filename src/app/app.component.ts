@@ -1,7 +1,7 @@
 // angular
-import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, Renderer2 } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 // cdk
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 // rxjs
@@ -19,7 +19,7 @@ import { SwService } from './shared/services';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   isHandset$?: Observable<boolean>;
   isLoading = true;
 
@@ -28,7 +28,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private store$: Store<fromApp.AppState>,
     private renderer2: Renderer2,
     private sw: SwService,
-    @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
@@ -38,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.drawParticle('particles-js', '../assets/particlesjs-config.json');
 
-    this.onLoading();
+    this.subscribeLoading();
 
     this.isHandset$ = this.breakpointObserver
       .observe(Breakpoints.Handset)
@@ -48,30 +47,22 @@ export class AppComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnDestroy(): void { }
-
   prepareRoute(routerOutlet: RouterOutlet): boolean {
 
-    return (
-      routerOutlet &&
-      routerOutlet.activatedRouteData &&
-      routerOutlet.activatedRouteData.animation
-    );
+    return routerOutlet && routerOutlet.activatedRouteData && routerOutlet.activatedRouteData.animation;
 
   }
 
-  private onLoading(): void {
+  private subscribeLoading(): void {
     this.store$.select(fromAuth.selectLoading)
       .pipe(
         filter(res => !res)
       )
       .subscribe((res) => {
 
-        if (isPlatformBrowser(this.platformId)) {
-          this.isLoading = res;
-          const element = this.document.getElementById('loading-box');
-          this.renderer2.setStyle(element, 'display', 'none');
-        }
+        this.isLoading = res;
+        const element = this.document.getElementById('loading-box');
+        this.renderer2.setStyle(element, 'display', 'none');
 
       });
 
@@ -79,15 +70,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async drawParticle(id: string, config: string): Promise<void> {
 
-    if (isPlatformBrowser(this.platformId)) {
-      const particle = await import(
-        /* webpackMode: "lazy" */
-        'tsparticles'
-      ).then(({ tsParticles }) => tsParticles);
+    const particle = await import(
+      /* webpackMode: "lazy" */
+      'tsparticles'
+    ).then(({ tsParticles }) => tsParticles);
 
-      particle.loadJSON(id, config);
-    }
+    particle.loadJSON(id, config);
 
   }
+
 
 }

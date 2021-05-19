@@ -1,14 +1,16 @@
 import { NextFunction, Response, Request } from 'express';
 import * as crypto from 'crypto';
-import { validationResult } from 'express-validator';
 import * as bcrypt from 'bcryptjs';
+import * as speakeasy from 'speakeasy';
 const ms = require('ms');
+import * as _ from 'lodash';
 // custom
-import { UserImage, User, UserImageDocument } from '../../mongoose/models';
-import { handleErrors } from '../../middlewares';
-import { passportStrategy } from '../../passport';
-import { smtp } from '../../smtp';
-import { config } from '../../config';
+import { UserImage, User, UserImageDocument } from '@server/mongoose/models';
+import { handleErrors } from '@server/middlewares';
+import { passportStrategy } from '@server/passport';
+import { smtp } from '@server/smtp';
+import { config } from '@server/config';
+import { log } from '@server/logger';
 
 class Controller {
 
@@ -18,13 +20,9 @@ class Controller {
 
       let { password } = req.body;
       const { email } = req.body;
-      const errors: any = validationResult(req);
       let userImage: UserImageDocument;
 
-      if (!errors.isEmpty()) {
-        throw { message: errors.errors[0].msg };
-      }
-      else if (await User.findOne({ email })) {
+      if (await User.findOne({ email })) {
         throw { message: 'This email already exists!' };
       }
       else if (new Object(req.body).hasOwnProperty('file')) {
@@ -35,14 +33,12 @@ class Controller {
       }
 
       password = await bcrypt.hashSync(password, 10);
-
-      await User.create({ email, password, imageId: userImage._id });
-
+      await new User({ email, password, imageId: userImage._id }).save();
       res.status(200).send({ message: 'Registration successful!' });
 
     }
     catch (error) {
-      console.log(error);
+
       handleErrors(error, res);
 
     }
@@ -51,37 +47,42 @@ class Controller {
 
   static login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-    const errors: any = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      throw { message: errors.errors[0].msg };
-    }
-
     passportStrategy.authenticate('login', (error, user, info): Response<any> | void => {
 
-      if (error) { return handleErrors(error, res); }
-      if (info !== undefined) { return res.status(400).send(info); }
+      if (error) {
+        if (error.name === 'OtpError') {
+          return res.status(206).send({
+            otp: {
+              message: error.message
+            }
+          });
+        }
+        else {
+          return handleErrors(error, res);
+        }
+      }
 
       const json = {
         email: user.email,
         image: user.imageId.url,
         role: user.role,
-        expires: ms('1m'),
+        is2FAenabled: user.is2FAenabled,
+        expires: ms('1d'),
         redirect: true
       };
 
       req.login(user, (err): Response<any> | void => {
 
-        if (error) {
-          return handleErrors(error, res);
+        if (err) {
+          return handleErrors(err, res);
         }
         else if (req.body.remember) {
-          req.session.cookie.originalMaxAge = ms('1m');
-          return res.status(200).send(json);
+          req.session.cookie.originalMaxAge = ms('1d');
+          return res.status(200).send({ user: json });
         }
         else {
           req.session.cookie.expires = undefined;
-          return res.status(200).send(json);
+          return res.status(200).send({ user: json });
         }
 
       });
@@ -95,23 +96,35 @@ class Controller {
     try {
 
       const body = req.user as { id: any };
-      let expires: number = ms('1m');
-      const user = await User.isLoggedIn(body.id);
+      let expires: number = ms('1d');
+      const user = await User.findById(body.id)
+        .select('email role is2FAenabled')
+        .populate({
+          path: 'imageId',
+          model: UserImage,
+          select: 'url'
+        })
+        .exec();
+
+      if (!user) {
+        return res.sendStatus(401);
+      }
 
       if (req?.session?.cookie.originalMaxAge) {
-        req.session.cookie.originalMaxAge = ms('1m');
-
+        req.session.cookie.originalMaxAge = ms('1d');
         expires = (req.session.cookie.expires as Date).getTime() - Date.now();
       }
 
-      return res.status(200)
-        .send({
-          email: user.email,
-          image: user.imageId.url,
-          role: user.role,
-          expires,
-          redirect: false
-        });
+      const json = {
+        email: user.email,
+        image: user.imageId.url,
+        role: user.role,
+        is2FAenabled: user?.is2FAenabled,
+        expires,
+        redirect: false
+      };
+
+      return res.status(200).send({ user: json });
 
     }
     catch (error) {
@@ -123,8 +136,15 @@ class Controller {
 
   static logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
+    req.session.destroy((err) => {
+
+      if (err) {
+        log.error('session:destroy:', JSON.stringify(err));
+      }
+
+    });
+    res.clearCookie('uid', { path: '/' });
     req.logout();
-    res.clearCookie('uid');
     res.status(200).send();
 
   }
@@ -136,19 +156,11 @@ class Controller {
     try {
 
       const { email } = req.body;
-      const errors: any = validationResult(req);
 
-      if (!errors.isEmpty()) {
-        throw { message: errors.errors[0].msg };
-      }
-
-      let user = await User.findOne({ email });
-
-      if (user) {
-        user.resetPasswordToken = crypto.randomBytes(16).toString('hex');
-        user.resetPasswordExpires = Date.now() + ms('1m');
-        user = await user.save();
-      }
+      const user = await User.findOneAndUpdate({ email }, {
+        resetPasswordToken: crypto.randomBytes(16).toString('hex'),
+        resetPasswordExpires: Date.now() + ms('1h')
+      }).exec();
 
       res.status(200).send({ message: `If your email exists in our database, you will receive a reset link shortly!` });
 
@@ -178,34 +190,94 @@ class Controller {
     try {
 
       const { token, password, repeatedPassword } = req.body;
-      const errors: any = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        throw { message: errors.errors[0].msg };
-      }
 
       if (password.localeCompare(repeatedPassword) !== 0) {
         throw { message: 'New password and repeated password are not equals!' };
       }
 
-      const user = await User.findOne({
+      const user = await User.findOneAndUpdate({
         resetPasswordToken: token,
         resetPasswordExpires: { $gt: Date.now() }
-      })
-        .exec();
+      }, {
+        password: await bcrypt.hashSync(password, 10),
+        resetPasswordToken: undefined,
+        resetPasswordExpires: undefined
+      }).exec();
 
       if (!user) {
         throw { message: 'Reset password token is invalid or has expired!' };
       }
 
-      user.password = await bcrypt.hashSync(password, 10);
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-      user.save();
+      return res.sendStatus(200);
 
-      return res.status(200).end();
     }
     catch (error) {
+
+      handleErrors(error, res);
+
+    }
+
+  }
+
+  static qrSetup = async (req: Request, res: Response, next: NextFunction): Promise<void | Response<any>> => {
+
+    const body = req.user as { id: any };
+    let { enable }: any = req.query as { enable: string };
+    enable = JSON.parse(enable);
+
+    if (enable) {
+
+      const { base32, otpauth_url } = speakeasy.generateSecret({ length: 20 });
+
+      try {
+
+        if (otpauth_url) {
+          return res.send({ secretKey: base32, url: otpauth_url });
+        }
+
+      } catch (error) {
+
+        handleErrors(error, res);
+
+      }
+
+    }
+    else {
+      try {
+
+        await User.findByIdAndUpdate(body.id, { is2FAenabled: false, tfaSecret: '' }).exec();
+        return res.status(200).send(null);
+
+      } catch (error) {
+
+        handleErrors(error, res);
+
+      }
+    }
+  }
+
+  static qrVerify = async (req: Request, res: Response, next: NextFunction): Promise<void | Response<any>> => {
+
+    const body = req.user as { id: any };
+    const { secretKey, code } = req.body;
+    const isVerified = speakeasy.totp.verify({
+      secret: secretKey,
+      encoding: 'base32',
+      token: code
+    });
+
+    try {
+
+      if (isVerified) {
+        await User.findByIdAndUpdate(body.id, { is2FAenabled: true, tfaSecret: secretKey }).exec();
+      }
+      else {
+        throw { message: 'This code is not a valid try again!' };
+      }
+
+      return res.status(200).send({ message: 'Your 2FA is enabled!' });
+
+    } catch (error) {
 
       handleErrors(error, res);
 

@@ -1,0 +1,48 @@
+<div fxLayout="column"
+     fxLayoutAlign="center center">
+  <span class="mat-body">Scan QR code</span>
+  <div id="qr-box"></div>
+  <span class="mat-body">or copy secret key</span>
+
+  <input type="hidden"
+         [(ngModel)]="secretKey">
+
+  <button [cdkCopyToClipboard]="secretKey"
+          mat-icon-button
+          aria-label="copy">
+    <mat-icon>content_copy</mat-icon>
+  </button>
+
+</div>
+
+<mat-dialog-content [formGroup]="form"
+                    #formDirective="ngForm"
+                    fxLayout="column"
+                    fxLayoutAlign="space-between none">
+
+  <mat-form-field class="field"
+                  appearance="outline">
+    <mat-label>One time code</mat-label>
+    <input #codeInput
+           matInput
+           type="text"
+           formControlName="code"
+           required>
+    <mat-error *ngIf="hasCodeControlErrorRequired(codeControl)">
+      Code is <strong>required</strong> !
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row"
+                    fxLayoutAlign="space-around center">
+  <button mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="isLoading"
+          (click)="onSubmit()">
+    Verify
+  </button>
+  <button mat-raised-button
+          color="warn"
+          (click)="onClose()">Cancel</button>
+</mat-dialog-actions>

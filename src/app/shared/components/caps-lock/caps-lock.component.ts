@@ -3,14 +3,12 @@ import {
   Component, Input,
   EventEmitter, Output,
   AfterViewInit, ChangeDetectionStrategy,
-  Inject, PLATFORM_ID, NgZone, OnDestroy
+  NgZone, OnDestroy
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 // rxjs
 import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 // custom
-import { LoggerService } from '../../../shared/services';
 
 @Component({
   selector: 'app-caps-lock',
@@ -26,13 +24,10 @@ export class CapsLockComponent implements AfterViewInit, OnDestroy {
   @Output() isActiveCapsLock: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   private onDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private logger: LoggerService,
-              private zone: NgZone,
-              @Inject(PLATFORM_ID) private platformId: any) { }
+  constructor(private zone: NgZone) { }
 
   ngAfterViewInit(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
       this.zone.runOutsideAngular(() => {
 
         let prev = '';
@@ -86,7 +81,6 @@ export class CapsLockComponent implements AfterViewInit, OnDestroy {
         }
 
       });
-    }
 
   }
 

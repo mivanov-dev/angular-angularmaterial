@@ -1,22 +1,22 @@
 // angular
 import {
-  Component, OnInit, ViewChild, ElementRef,
+  Component, OnInit, ViewChild,
   OnDestroy, Inject,
-  PLATFORM_ID, ViewContainerRef, AfterViewInit, ChangeDetectorRef
+  ViewContainerRef, AfterViewInit, ChangeDetectorRef
 } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
 // rxjs
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
-import { DirtyCheck } from '../../shared/guards';
-import { SeoService, AlertService } from '../../shared/services';
-import * as fromApp from '../../store';
+import { DirtyCheck } from '@app/shared/guards';
+import { SeoService, AlertService } from '@app/shared/services';
+import * as fromApp from '@app/store';
 import * as fromForgotPassword from './store/reducer';
 import * as ForgotPasswordActions from './store/actions';
 import * as ForgotPasswordModels from './store/models';
@@ -30,12 +30,12 @@ import { UserFormValidatorToken, UserFormValidator } from '../validators';
 export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewInit {
 
   form: FormGroup;
-  isLoading$: Observable<boolean>;
+  isLoading = false;
   emailElement?: HTMLElement;
   submitButtonElement?: HTMLElement;
   @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
-  @ViewChild('email', { static: true }) email?: ElementRef;
-  @ViewChild('submitButton', { static: true }) submitButton?: MatButton;
+  @ViewChild('emailInput', { static: false, read: MatInput }) emailInput?: MatInput;
+  @ViewChild('submitButton', { static: false, read: MatButton }) submitButton?: MatButton;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
 
@@ -44,42 +44,34 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
               private seoService: SeoService,
               private alertService: AlertService,
               private cdr: ChangeDetectorRef,
-              @Inject(PLATFORM_ID) private platformId: any,
               @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Forgot password', url: 'user/forgot-password' });
-    this.isLoading$ = this.store$.select(fromForgotPassword.selectLoading).pipe(takeUntil(this.onDestroy$));
     this.form = this.initForm();
 
   }
 
   get userGroup(): AbstractControl | null {
-
     return this.form.get('user');
-
   }
 
   get emailControl(): AbstractControl | null {
-
     return this.form.get('user.email');
-
   }
 
   ngOnInit(): void {
 
-    this.getSuccessfulMessage();
-    this.getUnsuccessfulMessage();
+    this.subscribeForgotPassword();
+    this.subscribeError();
+    this.subscribeLoading();
 
   }
   ngAfterViewInit(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.emailElement = this.email?.nativeElement as HTMLElement;
-      this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
-      // https://stackoverflow.com/a/54794081
-      this.emailElement.focus({ preventScroll: true });
-      this.cdr.detectChanges();
-    }
+    this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
+    // https://stackoverflow.com/a/54794081
+    this.emailInput?.focus({ preventScroll: true });
+    this.cdr.detectChanges();
 
   }
 
@@ -93,7 +85,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
 
   private initForm(): FormGroup {
 
-    return this.formBuilder.group({
+    const fb = this.formBuilder.group({
       user: this.formBuilder.group({
         email: [null,
           {
@@ -103,6 +95,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
       })
     }, { updateOn: 'blur' });
 
+    return fb;
+
   }
 
   onSubmit(): void {
@@ -110,32 +104,29 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
     this.isSubmitted = true;
     const data = this.userGroup?.value;
 
-    if (!this.form.valid) { return; }
-
+    if (!this.form.valid) {
+      return;
+    }
     this.store$.dispatch(ForgotPasswordActions.forgotPasswordStart({ data }));
 
   }
 
   onTriggerClick(): void {
-
     this.submitButtonElement?.click();
-
   }
 
-  private getSuccessfulMessage(): void {
+  private subscribeForgotPassword(): void {
 
     this.store$.select(fromForgotPassword.selectForgotPassword)
       .pipe(
         takeUntil(this.onDestroy$),
         filter((res): res is ForgotPasswordModels.ForgotPassword => res !== null)
       )
-      .subscribe((res) => {
-        this.showAlertMessage(res.message, false);
-      });
+      .subscribe((res) => this.showAlertMessage(res.message, false));
 
   }
 
-  private getUnsuccessfulMessage(): void {
+  private subscribeError(): void {
 
     this.store$.select(fromForgotPassword.selectError)
       .pipe(
@@ -146,12 +137,19 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
 
   }
 
+  private subscribeLoading(): void {
+
+    this.store$.select(fromForgotPassword.selectLoading)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => this.isLoading = res);
+
+  }
+
   canDeactivate(): boolean {
 
     if (!this.isSubmitted && this.form.dirty) {
       return confirm('Are you shure ?');
     }
-
     return true;
 
   }
@@ -169,7 +167,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
     if (control) {
       return (control.hasError('required') || control.hasError('email')) && (control.dirty || control.touched);
     }
-
     return false;
 
   }
@@ -179,7 +176,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy, DirtyCheck, A
     if (control) {
       return !(control.hasError('minLength') && control.hasError('maxLength')) && (control.dirty || control.touched);
     }
-
     return false;
 
   }

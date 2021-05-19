@@ -1,26 +1,26 @@
 // angular
 import {
-  Component, OnInit, ViewChild, ElementRef,
+  Component, OnInit, ViewChild,
   OnDestroy, Inject,
-  PLATFORM_ID, ViewContainerRef, AfterViewInit, ChangeDetectorRef
+  ViewContainerRef, AfterViewInit, ChangeDetectorRef
 } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Data } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 // material
 import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
 // rxjs
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // custom
-import { LoggerService, SeoService, AlertService } from '../../shared/services';
-import * as fromApp from '../../store';
+import { SeoService, AlertService } from '@app/shared/services';
+import * as fromApp from '@app/store';
 import * as fromResetPassword from './store/reducer/';
 import * as ResetPasswordActions from './store/actions';
 import * as ResetPasswordModels from './store/models';
-import { DirtyCheck } from '../../shared/guards';
+import { DirtyCheck } from '@app/shared/guards';
 import { UserFormValidator, UserFormValidatorToken } from '../validators';
 
 @Component({
@@ -31,68 +31,56 @@ import { UserFormValidator, UserFormValidatorToken } from '../validators';
 export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, AfterViewInit {
 
   form: FormGroup;
-  isLoading$: Observable<boolean>;
+  isLoading = false;
   hidePassword = true;
   hideRepeatedPassword = true;
-  passwordElement?: HTMLElement;
   submitButtonElement?: HTMLElement;
-  @ViewChild('alertContainer', { read: ViewContainerRef }) alertContainer?: ViewContainerRef;
-  @ViewChild('password', { static: true }) password?: ElementRef;
-  @ViewChild('submitButton', { static: true }) submitButton?: MatButton;
+  @ViewChild('alertContainer', { static: false, read: ViewContainerRef }) alertContainer?: ViewContainerRef;
+  @ViewChild('passwordInput', { static: false, read: MatInput }) passwordInput?: MatInput;
+  @ViewChild('submitButton', { static: false, read: MatButton }) submitButton?: MatButton;
   private token?: string | undefined;
   private onDestroy$: Subject<void> = new Subject<void>();
   private isSubmitted = false;
 
   constructor(private formBuilder: FormBuilder,
-              private logger: LoggerService,
               private store$: Store<fromApp.AppState>,
               private seoService: SeoService,
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService,
               private cdr: ChangeDetectorRef,
-              @Inject(PLATFORM_ID) private platformId: any,
               @Inject(UserFormValidatorToken) private userFormValidator: UserFormValidator) {
 
     this.seoService.config({ title: 'Reset password', url: 'user/reset-password/:id' });
-    this.isLoading$ = this.store$.select(fromResetPassword.selectLoading).pipe(takeUntil(this.onDestroy$));
     this.form = this.initForm();
 
   }
 
   get userGroup(): AbstractControl | null {
-
     return this.form.get('user');
-
   }
 
   get passwordControl(): AbstractControl | null {
-
     return this.form.get('user.password');
-
   }
 
   get repeatedPasswordControl(): AbstractControl | null {
-
     return this.form.get('user.repeatedPassword');
-
   }
 
   ngOnInit(): void {
 
-    this.getToken();
-    this.getUnsuccessfulMessage();
+    this.subscribeRouteData();
+    this.subscribeError();
+    this.subscribeLoading();
 
   }
 
   ngAfterViewInit(): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.passwordElement = this.password?.nativeElement as HTMLElement;
-      this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
-      // https://stackoverflow.com/a/54794081
-      this.passwordElement?.focus({ preventScroll: true });
-      this.cdr.detectChanges();
-    }
+    this.submitButtonElement = this.submitButton?._elementRef.nativeElement as HTMLElement;
+    // https://stackoverflow.com/a/54794081
+    this.passwordInput?.focus({ preventScroll: true });
+    this.cdr.detectChanges();
 
   }
 
@@ -106,7 +94,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   private initForm(): FormGroup {
 
-    return this.formBuilder.group({
+    const fb = this.formBuilder.group({
       user: this.formBuilder.group({
         password: [null,
           {
@@ -120,6 +108,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
         ]
       })
     }, { updateOn: 'blur' });
+
+    return fb;
 
   }
 
@@ -140,14 +130,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
   }
 
   onTriggerClick(): void {
-
-    if (isPlatformBrowser(this.platformId)) {
-      this.submitButtonElement?.click();
-    }
-
+    this.submitButtonElement?.click();
   }
 
-  private getUnsuccessfulMessage(): void {
+  private subscribeError(): void {
 
     this.store$.select(fromResetPassword.selectError)
       .pipe(
@@ -158,17 +144,24 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
 
   }
 
+  private subscribeLoading(): void {
+
+    this.store$.select(fromResetPassword.selectLoading)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(res => this.isLoading = res);
+
+  }
+
   canDeactivate(): boolean {
 
     if (!this.isSubmitted && this.form.dirty) {
       return confirm('Are you shure ?');
     }
-
     return true;
 
   }
 
-  private getToken(): void {
+  private subscribeRouteData(): void {
 
     this.activatedRoute.data
       .pipe(takeUntil(this.onDestroy$))
@@ -189,7 +182,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
     if (control) {
       return control.hasError('required') && (control.dirty || control.touched);
     }
-
     return false;
 
   }
@@ -200,7 +192,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy, DirtyCheck, Af
       return !(control.hasError('minLength') && control.hasError('maxLength'))
         && (control.dirty || control.touched);
     }
-
     return false;
 
   }

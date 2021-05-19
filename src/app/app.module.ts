@@ -24,6 +24,7 @@ import { ForgotPasswordEffects } from './user/forgot-password/store/effects';
 import { ResetPasswordEffects } from './user/reset-password/store/effects';
 import { CommentEffects } from './scroll/store/effects';
 import { LoggerService } from './shared/services';
+import { QrEffects } from './user/security/store/effects';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { LoggerService } from './shared/services';
     FooterComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserModule.withServerTransition({ appId: 'app' }),
     BrowserTransferStateModule,
     BrowserAnimationsModule,
     // import HttpClientModule after BrowserModule or Browser... !
@@ -55,6 +56,7 @@ import { LoggerService } from './shared/services';
       ForgotPasswordEffects,
       ResetPasswordEffects,
       CommentEffects,
+      QrEffects,
     ]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     SharedModule,
@@ -70,10 +72,10 @@ export class AppModule {
     private logger: LoggerService) {
 
     if (isPlatformBrowser(this.platformId)) {
-      this.logger.log(`browser:appId=${this.appId}`);
+      this.logger.log(`${this.platformId}:${this.appId}`);
     }
     if (isPlatformServer(this.platformId)) {
-      this.logger.log(`server:appId=${this.appId}`);
+      this.logger.log(`${this.platformId}:${this.appId}`);
     }
 
   }

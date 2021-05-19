@@ -2,19 +2,18 @@
      fxFlex
      fxLayout="column"
      fxFlexAlign="center center">
-  <mat-card class="card"
-            fxLayout="row">
+  <div class="box"
+       fxLayout="row">
 
     <div fxLayout="column"
          fxLayoutAlign="center center">
-      <h1 class="mat-h1 mat-display-2">Hello World</h1>
-      <p class="mat-h1">
+      <h1 class="mat-h1 mat-display-2"
+          ngClass.xs="mat-display-1">Hello World</h1>
+      <p class="mat-h1"
+         [ngStyle.xs]="{'font-size': '20px'}">
         I use:
         <span class="typed"></span>
-        <span class="typed-cursor"></span>
       </p>
     </div>
-
-
-  </mat-card>
+  </div>
 </div>

@@ -12,7 +12,7 @@ export interface CommentDocument extends Document {
   seq: number;
 }
 
-export interface CommentModel extends Model<any> { }
+export interface CommentModel extends Model<CommentDocument> { }
 
 export const commentSchema = new Schema({
   emoji: {
@@ -35,8 +35,8 @@ export const commentSchema = new Schema({
   toObject: { virtuals: true },
 });
 
-commentSchema.pre('save', function(next): void {
-  const comment: any = this;
+commentSchema.pre<CommentDocument>('save', function(this: CommentDocument, next): void {
+  const comment = this;
 
 
   // @ts-ignore
@@ -44,10 +44,14 @@ commentSchema.pre('save', function(next): void {
     if (error) {
       return next(error);
     }
-    comment.seq = counter.seq;
+
+    if (counter) {
+      comment.seq = counter.seq;
+    }
+
     next();
   });
 
 });
 
-export const Comment = mongoose.model<CommentDocument, CommentModel>('Comment', commentSchema);
+export const Comment = mongoose.model<CommentDocument>('Comment', commentSchema) as CommentModel;

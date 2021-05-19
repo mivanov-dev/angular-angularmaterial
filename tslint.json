@@ -24,7 +24,8 @@
     "import-spacing": true,
     "indent": {
       "options": [
-        "spaces"
+        "spaces",
+        2
       ]
     },
     "max-classes-per-file": false,
@@ -51,11 +52,13 @@
       "timeEnd",
       "trace"
     ],
-    "no-empty": false,
+    "no-empty": true,
+    "no-invalid-template-strings": true,
     "no-inferrable-types": [
       true,
       "ignore-params"
     ],
+    "no-unused-variable": true,
     "no-non-null-assertion": true,
     "no-redundant-jsdoc": true,
     "no-switch-case-fall-through": true,

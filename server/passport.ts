@@ -1,7 +1,8 @@
 import * as passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import * as speakeasy from 'speakeasy';
 // custom
-import { User } from './mongoose/models';
+import { User, UserImage } from './mongoose/models';
 
 const localStrategy = new LocalStrategy(
   {
@@ -10,46 +11,76 @@ const localStrategy = new LocalStrategy(
     session: true,
     passReqToCallback: true
   },
-  (request, email, password, cb) => {
+  (req, email, password, cb) => {
 
     process.nextTick(async () => {
 
       try {
 
-        const user = await User.authenticate(request.body);
+        const body = req.body as { email: string; password: string, otpCode?: string };
 
-        if (user == null) {
-          return cb(null, false, { message: 'Wrong credentials!' });
+        const user = await User.findOne({ email: body.email })
+          .select('email password role is2FAenabled tfaSecret')
+          .populate({
+            path: 'imageId',
+            model: UserImage,
+            select: 'url'
+          }).exec();
+
+        if (user && await User.isComparedPasswords(body.password, user.password)) {
+          if (user.is2FAenabled) {
+            if (body.otpCode) {
+              const isVerified = speakeasy.totp.verify({
+                secret: user.tfaSecret as string,
+                encoding: 'base32',
+                token: body.otpCode
+              });
+
+              if (!isVerified) {
+                throw { name: 'OtpError', message: 'Please enter a valid OTP code' };
+              }
+              else {
+                return cb(null, user);
+              }
+            }
+            else {
+              throw { name: 'OtpError', message: 'Please enter a OTP code' };
+            }
+          }
+          else {
+            return cb(null, user);
+          }
         }
-
-        return cb(null, user);
+        else {
+          return cb({ message: 'Wrong credentials!' }, false);
+        }
 
       }
       catch (error) {
-
         return cb(error);
-
       }
 
     });
 
   });
-passport.use('login', localStrategy);
 
+passport.use('login', localStrategy);
 passport.serializeUser((user: any, cb) => cb(null, user.id));
 passport.deserializeUser(async (id: any, cb) => {
 
   try {
 
     const user = await User.findById(id).select('id').exec();
-    cb(null, user);
+
+    if (user) {
+      cb(null, user);
+    }
 
   } catch (error) {
-
     cb(error);
-
   }
 
 });
 
 export { passport as passportStrategy };
+

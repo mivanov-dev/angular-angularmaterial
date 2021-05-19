@@ -1,8 +1,7 @@
 import { Response, Request } from 'express';
-const ms = require('ms');
 // custom
-import { Comment } from '../../mongoose/models';
-import { handleErrors } from '../../middlewares';
+import { Comment } from '@server/mongoose/models';
+import { handleErrors } from '@server/middlewares';
 
 class Controller {
 
