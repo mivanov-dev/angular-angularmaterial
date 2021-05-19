@@ -13,7 +13,7 @@ node_js:
 
 branches:
   only:
-    - master
+    - travisci
 
 notifications:
   email: false
