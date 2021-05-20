@@ -55,7 +55,7 @@
     "domino": "^2.1.6",
     "dotenv": "^8.2.0",
     "express": "4.17.1",
-    "express-session": "^1.17.1",
+    "express-session": "^1.17.2",
     "express-validator": "^6.10.0",
     "faker": "^5.5.1",
     "filepond": "4.20.1",
