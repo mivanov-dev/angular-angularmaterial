@@ -9,9 +9,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    # target-branch: "master"
-    ignore:
-      # Ignore updates to packages that start with 'aws'
-      # Wildcards match zero or more arbitrary characters
-      - dependency-name: "@angular*"
-      - dependency-name: "@ngrx*"
+    # ignore:
+    #   - dependency-name: "@angular*"
+    #     update-types: ["version-update:semver-major"]
+    #   - dependency-name: "@ngrx*"
+    #     update-types: ["version-update:semver-major"]
+    labels:
+      - dependencies
+    versioning-strategy: widen
