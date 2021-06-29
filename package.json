@@ -102,7 +102,7 @@
     "@schematics/angular": "^11.2.6",
     "@types/bcryptjs": "^2.4.2",
     "@types/bluebird": "^3.5.33",
-    "@types/chai": "^4.2.15",
+    "@types/chai": "^4.2.19",
     "@types/compression": "1.7.0",
     "@types/compression-webpack-plugin": "^4.0.1",
     "@types/connect-redis": "0.0.15",
