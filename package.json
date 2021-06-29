@@ -84,7 +84,7 @@
     "speakeasy": "^2.0.0",
     "tslib": "^2.0.0",
     "tsparticles": "^1.24.2",
-    "typed.js": "2.0.11",
+    "typed.js": "2.0.12",
     "web-animations-js": "^2.3.2",
     "winston": "^3.2.1",
     "zone.js": "~0.11.3"
