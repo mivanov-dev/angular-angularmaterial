@@ -14,7 +14,7 @@ const seoProtocol = process.env.SEO_PROTOCOL || protocol;
 
 const isDev = (process.env.NODE_ENV ? process.env.NODE_ENV : 'development') === 'development';
 
-const plugins = [
+const plugins: any = [
   new webpack.DefinePlugin({
     'process.env': {
       // Base
@@ -31,13 +31,13 @@ const plugins = [
       CLOUDINARY_CLOUDNAME: JSON.stringify(process.env.CLOUDINARY_CLOUDNAME) as string,
       CLOUDINARY_PRESETS: JSON.stringify(process.env.CLOUDINARY_PRESETS) as string,
     }
-  })
-].concat(isDev ? [] : [
-  new CompressionPlugin({
+  }),
+  ...(isDev ? [] : [new CompressionPlugin({
     test: /\.js$/i,
     exclude: /\/node_modules/i
-  })
-]);
+  })])
+
+];
 
 const config: webpack.Configuration = {
   mode: isDev ? 'development' : 'production',
