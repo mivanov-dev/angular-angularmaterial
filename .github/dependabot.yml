@@ -9,11 +9,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    # ignore:
-    #   - dependency-name: "@angular*"
-    #     update-types: ["version-update:semver-major"]
-    #   - dependency-name: "@ngrx*"
-    #     update-types: ["version-update:semver-major"]
+    open-pull-requests-limit: 20
+    target-branch: "dev"
     labels:
       - dependencies
     versioning-strategy: widen
