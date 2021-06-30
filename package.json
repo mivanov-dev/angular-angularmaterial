@@ -80,7 +80,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.7",
     "rxjs-compat": "^6.6.7",
-    "sitemap": "^6.4.0",
+    "sitemap": "^7.0.0",
     "speakeasy": "^2.0.0",
     "tslib": "^2.3.0",
     "tsparticles": "^1.30.1",
