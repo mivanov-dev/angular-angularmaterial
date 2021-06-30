@@ -47,7 +47,7 @@
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.26.1",
     "compression": "^1.7.4",
-    "connect-redis": "^5.2.0",
+    "connect-redis": "^6.0.0",
     "cookie-parser": "^1.4.5",
     "core-js": "3.15.2",
     "cors": "^2.8.5",
