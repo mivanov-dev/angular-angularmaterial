@@ -65,7 +65,7 @@
     "filepond-plugin-image-preview": "4.6.4",
     "filepond-plugin-image-validate-size": "^1.2.6",
     "generate-robotstxt": "^8.0.3",
-    "ioredis": "^4.24.5",
+    "ioredis": "^4.27.6",
     "jasmine-marbles": "0.6.0",
     "lodash": "^4.17.21",
     "method-override": "^3.0.0",
