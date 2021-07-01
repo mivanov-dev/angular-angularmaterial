@@ -1,8 +1,11 @@
 import * as webpack from 'webpack';
 import * as CompressionPlugin from 'compression-webpack-plugin';
 import * as dotenv from 'dotenv';
+// const Dotenv = require('dotenv-webpack');
 
 dotenv.config({ encoding: 'utf-8' });
+
+declare const process: any;
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || '4200';
@@ -16,20 +19,23 @@ const isDev = (process.env.NODE_ENV ? process.env.NODE_ENV : 'development') === 
 
 const plugins: any = [
   new webpack.DefinePlugin({
-    'process.env': {
-      // Base
-      HOST: JSON.stringify(host),
-      PORT: JSON.stringify(port),
-      SEO_HOST: JSON.stringify(seoHost),
-      SEO_PORT: JSON.stringify(seoPort),
-      SEO_PROTOCOL: JSON.stringify(seoProtocol),
-      // Google
-      GOOGLE_ANALYTICS_ID: JSON.stringify(process.env.GOOGLE_ANALYTICS_ID || 'G-XXXXXXXXXX'),
-      // Cloudinary
-      CLOUDINARY_SERVER: JSON.stringify(process.env.CLOUDINARY_SERVER) as string,
-      CLOUDINARY_UPLOAD_IMAGE_URL: JSON.stringify(process.env.CLOUDINARY_UPLOAD_IMAGE_URL) as string,
-      CLOUDINARY_CLOUDNAME: JSON.stringify(process.env.CLOUDINARY_CLOUDNAME) as string,
-      CLOUDINARY_PRESETS: JSON.stringify(process.env.CLOUDINARY_PRESETS) as string,
+    HOST: JSON.stringify(host),
+    process: {
+      env: {
+        // Base
+        HOST: JSON.stringify(host),
+        PORT: JSON.stringify(port),
+        SEO_HOST: JSON.stringify(seoHost),
+        SEO_PORT: JSON.stringify(seoPort),
+        SEO_PROTOCOL: JSON.stringify(seoProtocol),
+        // Google
+        GOOGLE_ANALYTICS_ID: JSON.stringify(process.env.GOOGLE_ANALYTICS_ID || 'G-XXXXXXXXXX'),
+        // Cloudinary
+        CLOUDINARY_SERVER: JSON.stringify(process.env.CLOUDINARY_SERVER) as string,
+        CLOUDINARY_UPLOAD_IMAGE_URL: JSON.stringify(process.env.CLOUDINARY_UPLOAD_IMAGE_URL) as string,
+        CLOUDINARY_CLOUDNAME: JSON.stringify(process.env.CLOUDINARY_CLOUDNAME) as string,
+        CLOUDINARY_PRESETS: JSON.stringify(process.env.CLOUDINARY_PRESETS) as string,
+      }
     }
   }),
   ...(isDev ? [] : [new CompressionPlugin({
