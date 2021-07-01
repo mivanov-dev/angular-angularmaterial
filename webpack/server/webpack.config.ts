@@ -9,9 +9,6 @@ dotenv.config({ path: './.env', encoding: 'utf-8' });
 
 const plugins: any = [
   new webpack.DefinePlugin({
-    'process.env': {
-      NG_BUILD_IVY_LEGACY: 1
-    }
   }),
   // Temporary Fix for issue: https://github.com/angular/angular/issues/11580
   // for "WARNING Critical dependency: the request of a dependency is an expression"

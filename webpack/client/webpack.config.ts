@@ -19,7 +19,6 @@ const isDev = (process.env.NODE_ENV ? process.env.NODE_ENV : 'development') === 
 
 const plugins: any = [
   new webpack.DefinePlugin({
-    HOST: JSON.stringify(host),
     process: {
       env: {
         // Base
@@ -35,6 +34,9 @@ const plugins: any = [
         CLOUDINARY_UPLOAD_IMAGE_URL: JSON.stringify(process.env.CLOUDINARY_UPLOAD_IMAGE_URL) as string,
         CLOUDINARY_CLOUDNAME: JSON.stringify(process.env.CLOUDINARY_CLOUDNAME) as string,
         CLOUDINARY_PRESETS: JSON.stringify(process.env.CLOUDINARY_PRESETS) as string,
+        // Angular
+        NG_PERSISTENT_BUILD_CACHE: 1,
+        NG_BUILD_IVY_LEGACY: 1,
       }
     }
   }),
