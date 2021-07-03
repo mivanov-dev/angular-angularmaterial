@@ -5,8 +5,6 @@ import * as path from 'path';
 
 dotenv.config({ path: './.env', encoding: 'utf-8' });
 
-// const rootDir = process.cwd();
-
 const plugins: any = [
   new webpack.DefinePlugin({
   }),
@@ -24,7 +22,7 @@ const plugins: any = [
 ];
 
 const config: webpack.Configuration = {
-
+  externals: ['mongodb-client-encryption']
 };
 
 export default config;
