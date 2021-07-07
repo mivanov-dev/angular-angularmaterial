@@ -103,7 +103,7 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/bluebird": "^3.5.35",
     "@types/chai": "^4.2.19",
-    "@types/compression": "1.7.0",
+    "@types/compression": "1.7.1",
     "@types/compression-webpack-plugin": "^6.0.5",
     "@types/connect-redis": "0.0.15",
     "@types/cookie-parser": "^1.4.2",
