@@ -20,7 +20,7 @@
     "prerender": "ng run angular-angularmaterial:prerender",
     "preinstall": "npm i -g @angular/cli typescript tslint sass",
     "docker:deploy": "docker-compose -f \"docker-compose.yml\" up -d --build",
-    "wmu": ".\\node_modules\\.bin\\webdriver-manager update"
+    "wmu": "webdriver-manager update"
   },
   "config": {
     "unsafe-perm": true
@@ -155,5 +155,15 @@
   "engines": {
     "node": "14.17.1",
     "npm": "6.14.13"
-  }
+  },
+  "repository": {
+    "url": "git+https://github.com/mivanov-dev/angular-angularmaterial.git"
+  },
+  "description": "This project is for test purposes. Here I test some techniques and libraries with angular like authentication, testing, performance, et cetera. 👨‍💻☕",
+  "bugs": {
+    "url": "https://github.com/mivanov-dev/angular-angularmaterial/issues"
+  },
+  "homepage": "https://github.com/mivanov-dev/angular-angularmaterial#readme",
+  "author": "m.ivanov@email.com",
+  "license": "MIT"
 }
