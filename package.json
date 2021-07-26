@@ -144,7 +144,7 @@
     "karma-spec-reporter": "0.0.32",
     "nodemailer": "^6.6.2",
     "protractor": "~7.0.0",
-    "protractor-cucumber-framework": "~6.2.1",
+    "protractor-cucumber-framework": "~8.2.2",
     "sass": "^1.35.1",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.1.0",
