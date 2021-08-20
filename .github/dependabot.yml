@@ -13,4 +13,4 @@ updates:
     target-branch: "dev"
     labels:
       - dependencies
-    versioning-strategy: increase-if-necessary
+    versioning-strategy: widen
