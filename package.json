@@ -58,7 +58,7 @@
     "express-session": "^1.17.2",
     "express-validator": "^6.12.1",
     "faker": "^5.5.3",
-    "filepond": "4.28.2",
+    "filepond": "4.29.0",
     "filepond-plugin-file-validate-size": "2.2.1",
     "filepond-plugin-file-validate-type": "1.2.5",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
