@@ -23,6 +23,7 @@ export class HeaderComponent implements OnDestroy {
 
 
   user$: Observable<AuthModels.LoggedUser | undefined>;
+  isLoading$: Observable<boolean>;
   userImage = '../../assets/user.png';
   adminImage = '../../assets/admin.png';
   @Input() sidenav?: MatSidenav;
@@ -31,7 +32,13 @@ export class HeaderComponent implements OnDestroy {
   constructor(private store$: Store<fromApp.AppState>) {
 
     this.user$ = this.store$.select(fromAuth.selectLogin)
-      .pipe(takeUntil(this.onDestroy$), map((res => res?.user)));
+      .pipe(
+        takeUntil(this.onDestroy$),
+        map(((res) => res?.user))
+      );
+
+    this.isLoading$ = this.store$.select(fromAuth.selectLoading)
+      .pipe(takeUntil(this.onDestroy$));
 
   }
 
