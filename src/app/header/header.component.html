@@ -10,50 +10,57 @@
     </button>
     <span fxFlex></span>
 
-    <div fxLayout="row"
-         fxLayoutGap="10px"
-         *ngIf="(user$ | async) as u; else loggedOut">
+    <ng-container *ngIf="{user: user$ | async, isLoading: isLoading$ | async} as obj">
+      <ng-container *ngIf="!obj.isLoading">
 
-      <img width="50"
-           height="50"
-           class="user-avatar"
-           [src]="u?.image"
-           [appImageFallback]="u?.role === 'user' ? userImage : adminImage"
-           [matMenuTriggerFor]="beforeMenu">
+        <ng-container *ngIf="obj.user as u; else loggedOut">
+          <div fxLayout="row"
+               fxLayoutGap="10px">
 
-      <mat-menu #beforeMenu="matMenu"
-                xPosition="before">
-        <a mat-menu-item
-           href="#/user/profile">
-          Profile
-        </a>
-        <a mat-menu-item
-           href="#/user/security">
-          Security
-        </a>
-        <button mat-menu-item
-                (click)="logout()">
-          Logout
-        </button>
-      </mat-menu>
+            <img width="50"
+                 height="50"
+                 class="user-avatar"
+                 [src]="u?.image"
+                 [appImageFallback]="u?.role === 'user' ? userImage : adminImage"
+                 [matMenuTriggerFor]="beforeMenu">
 
-    </div>
+            <mat-menu #beforeMenu="matMenu"
+                      xPosition="before">
+              <a mat-menu-item
+                 href="#/user/profile">
+                Profile
+              </a>
+              <a mat-menu-item
+                 href="#/user/security">
+                Security
+              </a>
+              <button mat-menu-item
+                      (click)="logout()">
+                Logout
+              </button>
+            </mat-menu>
 
-    <ng-template #loggedOut>
-      <a mat-button
-         role="button"
-         href="#/user/auth"
-         (click)="switchModeTo('login')">
-        Login
-      </a>
-      <a mat-raised-button
-         color="warn"
-         role="button"
-         href="#/user/auth"
-         (click)="switchModeTo('register')">
-        Register
-      </a>
-    </ng-template>
+          </div>
+        </ng-container>
+
+        <ng-template #loggedOut>
+          <a mat-button
+             role="button"
+             href="#/user/auth"
+             (click)="switchModeTo('login')">
+            Login
+          </a>
+          <a mat-raised-button
+             color="warn"
+             role="button"
+             href="#/user/auth"
+             (click)="switchModeTo('register')">
+            Register
+          </a>
+        </ng-template>
+
+      </ng-container>
+    </ng-container>
 
   </mat-toolbar-row>
 </mat-toolbar>

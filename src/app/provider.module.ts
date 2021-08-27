@@ -15,6 +15,10 @@ import * as AuthActions from './user/auth/store/actions';
 import { TokenResolver } from './user/reset-password/resolvers';
 import { AuthInterceptor, HttpErrorInterceptor, ErrorInterceptor } from './shared/interceptors';
 import { DirtyCheckGuard } from './shared/guards';
+import {
+  particlesOptions, ParticlesOptionsToken,
+  windowProvider, WindowToken
+} from './shared/config';
 
 export const appInit = (store: Store<fromApp.AppState>, logger: LoggerService) => {
   logger.log('APP_INITIALIZER');
@@ -71,6 +75,14 @@ export const appInit = (store: Store<fromApp.AppState>, logger: LoggerService) =
         enabled: location.search.includes('sw=true'),
         registrationStrategy: 'registerImmediately'
       }),
+    },
+    {
+      provide: WindowToken,
+      useFactory: windowProvider
+    },
+    {
+      provide: ParticlesOptionsToken,
+      useValue: particlesOptions
     }
   ]
 })

@@ -1,5 +1,5 @@
 // angular
-import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
+import { Component, OnInit, Inject, Renderer2, AfterViewInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 // cdk
@@ -12,30 +12,35 @@ import { Store } from '@ngrx/store';
 // custom
 import * as fromApp from './store/reducer';
 import * as fromAuth from './user/auth/store/reducer';
-import { SwService } from './shared/services';
+import { LoggerService, SwService } from './shared/services';
+import { ParticlesOptionsToken } from './shared/config';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   isHandset$?: Observable<boolean>;
   isLoading = true;
+  particlesOptions: object;
+  public readonly particleId = 'particles-js';
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store$: Store<fromApp.AppState>,
     private renderer2: Renderer2,
     private sw: SwService,
+    private logger: LoggerService,
+    @Inject(ParticlesOptionsToken) particlesOptions: object,
     @Inject(DOCUMENT) private document: Document
-  ) { }
+  ) {
+    this.particlesOptions = particlesOptions;
+  }
 
   ngOnInit(): void {
 
     this.sw.update();
-
-    this.drawParticle('particles-js', '../assets/particlesjs-config.json');
 
     this.subscribeLoading();
 
@@ -45,6 +50,12 @@ export class AppComponent implements OnInit {
         map(result => result.matches),
         shareReplay(1)
       );
+  }
+
+  ngAfterViewInit(): void {
+
+    this.drawParticle(this.particleId, this.particlesOptions);
+
   }
 
   prepareRoute(routerOutlet: RouterOutlet): boolean {
@@ -68,14 +79,23 @@ export class AppComponent implements OnInit {
 
   }
 
-  async drawParticle(id: string, config: string): Promise<void> {
+  async drawParticle(id: string, config: object): Promise<void> {
 
-    const particle = await import(
-      /* webpackMode: "lazy" */
-      'tsparticles'
-    ).then(({ tsParticles }) => tsParticles);
+    try {
+      if (this.document.getElementById(id)) {
+        const { tsParticles } = await import(
+          /* webpackMode: "lazy" */
+          'tsparticles'
+        );
 
-    particle.loadJSON(id, config);
+        tsParticles.load(id, config);
+      }
+      else {
+        throw new Error('check particle configuration');
+      }
+    } catch (error) {
+      this.logger.error(error.message);
+    }
 
   }
 

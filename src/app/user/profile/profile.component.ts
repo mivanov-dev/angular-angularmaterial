@@ -8,6 +8,7 @@ import { map, takeUntil } from 'rxjs/operators';
 // custom
 import * as fromApp from '@app/store';
 import * as fromAuth from '../auth/store/reducer';
+import { SeoService } from '@app/shared/services';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,11 @@ export class ProfileComponent implements OnDestroy {
   private onDestroy$: Subject<void> = new Subject<void>();
   user$ = this.store$.select(fromAuth.selectLogin).pipe(takeUntil(this.onDestroy$), map(res => res?.user));
 
-  constructor(private store$: Store<fromApp.AppState>) { }
+  constructor(private store$: Store<fromApp.AppState>, private seoService: SeoService) {
+
+    this.seoService.config({ title: 'Profile', url: 'user/profile' });
+
+  }
 
   ngOnDestroy(): void {
 
