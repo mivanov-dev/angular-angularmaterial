@@ -13,19 +13,20 @@
           "/manifest.webmanifest",
           "/*.css",
           "/*.js",
+          "!/*-es5*.js",
           "/*.json",
           "/robots.txt",
           "/sitemap.xml"
         ],
         "urls": [
-          "https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap",
-          "https://fonts.googleapis.com/icon?family=Material+Icons"
+          "https://fonts.googleapis.com/**",
+          "https://fonts.gstatic.com/s/**"
         ]
       }
     },
     {
       "name": "assets",
-      "installMode": "lazy",
+      "installMode": "prefetch",
       "updateMode": "prefetch",
       "resources": {
         "files": [

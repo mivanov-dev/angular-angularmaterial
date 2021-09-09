@@ -9,21 +9,25 @@ import { Observable } from 'rxjs';
 import { map, shareReplay, filter } from 'rxjs/operators';
 // ngrx
 import { Store } from '@ngrx/store';
+// tsparticles
+import { tsParticles } from 'tsparticles';
 // custom
 import * as fromApp from './store/reducer';
 import * as fromAuth from './user/auth/store/reducer';
 import { LoggerService, SwService } from './shared/services';
-import { ParticlesOptionsToken } from './shared/config';
+import { ParticlesDarkOptionsToken, ParticlesOptionsToken } from './shared/config';
+import { ThemeService, ThemeData } from './shared/services/theme.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, AfterViewInit {
   isHandset$?: Observable<boolean>;
   isLoading = true;
   particlesOptions: object;
+  themeClass: string;
   public readonly particleId = 'particles-js';
 
   constructor(
@@ -32,10 +36,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     private renderer2: Renderer2,
     private sw: SwService,
     private logger: LoggerService,
-    @Inject(ParticlesOptionsToken) particlesOptions: object,
+    private theme: ThemeService,
+    @Inject(ParticlesOptionsToken) private particlesOptionsToken: object,
+    @Inject(ParticlesDarkOptionsToken) private particlesDarkOptionsToken: object,
     @Inject(DOCUMENT) private document: Document
   ) {
-    this.particlesOptions = particlesOptions;
+    this.themeClass = this.theme.themeClass;
+    if (this.theme.isDark) {
+      this.particlesOptions = this.particlesDarkOptionsToken;
+    }
+    else {
+      this.particlesOptions = this.particlesOptionsToken;
+    }
   }
 
   ngOnInit(): void {
@@ -79,25 +91,29 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   }
 
-  async drawParticle(id: string, config: object): Promise<void> {
+  private async drawParticle(id: string, config: object): Promise<void> {
 
     try {
       if (this.document.getElementById(id)) {
-        const { tsParticles } = await import(
-          /* webpackMode: "lazy" */
-          'tsparticles'
-        );
-
         tsParticles.load(id, config);
       }
       else {
         throw new Error('check particle configuration');
       }
     } catch (error) {
-      this.logger.error(error.message);
+      this.logger.error((error as Error).message);
     }
 
   }
 
+  switchTheme(e: ThemeData): void {
+    this.themeClass = e.themeClass;
+    if (e.isDark) {
+      this.drawParticle(this.particleId, this.particlesDarkOptionsToken);
+    }
+    else {
+      this.drawParticle(this.particleId, this.particlesOptionsToken);
+    }
+  }
 
 }

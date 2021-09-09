@@ -1,0 +1,9 @@
+@mixin header-component-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .user-avatar {
+    background-color: mat-color($primary);
+  }
+}

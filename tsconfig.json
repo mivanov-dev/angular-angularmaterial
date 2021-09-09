@@ -3,7 +3,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": ".",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -31,7 +30,8 @@
       "@server/*": [
         "./server/*"
       ]
-    }
+    },
+    "skipLibCheck": true
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

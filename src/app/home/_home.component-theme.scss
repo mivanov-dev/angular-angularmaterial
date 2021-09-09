@@ -1,0 +1,12 @@
+@mixin home-component-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .typed {
+    color: mat-color($primary);
+  }
+  .typed-cursor {
+    color: mat-color($warn);
+  }
+}

@@ -1,0 +1,36 @@
+#loading-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  height: 100vh;
+}
+.dots {
+  > div {
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    display: inline-block;
+    animation: dots-bounce 1.4s infinite ease-in-out both;
+    background-color: red;
+  }
+
+  .bounce1 {
+    animation-delay: -0.32s;
+  }
+
+  .bounce2 {
+    animation-delay: -0.16s;
+  }
+}
+@keyframes dots-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}

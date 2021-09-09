@@ -1,0 +1,13 @@
+$my-primary: mat-palette($mat-indigo, 500);
+$my-accent: mat-palette($mat-orange, 500);
+$my-warn: mat-palette($mat-red, 500);
+
+$my-light-theme: mat-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+      warn: $my-warn,
+    ),
+  )
+);
