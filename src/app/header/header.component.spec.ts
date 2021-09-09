@@ -21,6 +21,7 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let store: MockStore<fromAuth.State>;
+  let themeService: ThemeService;
   let dom: HTMLElement;
   const userProfileBtn = '.user-avatar';
   let mockUserSelector: any;
@@ -63,7 +64,10 @@ describe('HeaderComponent', () => {
       ],
       providers: [
         provideMockStore({ initialState }),
-        ThemeService
+        {
+          provide: ThemeService,
+          useValue: jasmine.createSpyObj('ThemeService', ['initTheme', 'switchTheme'])
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -75,6 +79,7 @@ describe('HeaderComponent', () => {
     component.adminImage = '../../assets/admin.png';
 
     store = TestBed.inject(MockStore);
+    themeService = TestBed.inject(ThemeService);
 
     dom = fixture.nativeElement as HTMLElement;
 
