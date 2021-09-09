@@ -3,7 +3,6 @@
   height: auto !important;
   max-width: 100%;
   margin: 0;
-  background: transparent !important;
 }
 
 .mat-sidenav {
@@ -29,7 +28,7 @@ mat-nav-list {
     height: 5px;
   }
 
-  &::-webkit-scrollbar-track-piece  {
+  &::-webkit-scrollbar-track-piece {
     background-color: transparent;
   }
 

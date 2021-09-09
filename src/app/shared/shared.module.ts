@@ -16,8 +16,8 @@ import {
   declarations: [
     TemplateRendererDirective,
     ConfirmEqualValidatorDirective,
-    CapsLockComponent,
     ImageFallbackDirective,
+    CapsLockComponent,
   ],
   imports: [
     CommonModule,
@@ -28,17 +28,19 @@ import {
     MaterialModule,
   ],
   exports: [
+    // modules
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FilepondModule,
+    LayoutModule,
+    MaterialModule,
+    // directives
     TemplateRendererDirective,
     ConfirmEqualValidatorDirective,
     ImageFallbackDirective,
+    // components
     CapsLockComponent,
-    // modules
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    LayoutModule,
-    FilepondModule,
-    CommonModule,
   ],
 })
 export class SharedModule { }

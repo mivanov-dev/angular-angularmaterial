@@ -1,5 +1,5 @@
 // angular
-import { NgModule, APP_INITIALIZER, ErrorHandler } from '@angular/core';
+import { NgModule, APP_INITIALIZER, ErrorHandler, Optional, SkipSelf } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 import { SwRegistrationOptions } from '@angular/service-worker';
@@ -16,7 +16,10 @@ import { TokenResolver } from './user/reset-password/resolvers';
 import { AuthInterceptor, HttpErrorInterceptor, ErrorInterceptor } from './shared/interceptors';
 import { DirtyCheckGuard } from './shared/guards';
 import {
-  particlesOptions, ParticlesOptionsToken,
+  particlesDarkOptions,
+  ParticlesDarkOptionsToken,
+  particlesOptions,
+  ParticlesOptionsToken,
   windowProvider, WindowToken
 } from './shared/config';
 
@@ -83,7 +86,17 @@ export const appInit = (store: Store<fromApp.AppState>, logger: LoggerService) =
     {
       provide: ParticlesOptionsToken,
       useValue: particlesOptions
+    },
+    {
+      provide: ParticlesDarkOptionsToken,
+      useValue: particlesDarkOptions
     }
   ]
 })
-export class ProviderModule { }
+export class ProviderModule {
+  constructor(@Optional() @SkipSelf() module: ProviderModule) {
+    if (module) {
+      throw new Error('ProviderModule is already loaded. Import only in AppModule');
+    }
+  }
+}

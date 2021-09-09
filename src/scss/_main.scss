@@ -1,0 +1,53 @@
+@import "~@angular/material/theming";
+@include mat-core();
+
+@import "variables";
+@import "main-theme";
+@import "../app/footer/footer.component-theme";
+@import "../app/home/home.component-theme";
+@import "../app/header/header.component-theme";
+
+@import "light-theme";
+@import "dark-theme";
+
+@mixin themes($theme) {
+  @include angular-material-theme($theme);
+  @include main-theme($theme);
+  @include home-component-theme($theme);
+  @include footer-component-theme($theme);
+  @include header-component-theme($theme);
+}
+
+.dark-theme {
+  @include themes($my-dark-theme);
+}
+.light-theme {
+  @include themes($my-light-theme);
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  font-display: swap;
+  scroll-behavior: smooth;
+}
+.scroller-vertical {
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(to bottom, #ff4a63 0%, #ff9335 100%);
+  }
+}
+.mat-drawer-inner-container {
+  overflow: hidden !important;
+}

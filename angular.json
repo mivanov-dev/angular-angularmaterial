@@ -45,6 +45,7 @@
               "src/sitemap.xml"
             ],
             "styles": [
+              "src/styles-loading.scss",
               "src/styles.scss"
             ],
             "scripts": []
@@ -124,6 +125,7 @@
               "src/sitemap.xml"
             ],
             "styles": [
+              "src/styles-loading.scss",
               "src/styles.scss"
             ],
             "scripts": []

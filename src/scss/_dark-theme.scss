@@ -1,0 +1,13 @@
+$my-primary: mat-palette($mat-blue, A200);
+$my-accent: mat-palette($mat-yellow, A200);
+$my-warn: mat-palette($mat-red, A200);
+
+$my-dark-theme: mat-dark-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+      warn: $my-warn,
+    ),
+  )
+);

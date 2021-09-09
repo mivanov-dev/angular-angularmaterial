@@ -1,7 +1,8 @@
-<div *ngIf="!isLoading">
-  <div [id]="particleId"></div>
+<div *ngIf="!isLoading"
+     [class]="themeClass">
 
-  <app-header [sidenav]="sidenav"></app-header>
+  <app-header [sidenav]="sidenav"
+              (switchThemeEvent)="switchTheme($event)"></app-header>
 
   <mat-progress-bar *ngIf="false"
                     mode="indeterminate"></mat-progress-bar>
@@ -32,6 +33,7 @@
     </mat-sidenav>
     <mat-sidenav-content>
 
+      <div [id]="particleId"></div>
       <main>
         <router-outlet></router-outlet>
       </main>

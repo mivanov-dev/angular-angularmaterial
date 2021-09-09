@@ -10,6 +10,18 @@
     </button>
     <span fxFlex></span>
 
+    <button mat-icon-button
+            aria-label="Switch theme mode"
+            style="border-radius: 0% !important; border-right: 1px solid;"
+            (click)="switchTheme()">
+      <mat-icon role="img"
+                class="material-icons"
+                aria-hidden="true"
+                [@lightDark]="isDark ? 'dark' : 'light'">
+        {{ isDark ? 'dark' : 'light' }}_mode
+      </mat-icon>
+    </button>
+
     <ng-container *ngIf="{user: user$ | async, isLoading: isLoading$ | async} as obj">
       <ng-container *ngIf="!obj.isLoading">
 
