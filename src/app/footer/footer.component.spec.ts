@@ -26,10 +26,10 @@ describe('FooterComponent', () => {
 
   });
 
-  it('should have ".container .mat-small" with "Powered by © Milen Hristov Ivanov | 2021"', () => {
+  it('should have ".footer-container .mat-small" with "Powered by © Milen Hristov Ivanov | 2021"', () => {
 
     const dom = fixture.nativeElement as HTMLElement;
-    const span = dom.querySelector('.container .mat-small');
+    const span = dom.querySelector('.footer-container .mat-small');
     expect(span?.textContent).toEqual('Powered by © Milen Hristov Ivanov | 2021');
 
   });

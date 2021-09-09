@@ -1,10 +1,11 @@
 // angular
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
-import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
 import { MatCardAvatar, MatCardModule } from '@angular/material/card';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 // ngrx
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 // custom
@@ -13,6 +14,8 @@ import * as fromAuth from '../user/auth/store/reducer';
 import * as AuthActions from '../user/auth/store/actions';
 import * as AuthModels from '../user/auth/store/models';
 import { ImageFallbackDirective } from '../shared/directives';
+import { ThemeService } from '@app/shared/services';
+import { ProviderModule } from '@app/provider.module';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -51,13 +54,16 @@ describe('HeaderComponent', () => {
         HeaderComponent
       ],
       imports: [
+        BrowserAnimationsModule,
         MatToolbarModule,
         MatMenuModule,
         MatIconModule,
-        MatCardModule
+        MatCardModule,
+        ProviderModule,
       ],
       providers: [
-        provideMockStore({ initialState })
+        provideMockStore({ initialState }),
+        ThemeService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -95,6 +101,7 @@ describe('HeaderComponent', () => {
   it('should dispatch an onLogout event', () => {
 
     const action = AuthActions.logoutStart();
+
     component.logout();
     expect(store.dispatch).toHaveBeenCalledWith(action);
 
@@ -104,6 +111,7 @@ describe('HeaderComponent', () => {
 
     const mode = 'login';
     const action = AuthActions.switchModeTo({ authMode: { mode } });
+
     component.switchModeTo(mode);
     expect(store.dispatch).toHaveBeenCalledWith(action);
 
@@ -115,9 +123,7 @@ describe('HeaderComponent', () => {
       ...initialState,
       login: loggedUser
     });
-
     mockUserSelector.setResult(loggedUser);
-
     store.refreshState();
     fixture.detectChanges();
 
