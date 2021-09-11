@@ -131,7 +131,7 @@
     "@types/webpack": "^5.28.0",
     "chai": "^4.3.4",
     "codelyzer": "^6.0.2",
-    "compression-webpack-plugin": "^8.0.1",
+    "compression-webpack-plugin": "^9.0.0",
     "cucumber": "~6.0.5",
     "cucumber-html-reporter": "~5.5.0",
     "jasmine-core": "~3.9.0",
