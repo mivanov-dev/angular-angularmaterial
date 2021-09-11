@@ -48,6 +48,7 @@
               "src/styles-loading.scss",
               "src/styles.scss"
             ],
+            "inlineStyleLanguage": "scss",
             "scripts": []
           },
           "configurations": {
@@ -67,11 +68,8 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json",
               "budgets": [
                 {
                   "type": "initial",
@@ -83,23 +81,33 @@
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
                 }
-              ],
-              "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "angular-angularmaterial:build",
             "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
               "browserTarget": "angular-angularmaterial:build:production"
+            },
+            "development": {
+              "browserTarget": "angular-angularmaterial:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -128,6 +136,7 @@
               "src/styles-loading.scss",
               "src/styles.scss"
             ],
+            "inlineStyleLanguage": "scss",
             "scripts": []
           }
         },
@@ -170,8 +179,7 @@
             "outputPath": "dist/server",
             "main": "server.ts",
             "tsConfig": "tsconfig.server.json",
-            "sourceMap": false,
-            "optimization": false
+            "inlineStyleLanguage": "scss"
           },
           "configurations": {
             "production": {
@@ -181,37 +189,48 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ],
-              "sourceMap": false,
-              "optimization": true
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
-          "options": {
-            "browserTarget": "angular-angularmaterial:build",
-            "serverTarget": "angular-angularmaterial:server"
-          },
           "configurations": {
             "production": {
               "browserTarget": "angular-angularmaterial:build:production",
               "serverTarget": "angular-angularmaterial:server:production"
+            },
+            "development": {
+              "browserTarget": "angular-angularmaterial:build:development",
+              "serverTarget": "angular-angularmaterial:server:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
           "options": {
-            "browserTarget": "angular-angularmaterial:build:production",
-            "serverTarget": "angular-angularmaterial:server:production",
             "routes": [
               "/"
             ]
           },
           "configurations": {
-            "production": {}
-          }
+            "production": {
+              "browserTarget": "angular-angularmaterial:build:production",
+              "serverTarget": "angular-angularmaterial:server:production"
+            },
+            "development": {
+              "browserTarget": "angular-angularmaterial:build:development",
+              "serverTarget": "angular-angularmaterial:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
