@@ -129,6 +129,7 @@ describe('HeaderComponent', () => {
       login: loggedUser
     });
     mockUserSelector.setResult(loggedUser);
+    tick(50);
     store.refreshState();
     tick(50);
     fixture.detectChanges();
