@@ -79,7 +79,7 @@
     "passport-local": "^1.0.0",
     "qrcode": "^1.4.4",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.6.7",
+    "rxjs": "7.3.0",
     "rxjs-compat": "^6.6.7",
     "sitemap": "^6.4.0",
     "speakeasy": "^2.0.0",
