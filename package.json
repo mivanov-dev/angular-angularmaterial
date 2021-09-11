@@ -20,7 +20,7 @@
     "prerender": "ng run angular-angularmaterial:prerender",
     "preinstall": "npm i -g @angular/cli typescript tslint sass",
     "docker:deploy": "docker-compose -f \"docker-compose.yml\" up -d --build",
-    "wmu": "./node_modules/.bin/webdriver-manager update"
+    "wmu": "webdriver-manager update"
   },
   "config": {
     "unsafe-perm": true
