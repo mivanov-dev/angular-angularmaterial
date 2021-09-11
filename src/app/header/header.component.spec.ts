@@ -1,5 +1,5 @@
 // angular
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatCardAvatar, MatCardModule } from '@angular/material/card';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -129,9 +129,10 @@ describe('HeaderComponent', () => {
       login: loggedUser
     });
     mockUserSelector.setResult(loggedUser);
+    tick(50);
     store.refreshState();
+    tick(50);
     fixture.detectChanges();
-
     expect(dom.querySelector(userProfileBtn)).not.toBeNull();
 
   }));
