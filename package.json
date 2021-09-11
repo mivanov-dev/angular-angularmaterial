@@ -37,7 +37,7 @@
     "@angular/platform-browser": "12.2.1",
     "@angular/platform-browser-dynamic": "12.2.5",
     "@angular/platform-server": "12.2.1",
-    "@angular/router": "12.2.1",
+    "@angular/router": "12.2.5",
     "@angular/service-worker": "12.2.1",
     "@ngrx/effects": "12.4.0",
     "@ngrx/entity": "^12.3.0",
