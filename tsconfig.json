@@ -14,11 +14,11 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2017",
     "typeRoots": [
       "node_modules/@types"
     ],
-    "module": "es2020",
+    "module": "ES2020",
     "lib": [
       "ES2018",
       "DOM"
