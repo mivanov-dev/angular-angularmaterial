@@ -63,7 +63,7 @@
     "filepond-plugin-file-validate-size": "2.2.1",
     "filepond-plugin-file-validate-type": "1.2.5",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
-    "filepond-plugin-image-preview": "4.6.9",
+    "filepond-plugin-image-preview": "4.6.10",
     "filepond-plugin-image-validate-size": "^1.2.6",
     "generate-robotstxt": "^8.0.3",
     "ioredis": "^4.27.7",
