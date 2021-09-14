@@ -5,4 +5,4 @@ COPY . .
 RUN npm install
 RUN npm run build:ssr
 EXPOSE 4200
-CMD ["sh", "-c", "npm run e2e-docker && npm run serve:ssr" ]
+CMD ["sh", "-c", "npm run e2e:docker && npm run serve:ssr" ]

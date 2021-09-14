@@ -40,7 +40,7 @@ pipeline {
             parallel {
                 stage('Test Headless') {
                     steps {
-                        bat 'npm run test-headless'
+                        bat 'npm run test:headless'
                     }
                     post{
                         success{
@@ -53,7 +53,7 @@ pipeline {
                 }
                 stage('E2E Headless') {
                     steps {
-                        bat 'npm run e2e-headless'
+                        bat 'npm run e2e:headless'
                     }
                     post{
                         success{

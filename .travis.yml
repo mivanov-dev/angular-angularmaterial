@@ -43,5 +43,5 @@ install:
 
 script:
   - npm run wmu
-  - npm run test-headless
-  - npm run e2e-headless
+  - npm run test:headless
+  - npm run e2e:headless

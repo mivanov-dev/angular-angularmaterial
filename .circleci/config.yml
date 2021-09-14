@@ -82,7 +82,7 @@ jobs:
       - custom_attach_workspace
       - browser-tools/install-browser-tools
       - chrome_environment_variables
-      - run: sudo npm run test-headless
+      - run: sudo npm run test:headless
 
   test-e2e:
     executor: default-executor
@@ -90,4 +90,4 @@ jobs:
       - custom_attach_workspace
       - browser-tools/install-browser-tools
       - chrome_environment_variables
-      - run: sudo npm run e2e-headless
+      - run: sudo npm run e2e:headless
