@@ -12,8 +12,14 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ],
     "target": "ES2017",
     "typeRoots": [
       "node_modules/@types"
