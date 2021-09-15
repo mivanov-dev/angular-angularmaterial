@@ -27,7 +27,8 @@
     "module": "ES2020",
     "lib": [
       "ES2018",
-      "DOM"
+      "DOM",
+      "ESNext.AsyncIterable"
     ],
     "paths": {
       "@app/*": [
