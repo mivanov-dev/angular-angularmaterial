@@ -12,16 +12,23 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ],
+    "target": "ES2017",
     "typeRoots": [
       "node_modules/@types"
     ],
-    "module": "es2020",
+    "module": "ES2020",
     "lib": [
       "ES2018",
-      "DOM"
+      "DOM",
+      "ESNext.AsyncIterable"
     ],
     "paths": {
       "@app/*": [
