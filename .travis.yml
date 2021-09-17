@@ -39,9 +39,13 @@ before_install:
 
 install:
   - npm set progress=false
+  - npm install codecov -g
   - npm install
 
 script:
   - npm run wmu
   - npm run test:headless
   - npm run e2e:headless
+
+after_success:
+  - codecov
