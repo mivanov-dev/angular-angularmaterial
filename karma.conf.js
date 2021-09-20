@@ -32,17 +32,18 @@ module.exports = function (config) {
     },
     coverageReporter: {
       dir: 'coverage/',
+      subdir: '.',
       reporters: [
-        { type: 'html', subdir: '.' },
-        { type: 'lcovonly', subdir: '.', file: 'lcov.info' },
-        { type: 'json-summary', subdir: '.', file: 'coverage.json' },
+        { type: 'html' },
+        { type: 'lcovonly', file: 'lcov.info' },
+        { type: 'json-summary', file: 'coverage.json' },
       ],
       check: {
         global: {
-          statements: 100,
-          branches: 100,
-          functions: 100,
-          lines: 100,
+          statements: 20,
+          branches: 20,
+          functions: 20,
+          lines: 20,
         },
       },
       fixWebpackSourcePaths: true,
