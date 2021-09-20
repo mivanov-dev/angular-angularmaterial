@@ -20,27 +20,38 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
-      require('karma-spec-reporter'),
-      // @ts-ignore
-      require('@angular-devkit/build-angular/plugins/karma')
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-jasmine-html-reporter',
+      'karma-coverage',
+      'karma-spec-reporter',
+      '@angular-devkit/build-angular/plugins/karma'
     ],
     client: {
       clearContext: false
     },
-    coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, './coverage/angular-angularmaterial'),
-      reports: ['html', 'lcovonly', 'text-summary'],
-      fixWebpackSourcePaths: true
+    coverageReporter: {
+      dir: 'coverage/',
+      reporters: [
+        { type: 'html', subdir: '.' },
+        { type: 'lcovonly', subdir: '.', file: 'lcov.info' },
+        { type: 'json-summary', subdir: '.', file: 'coverage.json' },
+      ],
+      check: {
+        global: {
+          statements: 100,
+          branches: 100,
+          functions: 100,
+          lines: 100,
+        },
+      },
+      fixWebpackSourcePaths: true,
     },
     jasmineHtmlReporter: {
       suppressAll: true,
       suppressFailed: true
     },
-    reporters: ['progress', 'kjhtml', 'coverage-istanbul', 'spec'],
+    reporters: ['progress', 'kjhtml', 'spec'],
     specReporter: {
       maxLogLines: 10,
       suppressErrorSummary: false,

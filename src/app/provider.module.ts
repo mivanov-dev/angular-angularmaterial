@@ -33,6 +33,7 @@ export const appInit = (store: Store<fromApp.AppState>, logger: LoggerService) =
       .pipe(filter(loading => !loading))
       .subscribe(res => {
 
+        /* istanbul ignore next */
         if (!res) {
           resolve(true);
         }
@@ -74,10 +75,14 @@ export const appInit = (store: Store<fromApp.AppState>, logger: LoggerService) =
     },
     {
       provide: SwRegistrationOptions,
-      useFactory: () => ({
-        enabled: location.search.includes('sw=true'),
-        registrationStrategy: 'registerImmediately'
-      }),
+
+      useFactory: /* istanbul ignore next */ () => (
+        /* istanbul ignore next */
+        {
+          enabled: location.search.includes('sw=true'),
+          registrationStrategy: 'registerImmediately'
+        }
+      ),
     },
     {
       provide: WindowToken,
@@ -95,6 +100,7 @@ export const appInit = (store: Store<fromApp.AppState>, logger: LoggerService) =
 })
 export class ProviderModule {
   constructor(@Optional() @SkipSelf() module: ProviderModule) {
+    /* istanbul ignore next */
     if (module) {
       throw new Error('ProviderModule is already loaded. Import only in AppModule');
     }
