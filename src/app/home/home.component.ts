@@ -1,5 +1,6 @@
+import { AfterViewInit } from '@angular/core';
 // angular
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 // custom
 import { SeoService } from '../shared/services';
 
@@ -8,7 +9,7 @@ import { SeoService } from '../shared/services';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements AfterViewInit, OnDestroy {
 
   private typed: any;
 
@@ -18,12 +19,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngAfterViewInit(): Promise<void> {
 
-    const Typed = await import(
+    const Typed = (await import(
       /* webpackMode: "lazy" */
       'typed.js'
-    ).then((res) => res.default);
+    )).default;
 
     this.typed = new Typed('.typed', {
       strings: [
