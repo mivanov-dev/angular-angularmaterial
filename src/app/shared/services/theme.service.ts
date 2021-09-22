@@ -3,18 +3,21 @@ import { Inject, Injectable } from '@angular/core';
 
 import { WindowToken } from '../config';
 
+type ThemeClassType = 'light-theme' | 'dark-theme';
+
 export interface ThemeData {
   isDark: boolean;
-  themeClass: string;
+  themeClass: ThemeClassType;
 }
 
+/* istanbul ignore next */
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
   isDark = false;
-  themeClass = 'light-theme';
-  private classList = ['light-theme', 'dark-theme'];
+  themeClass: ThemeClassType = 'light-theme';
+  private classList: ThemeClassType[] = ['light-theme', 'dark-theme'];
   private readonly key = 'is_dark_theme';
 
   constructor(

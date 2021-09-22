@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 // custom
 import { LoggerService } from '../services';
 
+/* istanbul ignore next */
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 

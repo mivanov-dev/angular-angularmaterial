@@ -11,13 +11,15 @@ export interface SeoModel {
   url: string;
 }
 
+/* istanbul ignore next */
 @Injectable()
 export class SeoService {
 
   htmlMetaElement: HTMLMetaElement[] = [];
 
-  constructor(private title: Title,
-              private meta: Meta) { }
+  constructor(
+    private title: Title,
+    private meta: Meta) { }
 
 
   // getTitle(): void {

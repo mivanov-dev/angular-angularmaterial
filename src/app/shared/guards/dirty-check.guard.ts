@@ -8,6 +8,7 @@ export interface DirtyCheck {
   canDeactivate: () => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
 }
 
+/* istanbul ignore next */
 @Injectable()
 export class DirtyCheckGuard implements CanDeactivate<DirtyCheck> {
 

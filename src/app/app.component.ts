@@ -9,8 +9,6 @@ import { Observable } from 'rxjs';
 import { map, shareReplay, filter } from 'rxjs/operators';
 // ngrx
 import { Store } from '@ngrx/store';
-// tsparticles
-import { tsParticles } from 'tsparticles';
 // custom
 import * as fromApp from './store/reducer';
 import * as fromAuth from './user/auth/store/reducer';
@@ -28,6 +26,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   isLoading = true;
   particlesOptions: object;
   themeClass: string;
+  tsParticles: any | undefined = undefined;
   public readonly particleId = 'particles-js';
 
   constructor(
@@ -95,7 +94,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     try {
       if (this.document.getElementById(id)) {
-        tsParticles.load(id, config);
+        if (this.tsParticles === null || this.tsParticles === undefined) {
+          this.tsParticles = (await import(
+            /* webpackMode: "lazy" */
+            'tsparticles')).tsParticles;
+          this.tsParticles.load(id, config);
+        }
+        else {
+          this.tsParticles.load(id, config);
+        }
       }
       else {
         throw new Error('check particle configuration');

@@ -4,11 +4,13 @@ import { Injectable } from '@angular/core';
 // rxjs
 import { Observable } from 'rxjs';
 
+/* istanbul ignore next */
 @Injectable()
 export class TokenResolver implements Resolve<string> {
 
-  resolve(activatedRouteSnapshot: ActivatedRouteSnapshot,
-          routerStateSnapshot: RouterStateSnapshot): Observable<string> | Promise<string> | string {
+  resolve(
+    activatedRouteSnapshot: ActivatedRouteSnapshot,
+    routerStateSnapshot: RouterStateSnapshot): Observable<string> | Promise<string> | string {
     return activatedRouteSnapshot.params.id.toString();
   }
 

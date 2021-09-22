@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 
+/* istanbul ignore next */
 @Injectable()
 export class SwService {
 

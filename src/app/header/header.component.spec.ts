@@ -14,11 +14,12 @@ import * as fromAuth from '@app/user/auth/store/reducer';
 import * as AuthActions from '@app/user/auth/store/actions';
 import * as AuthModels from '@app/user/auth/store/models';
 import { ImageFallbackDirective } from '@app/shared/directives';
-import { ThemeService } from '@app/shared/services';
+import { ThemeData, ThemeService } from '@app/shared/services';
 import { ProviderModule } from '@app/provider.module';
 import * as fromApp from '@app/store';
 
 describe('HeaderComponent', () => {
+
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let store: MockStore<fromApp.AppState>;
@@ -54,6 +55,19 @@ describe('HeaderComponent', () => {
     router: { navigationId: 0, state: null }
   };
 
+  const themeServiceMock = jasmine.createSpyObj<ThemeService>(
+    'ThemeService',
+    ['initTheme', 'switchTheme']
+  );
+  const switchThemeServiceMock = themeServiceMock
+    .switchTheme
+    .and
+    .returnValue({ isDark: false, themeClass: 'light-theme' } as ThemeData);
+  const themesData: ThemeData[] = [
+    { isDark: false, themeClass: 'light-theme' },
+    { isDark: true, themeClass: 'dark-theme' }
+  ];
+
   beforeEach(() => {
 
     TestBed.configureTestingModule({
@@ -75,7 +89,7 @@ describe('HeaderComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         {
           provide: ThemeService,
-          useValue: jasmine.createSpyObj('ThemeService', ['initTheme', 'switchTheme'])
+          useValue: themeServiceMock
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -100,7 +114,9 @@ describe('HeaderComponent', () => {
   });
 
   afterEach(() => {
+
     fixture.destroy();
+
   });
 
   it('should create component', () => {
@@ -110,12 +126,27 @@ describe('HeaderComponent', () => {
 
   });
 
+  themesData.forEach((e) => {
+
+    it(`switchTheme ${e.isDark ? 'dark-theme to light-theme' : 'light-theme to dark-theme'}`, () => {
+
+      switchThemeServiceMock.and.returnValue(e);
+      component.switchTheme();
+
+      expect(component.isDark).toEqual(e.isDark);
+      expect(component.themeClass).toEqual(e.themeClass);
+
+    });
+
+  });
+
   describe('dispatch', () => {
+
     it('should dispatch an onLogout event', () => {
 
       const action = AuthActions.logoutStart();
-
       component.logout();
+
       expect(store.dispatch).toHaveBeenCalledWith(action);
 
     });
@@ -129,6 +160,7 @@ describe('HeaderComponent', () => {
       expect(store.dispatch).toHaveBeenCalledWith(action);
 
     });
+
   });
 
   describe('selector', () => {
@@ -144,8 +176,10 @@ describe('HeaderComponent', () => {
     };
 
     beforeEach(() => {
+
       mockAuthSelector = store.overrideSelector(fromAuth.selectLogin, { user } as AuthModels.Login);
       fixture.detectChanges();
+
     });
 
     it('should show user image if user is logged in', fakeAsync(() => {
@@ -166,8 +200,8 @@ describe('HeaderComponent', () => {
       store.setState(state);
       mockAuthSelector.setResult({ user });
       store.refreshState();
-      tick(100);
       fixture.detectChanges();
+      tick(100);
       expect(dom.querySelector(userProfileBtn)).not.toBeNull();
 
     }));

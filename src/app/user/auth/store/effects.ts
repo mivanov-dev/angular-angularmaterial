@@ -10,6 +10,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { AuthService } from '../../../user/auth/services/auth.service';
 import * as AuthActions from './actions';
 
+/* istanbul ignore next */
 @Injectable()
 export class AuthEffects {
 

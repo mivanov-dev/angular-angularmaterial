@@ -6,6 +6,7 @@ import {
 import { fromEvent, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+/* istanbul ignore next */
 /**
  * We can use the directive like that.
  * Examples:

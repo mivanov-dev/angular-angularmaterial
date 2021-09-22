@@ -4,6 +4,7 @@
 module.exports = function (config) {
   config.set({
     browsers: ['Chrome'],
+    browserConsoleLogOptions: { level: "info", terminal: true },
     customLaunchers: {
       HeadlessChrome: {
         base: 'ChromeHeadless',
@@ -28,6 +29,7 @@ module.exports = function (config) {
       '@angular-devkit/build-angular/plugins/karma'
     ],
     client: {
+      jasmine: {},
       clearContext: false
     },
     coverageReporter: {
@@ -52,7 +54,7 @@ module.exports = function (config) {
       suppressAll: true,
       suppressFailed: true
     },
-    reporters: ['progress', 'kjhtml', 'spec'],
+    reporters: ['spec'],
     specReporter: {
       maxLogLines: 10,
       suppressErrorSummary: false,

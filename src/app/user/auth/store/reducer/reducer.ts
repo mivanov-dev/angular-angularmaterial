@@ -20,6 +20,7 @@ export const initState: State = {
   authMode: { mode: 'login' },
 };
 
+/* istanbul ignore next */
 export const authReducer = createReducer<State>(
   initState,
   /**
@@ -110,6 +111,7 @@ export const authReducer = createReducer<State>(
 
 );
 
+/* istanbul ignore next */
 export const reducer = (state: State | undefined, action: Action) => {
   return authReducer(state, action);
 };
