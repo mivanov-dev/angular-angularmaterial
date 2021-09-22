@@ -11,6 +11,7 @@ import * as AuthActions from '../store/actions';
 import * as AuthModels from '../store/models';
 import { environment } from 'src/environments/environment';
 
+/* istanbul ignore next */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 

@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 // custom
 import { environment } from 'src/environments/environment';
 
+/* istanbul ignore next */
 @Injectable({ providedIn: 'root' })
 export class LoggerService {
 

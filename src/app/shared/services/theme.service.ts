@@ -10,6 +10,7 @@ export interface ThemeData {
   themeClass: ThemeClassType;
 }
 
+/* istanbul ignore next */
 @Injectable({
   providedIn: 'root'
 })

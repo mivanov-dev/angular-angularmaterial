@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import * as fromApp from '../../store';
 import * as fromAuth from '../../user/auth/store/reducer';
 
+/* istanbul ignore next */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor, OnDestroy {
 
