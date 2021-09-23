@@ -93,7 +93,7 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^12.1.0",
     "@angular-devkit/build-angular": "^12.1.2",
-    "@angular-devkit/schematics": "~12.2.5",
+    "@angular-devkit/schematics": "~12.2.7",
     "@angular/cli": "~12.2.5",
     "@angular/compiler-cli": "~12.2.5",
     "@angular/language-service": "~12.2.5",
