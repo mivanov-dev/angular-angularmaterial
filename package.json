@@ -142,7 +142,7 @@
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-html-reporter": "^1.6.0",
     "karma-spec-reporter": "0.0.32",
-    "nodemailer": "^6.6.2",
+    "nodemailer": "^6.6.5",
     "nyc": "^15.1.0",
     "protractor": "~7.0.0",
     "protractor-cucumber-framework": "~8.2.2",
